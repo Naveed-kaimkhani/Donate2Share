@@ -15,7 +15,7 @@ class DonationModel {
   String? donatorAddress;
   double? quantity;
   String? expiry;
-
+List<dynamic>? pictures;
   DonationModel({
     // this.receiverUid,
     this.documentId,
@@ -27,28 +27,32 @@ class DonationModel {
     this.donatorUid,
     this.expiry,
     this.quantity,
+    this.type,
     this.donatorName,
     this.sentDate,
     this.sentTime,
     this.donatorProfileImage,
     this.donatorPhone,
+    this.pictures,
   });
 
-  Map<String, dynamic> toMap(DonationModel request) {
+  Map<String, dynamic> toMap(DonationModel donation) {
     var data = Map<String, dynamic>();
-    // data['receiverUid'] = request.receiverUid;
-    data['documentId'] = request.documentId;
-    data['donatorUid'] = request.donatorUid;
-    data['donatorLat'] = request.donatorLat;
-    data['donatorLong'] = request.donatorLong;
-    data['donatorPhone'] = request.donatorPhone;
-    data['donatorAddress'] = request.donatorAddress;
-    data['donationId'] = request.donationId;
-    data['donatorName'] = request.donatorName;
-    data['donatorProfileImage'] = request.donatorProfileImage;
-    data['sentDate'] = request.sentDate;
-    data['sentTime'] = request.sentTime;
-    data['donatorDeviceToken'] = request.donatorDeviceToken;
+    // data['receiverUid'] = donation.receiverUid;
+    data['documentId'] = donation.documentId;
+    data['donatorUid'] = donation.donatorUid;
+    data['donatorLat'] = donation.donatorLat;
+    data['donatorLong'] = donation.donatorLong;
+    data['donatorPhone'] = donation.donatorPhone;
+    data['donatorAddress'] = donation.donatorAddress;
+    data['donationId'] = donation.donationId;
+    data['donatorName'] = donation.donatorName;
+    data['donatorProfileImage'] = donation.donatorProfileImage;
+    data['type'] = donation.type;
+    data['sentDate'] = donation.sentDate;
+    data['sentTime'] = donation.sentTime;
+    data['donatorDeviceToken'] = donation.donatorDeviceToken;
+ data['pictures'] = donation.pictures;
 
     return data;
   }
@@ -59,6 +63,7 @@ class DonationModel {
     donatorName = mapData['donatorName'];
     donatorUid = mapData['donatorUid'];
     donatorLat = mapData['donatorLat'];
+    type = mapData['type'];
     donatorLong = mapData['donatorLong'];
     donatorPhone = mapData['donatorPhone'];
     donatorAddress = mapData['donatorAddress'];

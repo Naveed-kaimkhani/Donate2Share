@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_route.dart';
@@ -5,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:ui' as ui;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
@@ -12,7 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:path_provider/path_provider.dart' as path_provider;
 import '../presentation/donar screens/no_internet_connection.dart';
 import '../presentation/widgets/circle_progress.dart';
 class utils {
@@ -87,14 +89,30 @@ class utils {
     });
     // return true;
   }
+ static Future<XFile> compressImage(XFile image)async{
+    final dir = await path_provider.getTemporaryDirectory();
+    final targetPath = '${dir.absolute.path}/temp.jpg';
 
+    // converting original image to compress it
+    final result = await FlutterImageCompress.compressAndGetFile(
+      image.path,
+      targetPath,
+      minHeight: 1080, //you can play with this to reduce siz
+      minWidth: 1080,
+      quality: 90, // keep this high to get the original quality of image
+    );
+    return result!;
+  }
+  
   static Future<Uint8List?> pickImage() async {
     //    ImagePicker picker=ImagePicker();
     ImagePicker picker = ImagePicker();
     XFile? file = await picker.pickImage(source: ImageSource.gallery);
+  
     //print("before redusing size $file");
     if (file != null) {
-      return file.readAsBytes();
+    XFile compressedImage = await compressImage(file);
+      return compressedImage.readAsBytes();
     }
     return null;
   }

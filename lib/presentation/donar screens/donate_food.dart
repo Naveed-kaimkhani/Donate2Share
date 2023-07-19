@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/domain/models/donation_model.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
 import 'package:donation_app/style/styling.dart';
@@ -14,6 +15,7 @@ import '../../domain/models/user_model.dart';
 import '../../providers/seller_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
+import '../widgets/circle_progress.dart';
 import '../widgets/donationScreen_input_field.dart';
 import '../widgets/donation_screen_header.dart';
 
@@ -25,7 +27,7 @@ class DonateFood extends StatefulWidget {
 }
 
 class _DonateFoodState extends State<DonateFood> {
-   SellerModel? donator;
+  SellerModel? donator;
   FocusNode foodNameFocusNode = FocusNode();
 
   FocusNode foodDescriptionFocusNode = FocusNode();
@@ -48,8 +50,8 @@ class _DonateFoodState extends State<DonateFood> {
     height: 12.h,
   );
   bool isLoadingNow = false;
-  
- void isLoading(bool value) {
+
+  void isLoading(bool value) {
     setState(() {
       isLoadingNow = value;
     });
@@ -64,13 +66,11 @@ class _DonateFoodState extends State<DonateFood> {
     setState(() {});
   }
 
-  void _validateFields() {
+  void _validateFields() async {
     if (_foodNameController.text.trim().isEmpty &&
         _foodDescriptionController.text.trim().isEmpty &&
         _quantityController.text.trim().isEmpty &&
-        _expiryController.text.trim().isEmpty 
-        ) {
-        
+        _expiryController.text.trim().isEmpty) {
       utils.flushBarErrorMessage('Enter Donation details', context);
     } else if (_foodNameController.text.trim().isEmpty) {
       utils.flushBarErrorMessage('Enter food Name', context);
@@ -78,28 +78,34 @@ class _DonateFoodState extends State<DonateFood> {
       utils.flushBarErrorMessage('Enter Food Description', context);
     } else if (_expiryController.text.trim().isEmpty) {
       utils.flushBarErrorMessage('Enter expiry date', context);
-    } else if (foodImageList!.isEmpty || foodImageList==null) {
+    } else if (foodImageList!.isEmpty || foodImageList == null) {
       utils.flushBarErrorMessage('Enter food images', context);
-    }  else {
+    } else {
       // Regex for Pakistani number (+92 123 4567890)
       // if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(_phoneController.text)) {
       isLoading(true);
-    DonationModel donationModel=DonationModel(
+
+      List<String> pictures = await FirebaseUserRepository.uploadDonationImage(
+          imageFile: foodImageList!);
+      DonationModel donationModel = DonationModel(
         donatorUid: utils.currentUserUid,
-          donatorName:donator?.name??"No name" ,
+        donatorName: donator?.name ?? "No name",
         donatorProfileImage: donator!.profileImage,
         donatorPhone: donator!.phone,
         donatorAddress: donator!.address,
         donatorDeviceToken: donator!.deviceToken,
         donatorLat: donator!.lat,
         donatorLong: donator!.long,
-          sentDate:utils.getCurrentDate(),
-          sentTime: utils.getCurrentTime(),
-          donationId: utils.getRandomid(),
+        pictures: pictures,
+        type: "food",
+        sentDate: utils.getCurrentDate(),
+        sentTime: utils.getCurrentTime(),
+        donationId: utils.getRandomid(),
+      );
 
-    );
-      
-      _saveModelToFireStore(donationModel);
+      await FirebaseUserRepository.saveDonationModelToFirestore(
+          donationModel, context);
+    
     }
   }
 
@@ -126,7 +132,7 @@ class _DonateFoodState extends State<DonateFood> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const DonationScreenHeader(),
         SizedBox(
-          height: 30.h,
+          height: 3.h,
         ),
         foodImageList!.isNotEmpty
             ? SizedBox(
@@ -154,10 +160,15 @@ class _DonateFoodState extends State<DonateFood> {
             : const SizedBox(),
         Center(
           child: InkWell(
-            child: Icon(
-              Icons.file_upload_outlined,
-              color: Styling.primaryColor,
-              size: 40.h,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.file_upload_outlined,
+                  color: Styling.primaryColor,
+                  size: 40.h,
+                ),
+                Text("Upload Images")
+              ],
             ),
             onTap: () => selectImages(),
           ),
@@ -165,12 +176,12 @@ class _DonateFoodState extends State<DonateFood> {
         Padding(
           padding: k,
           child: Text(
-            "Food Type",
+            "Food Name",
             style: CustomTextStyle.font_18_black,
           ),
         ),
         DonationScreenInputField(
-          hint_text: "Food Type",
+          hint_text: "Food name",
           currentNode: foodNameFocusNode,
           focusNode: foodNameFocusNode,
           nextNode: foodDescriptionFocusNode,
@@ -227,7 +238,7 @@ class _DonateFoodState extends State<DonateFood> {
           currentNode: quantityFocusNode,
           focusNode: quantityFocusNode,
           nextNode: expiryFocusNode,
-          controller: _foodNameController,
+          controller: _quantityController,
           obsecureText: false,
           // validator: (value) {
           //   if (value.isEmpty) {
@@ -250,7 +261,7 @@ class _DonateFoodState extends State<DonateFood> {
           currentNode: foodNameFocusNode,
           focusNode: foodNameFocusNode,
           nextNode: foodDescriptionFocusNode,
-          controller: _foodNameController,
+          controller: _expiryController,
           obsecureText: false,
           // validator: (value) {
           //   if (value.isEmpty) {
@@ -261,9 +272,12 @@ class _DonateFoodState extends State<DonateFood> {
           // },
         ),
         Padding(
-          padding: EdgeInsets.only(left: 40.w, top: 36.h),
-          child: AuthButton(
-              text: "Donate Now", func: () {}, color: Styling.primaryColor),
+          padding: EdgeInsets.only(left: 42.w, top: 16.h),
+          child: isLoadingNow
+                        ? const CircleProgress():AuthButton(
+              text: "Donate Now", func: () {
+                _validateFields();
+              }, color: Styling.primaryColor),
         )
       ]),
     )));

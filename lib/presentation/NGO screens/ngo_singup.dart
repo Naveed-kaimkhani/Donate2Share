@@ -2,7 +2,6 @@
 import 'dart:typed_data';
 import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart';
 import 'package:donation_app/utils/utils.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -297,50 +296,6 @@ class _NGOSignUpState extends State<NGOSignUp> {
     setState(() {
       _obsecureText = !_obsecureText;
     });
-  }
-
-  Container hostelType() {
-    return Container(
-      height: 60.h,
-      // width: 60.w,
-      decoration: BoxDecoration(
-        color: Color(0xffF4F7FF),
-        borderRadius: BorderRadius.circular(7.r),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2(
-          // focusColor: Styling.primaryColor,
-
-          // dropdownElevation: 0,
-          // buttonElevation: 0,
-          // icon: Padding(
-          //   padding: EdgeInsets.only(right: 17.w),
-          //   child: Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Styling.primaryColor,
-          //   ),
-          // ),
-          // dropdownDecoration: BoxDecoration(
-          //   color: Styling.primaryColor,
-          //   borderRadius: BorderRadius.circular(7.r),
-          // ),
-          hint: Text(donarselectedvalue!),
-          items: donarList
-              .map(
-                (value) => DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              donarselectedvalue = value as String;
-            });
-          },
-        ),
-      ),
-    );
   }
 
   Widget uploadProfile(Uint8List? image) {

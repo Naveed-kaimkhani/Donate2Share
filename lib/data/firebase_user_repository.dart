@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../domain/models/donation_model.dart';
@@ -24,9 +26,11 @@ class FirebaseUserRepository {
       firestore.collection('NGOs');
   static final CollectionReference _sellerCollection =
       firestore.collection('donars');
-  final Reference _storageReference = FirebaseStorage.instance.ref();
+static  final  Reference _storageReference = FirebaseStorage.instance.ref();
   NotificationServices _notificationServices = NotificationServices();
  
+  static final CollectionReference _donationCollection =
+      firestore.collection("donations");
   Future<User?> login(String email, String password, context) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -235,32 +239,40 @@ class FirebaseUserRepository {
     }
   }
 
-  static Future<void> _saveDonatinoModelToFirestore(
-    DonationModel donationModel,
-    context,
-  ) async {
-    try {
-      for (SellerModel seller in sellers) {
-        final DocumentReference requestRef = await _sellerCollection
-            .doc(seller.uid)
-            .collection('Request')
-            .add(DonationModel.toMap(DonationModel));
+static Future<void> saveDonationModelToFirestore(DonationModel donation,context) async {
+  try {
 
-        final String documentId = requestRef.id;
-
-        await requestRef.update({'documentId': documentId});
-      }
-
-      // utils.toastMessage("Request Sent");
-    } catch (error) {
-      // Handle the error appropriately
-      utils.flushBarErrorMessage('Error sending request: $error', context);
-      throw FirebaseException(
-        plugin: 'FirebaseUserRepository',
-        message: 'Failed to send request to sellers.',
-      );
-    }
+    await _donationCollection
+        .doc(utils.currentUserUid)
+        .collection("user_donations")
+        .doc(donation.documentId)
+        .set(donation.toMap(donation));
+    
+  } catch (e) {
+  utils.flushBarErrorMessage('Failed to donate: $e',context);
   }
-
-
+}
+static Future<List<String>> uploadDonationImage({
+  required List<XFile> imageFile,
+}) async {
+  int id = 1;
+  List<String> listOfDonationImages = [];
+  
+  for (XFile element in imageFile) {
+   XFile compressedImage = await utils.compressImage(element);
+    final imageRef = _storageReference
+        .child('donation_images')
+        .child(utils.currentUserUid)
+        .child(DateTime.now().millisecondsSinceEpoch.toString())
+        .child(id.toString());
+    
+    await imageRef.putFile(File(compressedImage.path));
+  
+    String downloadURL = await imageRef.getDownloadURL();
+    listOfDonationImages.add(downloadURL);
+    id++;
+  }
+  
+  return listOfDonationImages;
+}
 }
