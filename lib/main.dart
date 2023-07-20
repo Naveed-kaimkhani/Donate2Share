@@ -1,5 +1,8 @@
 
+import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
+import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/presentation/splash_screen.dart';
 import 'package:donation_app/providers/seller_provider.dart';
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home:DonateFood(),
+            home:DonarLogin(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
           

@@ -3,9 +3,8 @@ import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/food_tracing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../style/styling.dart';
+import 'donate_food.dart';
 
 class DonarNavigation extends StatefulWidget {
   const DonarNavigation({Key? key}) : super(key: key);
@@ -15,7 +14,8 @@ class DonarNavigation extends StatefulWidget {
 
 class _DonarNavigationState extends State<DonarNavigation> {
   List pages = [
-    DonarHomePage(),
+    // DonarHomePage(),
+    DonateFood(),
     FoodTracing(),
     DonarSetting(),
   ];
@@ -33,8 +33,12 @@ class _DonarNavigationState extends State<DonarNavigation> {
     return Scaffold(
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+        onPressed: () {
+         
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>DonateFood()));
+        },
+        child: Icon(Icons.add,color: Styling.primaryColor,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

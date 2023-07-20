@@ -1,20 +1,16 @@
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
-import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
+import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
+import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
 import '../../domain/models/seller_model.dart';
-import '../../main.dart';
-import '../../providers/seller_provider.dart';
 import '../../style/custom_text_style.dart';
-import '../../style/images.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/circle_progress.dart';
@@ -76,14 +72,12 @@ class _DonarLoginState extends State<DonarLogin> {
       if (sellerModel != null) {
         StorageService.saveSeller(sellerModel).then((value) async {
           // await Provider.of<SellerProvider>(context, listen: false)
-          //     .getSellerFromServer();
+          //     .getSellerFromServer(); 
           await _firebaseRepository.loadSellerDataOnAppInit(context);
-          
+
           isLoading(false);
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const DonarNavigation()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const DonateFood()));
         }).catchError((error) {
           isLoading(false);
           utils.flushBarErrorMessage(error.message.toString(), context);
@@ -97,7 +91,6 @@ class _DonarLoginState extends State<DonarLogin> {
       utils.flushBarErrorMessage(error.message.toString(), context);
     });
   }
-
 
   @override
   void dispose() {

@@ -15,6 +15,7 @@ class DonationModel {
   String? donatorAddress;
   double? quantity;
   String? expiry;
+String? riderChoise;
 List<dynamic>? pictures;
   DonationModel({
     // this.receiverUid,
@@ -22,6 +23,7 @@ List<dynamic>? pictures;
     this.donationId,
     this.donatorLat,
     this.donatorLong,
+    this.riderChoise,
     this.donatorAddress,
     this.donatorDeviceToken,
     this.donatorUid,
@@ -51,7 +53,10 @@ List<dynamic>? pictures;
     data['type'] = donation.type;
     data['sentDate'] = donation.sentDate;
     data['sentTime'] = donation.sentTime;
+    data['riderChoise'] = donation.riderChoise;
+
     data['donatorDeviceToken'] = donation.donatorDeviceToken;
+
  data['pictures'] = donation.pictures;
 
     return data;
@@ -68,6 +73,7 @@ List<dynamic>? pictures;
     donatorPhone = mapData['donatorPhone'];
     donatorAddress = mapData['donatorAddress'];
     donationId = mapData['donationId'];
+    riderChoise = mapData['riderChoise'];
     donatorProfileImage = mapData['donatorProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];

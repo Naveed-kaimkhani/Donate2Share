@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/domain/models/donation_model.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
@@ -10,42 +9,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../domain/models/seller_model.dart';
-import '../../domain/models/user_model.dart';
 import '../../providers/seller_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/circle_progress.dart';
 import '../widgets/donationScreen_input_field.dart';
 import '../widgets/donation_screen_header.dart';
 
-class DonateFood extends StatefulWidget {
-  const DonateFood({super.key});
+class Donateclotheses extends StatefulWidget {
+  const Donateclotheses({super.key});
 
   @override
-  State<DonateFood> createState() => _DonateFoodState();
+  State<Donateclotheses> createState() => _DonateclothesesState();
 }
 
-class _DonateFoodState extends State<DonateFood> {
+class _DonateclothesesState extends State<Donateclotheses> {
   SellerModel? donator;
-  FocusNode foodNameFocusNode = FocusNode();
+  FocusNode clothesNameFocusNode = FocusNode();
 
-  FocusNode foodDescriptionFocusNode = FocusNode();
+  FocusNode clothesDescriptionFocusNode = FocusNode();
 
   FocusNode quantityFocusNode = FocusNode();
 
-  // FocusNode confirmFocusNode = FocusNode();
-  FocusNode expiryFocusNode = FocusNode();
+  final TextEditingController _clothesNameController = TextEditingController();
 
-  final TextEditingController _foodNameController = TextEditingController();
-
-  final TextEditingController _foodDescriptionController =
+  final TextEditingController _clothesDescriptionController =
       TextEditingController();
 
   final TextEditingController _quantityController = TextEditingController();
-
-  final TextEditingController _expiryController = TextEditingController();
   EdgeInsetsGeometry k = EdgeInsets.only(left: 18.w);
   SizedBox l = SizedBox(
     height: 12.h,
@@ -59,36 +50,33 @@ class _DonateFoodState extends State<DonateFood> {
     });
   }
 
-  List<XFile>? foodImageList = [];
+  List<XFile>? clothesImageList = [];
   void selectImages() async {
     final selectedImaged = await ImagePicker().pickMultiImage();
     if (selectedImaged.isNotEmpty) {
-      foodImageList!.addAll(selectedImaged);
+      clothesImageList!.addAll(selectedImaged);
     }
     setState(() {});
   }
 
   void _validateFields() async {
-    if (_foodNameController.text.trim().isEmpty &&
-        _foodDescriptionController.text.trim().isEmpty &&
-        _quantityController.text.trim().isEmpty &&
-        _expiryController.text.trim().isEmpty) {
+    if (_clothesNameController.text.trim().isEmpty &&
+        _clothesDescriptionController.text.trim().isEmpty &&
+        _quantityController.text.trim().isEmpty) {
       utils.flushBarErrorMessage('Enter Donation details', context);
-    } else if (_foodNameController.text.trim().isEmpty) {
-      utils.flushBarErrorMessage('Enter food Name', context);
-    } else if (_foodDescriptionController.text.trim().isEmpty) {
-      utils.flushBarErrorMessage('Enter Food Description', context);
-    } else if (_expiryController.text.trim().isEmpty) {
-      utils.flushBarErrorMessage('Enter expiry date', context);
-    } else if (foodImageList!.isEmpty || foodImageList == null) {
-      utils.flushBarErrorMessage('Enter food images', context);
+    } else if (_clothesNameController.text.trim().isEmpty) {
+      utils.flushBarErrorMessage('Enter clothes Name', context);
+    } else if (_clothesDescriptionController.text.trim().isEmpty) {
+      utils.flushBarErrorMessage('Enter clothes Description', context);
+    } else if (clothesImageList!.isEmpty || clothesImageList == null) {
+      utils.flushBarErrorMessage('Enter clothes images', context);
     } else {
       // Regex for Pakistani number (+92 123 4567890)
       // if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(_phoneController.text)) {
       isLoading(true);
-  final donationId=utils.getRandomid();
+      final donationId = utils.getRandomid();
       List<String> pictures = await FirebaseUserRepository.uploadDonationImage(
-          imageFile: foodImageList!,donationId: donationId);
+          imageFile: clothesImageList!, donationId: donationId);
       DonationModel donationModel = DonationModel(
         donatorUid: utils.currentUserUid,
         donatorName: donator?.name ?? "No name",
@@ -98,10 +86,9 @@ class _DonateFoodState extends State<DonateFood> {
         donatorAddress: donator!.address,
         donatorDeviceToken: donator!.deviceToken,
         donatorLat: donator!.lat,
-        expiry: _expiryController.text,
         donatorLong: donator!.long,
         pictures: pictures,
-        type: "food",
+        type: "clothes",
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
         donationId: donationId,
@@ -115,14 +102,12 @@ class _DonateFoodState extends State<DonateFood> {
 
   @override
   void dispose() {
-    _foodNameController.dispose();
-    _foodDescriptionController.dispose();
+    _clothesNameController.dispose();
+    _clothesDescriptionController.dispose();
     _quantityController.dispose();
-    _expiryController.dispose();
-    foodDescriptionFocusNode.dispose();
-    foodNameFocusNode.dispose();
+    clothesDescriptionFocusNode.dispose();
+    clothesNameFocusNode.dispose();
     quantityFocusNode.dispose();
-    expiryFocusNode.dispose();
     super.dispose();
   }
 
@@ -135,14 +120,14 @@ class _DonateFoodState extends State<DonateFood> {
             body: SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         DonationScreenHeader(
-          title: "Donate",
-          subTitle: "Life Saving Food To Famlies",
-          image: Images.donation_screen_header,
+          title: "Give Your ",
+          subTitle: "CLothes A second life",
+          image: Images.clothes,
         ),
         SizedBox(
           height: 3.h,
         ),
-        foodImageList!.isNotEmpty
+        clothesImageList!.isNotEmpty
             ? SizedBox(
                 height: 100.h,
                 width: double.infinity,
@@ -150,12 +135,12 @@ class _DonateFoodState extends State<DonateFood> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: foodImageList!.length,
+                    itemCount: clothesImageList!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.file(
-                          File(foodImageList![index].path),
+                          File(clothesImageList![index].path),
                           fit: BoxFit.cover,
                           height: 100.h,
                           width: 50.w,
@@ -184,20 +169,20 @@ class _DonateFoodState extends State<DonateFood> {
         Padding(
           padding: k,
           child: Text(
-            "Food Name",
+            "clothes Name",
             style: CustomTextStyle.font_18_black,
           ),
         ),
         DonationScreenInputField(
-          hint_text: "Food name",
-          currentNode: foodNameFocusNode,
-          focusNode: foodNameFocusNode,
-          nextNode: foodDescriptionFocusNode,
-          controller: _foodNameController,
+          hint_text: "clothes name",
+          currentNode: clothesNameFocusNode,
+          focusNode: clothesNameFocusNode,
+          nextNode: clothesDescriptionFocusNode,
+          controller: _clothesNameController,
           obsecureText: false,
           // validator: (value) {
           //   if (value.isEmpty) {
-          //     return "Enter food name";
+          //     return "Enter clothes name";
           //   } else {
           //     return null;
           //   }
@@ -214,7 +199,7 @@ class _DonateFoodState extends State<DonateFood> {
         Container(
           margin: EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h),
           width: 385.w,
-          height: 50.h,
+          height: 70.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
@@ -227,7 +212,7 @@ class _DonateFoodState extends State<DonateFood> {
             child: TextField(
               maxLength: 250,
               maxLines: 8,
-              controller: _foodDescriptionController,
+              controller: _clothesDescriptionController,
               decoration: const InputDecoration.collapsed(
                   hintText: "Write a description"),
             ),
@@ -242,10 +227,10 @@ class _DonateFoodState extends State<DonateFood> {
           ),
         ),
         DonationScreenInputField(
-          hint_text: "eg . 40 Kilograms",
+          hint_text: "eg . 40 dresses",
           currentNode: quantityFocusNode,
           focusNode: quantityFocusNode,
-          nextNode: expiryFocusNode,
+          nextNode: quantityFocusNode,
           controller: _quantityController,
           obsecureText: false,
           // validator: (value) {
@@ -256,29 +241,29 @@ class _DonateFoodState extends State<DonateFood> {
           //   }
           // },
         ),
-        l,
-        Padding(
-          padding: k,
-          child: Text(
-            "Best Before",
-            style: CustomTextStyle.font_18_black,
-          ),
-        ),
-        DonationScreenInputField(
-          hint_text: "Expiry date",
-          currentNode: expiryFocusNode,
-          focusNode: expiryFocusNode,
-          nextNode: expiryFocusNode,
-          controller: _expiryController,
-          obsecureText: false,
-          // validator: (value) {
-          //   if (value.isEmpty) {
-          //     return "Enter quantity";
-          //   } else {
-          //     return null;
-          //   }
-          // },
-        ),
+        // l,
+        // Padding(
+        //   padding: k,
+        //   child: Text(
+        //     "Best Before",
+        //     style: CustomTextStyle.font_18_black,
+        //   ),
+        // ),
+        // DonationScreenInputField(
+        //   hint_text: "Expiry date",
+        //   currentNode: expiryFocusNode,
+        //   focusNode: expiryFocusNode,
+        //   nextNode: expiryFocusNode,
+        //   controller: _expiryController,
+        //   obsecureText: false,
+        //   // validator: (value) {
+        //   //   if (value.isEmpty) {
+        //   //     return "Enter quantity";
+        //   //   } else {
+        //   //     return null;
+        //   //   }
+        //   // },
+        // ),
         l,
         Padding(
           padding: k,
@@ -289,7 +274,7 @@ class _DonateFoodState extends State<DonateFood> {
         ),
         riderSelection(),
         Padding(
-          padding: EdgeInsets.only(left: 42.w, top: 16.h),
+          padding: EdgeInsets.only(left: 42.w, top: 8.h),
           child: isLoadingNow
               ? const CircleProgress()
               : AuthButton(

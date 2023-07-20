@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,15 +6,22 @@ import '../../style/images.dart';
 import 'appbar_back_button.dart';
 
 class DonationScreenHeader extends StatelessWidget {
-  const DonationScreenHeader({
+  String title;
+  String subTitle;
+  String image;
+
+  DonationScreenHeader({
     super.key,
+    required this.title,
+    required this.subTitle,
+    required this.image,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(Images.donation_screen_header),
+        Image.asset(image!),
         // BackButton()
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,11 +33,11 @@ class DonationScreenHeader extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 46.w),
               child: Text.rich(TextSpan(
-                  text: '         Donate',
+                  text: '         $title',
                   style: CustomTextStyle.font_32,
                   children: <InlineSpan>[
                     TextSpan(
-                      text: '\nLife Saving Food To Faimlies',
+                      text: '\n         $subTitle',
                       style: CustomTextStyle.font_20_white,
                     )
                   ])),
