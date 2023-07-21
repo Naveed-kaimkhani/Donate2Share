@@ -1,4 +1,5 @@
 
+import 'package:donation_app/presentation/NGO%20screens/test.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
@@ -61,7 +62,9 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home:DonarLogin(),
+            // home:DonarHomePage(),
+            
+            home:SecondPage(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
           

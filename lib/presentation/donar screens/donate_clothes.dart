@@ -82,7 +82,7 @@ class _DonateclothesesState extends State<Donateclotheses> {
         donatorName: donator?.name ?? "No name",
         donatorProfileImage: donator!.profileImage,
         donatorPhone: donator!.phone,
-        riderChoise: riderChoise,
+        needRider: riderChoise,
         donatorAddress: donator!.address,
         donatorDeviceToken: donator!.deviceToken,
         donatorLat: donator!.lat,

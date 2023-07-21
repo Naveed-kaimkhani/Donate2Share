@@ -18,46 +18,57 @@ class DonarHomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.only(left: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Succesful Donations",
-                style: CustomTextStyle.font_24,
-              ),
-
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance
-                    .collection("donations")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const ShimmerScreen();
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const NoDataFoundScreen(
-                      text: "No pending request",
-                    );
-                  } else {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("fd"),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                },
-              ),
-              // DonationWidget(),
-            ],
+          padding: EdgeInsets.only(left: 18.w, top: 18.h),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text.rich(TextSpan(
+                        text: 'wellcome',
+                        style: CustomTextStyle.font_20,
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: '\nNaveed',
+                            style: CustomTextStyle.font_32,
+                          )
+                        ])),
+                  ],
+                )
+                // StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                //   stream: FirebaseFirestore.instance
+                //       .collection("donations")
+                //       .snapshots(),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return const ShimmerScreen();
+                //     } else if (snapshot.hasError) {
+                //       return Text(snapshot.error.toString());
+                //     } else if (!snapshot.hasData ||
+                //         snapshot.data!.docs.isEmpty) {
+                //       return const NoDataFoundScreen(
+                //         text: "No pending request",
+                //       );
+                //     } else {
+                //       return SizedBox(
+                //         height: MediaQuery.of(context).size.height,
+                //         child: ListView.builder(
+                //           itemCount: snapshot.data!.docs.length,
+                //           itemBuilder: (context, index) {
+                //             return Padding(
+                //               padding: const EdgeInsets.all(8.0),
+                //               child: Text("fd"),
+                //             );
+                //           },
+                //         ),
+                //       );
+                //     }
+                //   },
+                // ),
+                // DonationWidget(),
+              ],
+            ),
           ),
         ),
       ),
