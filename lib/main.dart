@@ -1,20 +1,13 @@
-
-import 'package:donation_app/presentation/NGO%20screens/test.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
-import 'package:donation_app/presentation/splash_screen.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/providers/seller_provider.dart';
-import 'package:donation_app/providers/user_provider.dart';
-import 'package:donation_app/utils/dialogues/donation_done_dialogue.dart';
 import 'package:donation_app/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
 // GetIt getIt = GetIt.instance;
 late Size mq;
 
@@ -23,6 +16,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // print(message.notification!.title);
   await Firebase.initializeApp();
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -47,8 +41,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-            mq = MediaQuery.of(context).size;
-
+    mq = MediaQuery.of(context).size;
+    // List<GraphDots> points = [GraphDots(x: 1, y: 2)];
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, child) {
@@ -63,15 +57,13 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
             ),
             // home:DonarHomePage(),
-            
-            home:SecondPage(),
+
+            home: DonarNavigation(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
-          
         );
       },
       // child:
-
     );
   }
 }

@@ -1,6 +1,7 @@
+import 'package:donation_app/style/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:lottie/lottie.dart';
 import '../../../style/custom_text_style.dart';
 import '../../../style/styling.dart';
 
@@ -21,27 +22,17 @@ class _DonationDoneDialogueState extends State<DonationDoneDialogue> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 240.h,
-                  width: 226.w,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30.r)),
-                ),
-                Positioned(left: 20, top: -14, child: DoneIcon()),
-              ],
-            )
-            // Text(
-            //   "Request Sent",
-            //   style: CustomTextStyle.font_25,
-            // ),
-            // Text(
-            //   "You will ge help soon",
-            //   style: CustomTextStyle.font_15_black,
-            // ),
-            // SizedBox(height: 16.h),
+            // const DoneIcon(),
+            Lottie.asset(Images.done),
+            Text(
+              "Request Sent",
+              style: CustomTextStyle.font_24_primaryColor,
+            ),
+            Text(
+              "You will ge help soon",
+              style: CustomTextStyle.font_15,
+            ),
+            SizedBox(height: 16.h),
             // InkWell(
             //   child: GeneralBttnForUserHmPg(
             //     text: "Ok",

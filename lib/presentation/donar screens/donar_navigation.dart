@@ -2,7 +2,9 @@ import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/food_tracing.dart';
+import 'package:donation_app/style/images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/styling.dart';
 import 'donate_food.dart';
 
@@ -14,10 +16,10 @@ class DonarNavigation extends StatefulWidget {
 
 class _DonarNavigationState extends State<DonarNavigation> {
   List pages = [
-    // DonarHomePage(),
-    DonateFood(),
-    FoodTracing(),
-    DonarSetting(),
+    const DonarHomePage(),
+    // DonateFood(),
+    const FoodTracing(),
+    const DonarSetting(),
   ];
   int currentindex = 0;
   void onTap(int index) {
@@ -27,25 +29,30 @@ class _DonarNavigationState extends State<DonarNavigation> {
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = DonarSignup();
+  Widget currentScreen = const DonarHomePage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Styling.primaryColor,
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Styling.primaryColor,
         onPressed: () {
-         
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>DonateFood()));
+              MaterialPageRoute(builder: (context) => const DonateFood()));
         },
-        child: Icon(Icons.add,color: Styling.primaryColor,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        color: Styling.primaryColor,
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
-          height: 60,
+        child: SizedBox(
+          height: 60.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -56,54 +63,29 @@ class _DonarNavigationState extends State<DonarNavigation> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = DonarHomePage();
+                        currentScreen = const DonarHomePage();
                         currentindex = 0;
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home_outlined,
-                          color: currentindex == 0
-                              ? Styling.primaryColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              color: currentindex == 0
-                                  ? Styling.primaryColor
-                                  : Colors.grey),
-                        )
-                      ],
+                    child: Image.asset(
+                      Images.home,
+                      height: 26.h,
+                      width: 26.w,
+                      color: currentindex == 0 ? Colors.white : Colors.grey,
                     ),
                   ),
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: 40.w,
                     onPressed: () {
                       setState(() {
-                        currentScreen = FoodTracing();
+                        currentScreen = const FoodTracing();
                         currentindex = 1;
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.directions,
-                          color: currentindex == 0
-                              ? Styling.primaryColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              color: currentindex == 0
-                                  ? Styling.primaryColor
-                                  : Colors.grey),
-                        )
-                      ],
+                    child: Icon(
+                      size: 26.h,
+                      Icons.directions,
+                      color: currentindex == 1 ? Colors.white : Colors.grey,
                     ),
                   )
                 ],
@@ -112,61 +94,44 @@ class _DonarNavigationState extends State<DonarNavigation> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: 40.w,
                     onPressed: () {
                       setState(() {
-                        currentScreen = DonarHomePage();
+                        currentScreen = const DonarSetting();
                         currentindex = 0;
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home_outlined,
-                          color: currentindex == 0
-                              ? Styling.primaryColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              color: currentindex == 0
-                                  ? Styling.primaryColor
-                                  : Colors.grey),
-                        )
-                      ],
+                    child: Icon(
+                      size: 26.h,
+                      Icons.chat,
+                      color: currentindex == 2 ? Colors.white : Colors.grey,
                     ),
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = FoodTracing();
-                        currentindex = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.directions,
-                          color: currentindex == 0
-                              ? Styling.primaryColor
-                              : Colors.grey,
+                        MaterialButton(
+                          minWidth: 40.w,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = const DonarSetting();
+                              currentindex = 0;
+                            });
+                          },
+                          child: Icon(
+                            size: 26.h,
+                            Icons.settings_outlined,
+                            color:
+                                currentindex == 2 ? Colors.white : Colors.grey,
+                          ),
                         ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              color: currentindex == 0
-                                  ? Styling.primaryColor
-                                  : Colors.grey),
-                        )
                       ],
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),

@@ -29,12 +29,13 @@ class utils {
     return actualDate;
   }
 
-  static String getCurrentTime() {
-    var now = DateTime.now();
-    var formatterTime = DateFormat('kk:mm');
-    String actualTime = formatterTime.format(now);
-    return actualTime;
-  }
+static String getCurrentTime() {
+  var now = DateTime.now();
+  var formatterTime = DateFormat('hh:mm a');
+  String actualTime = formatterTime.format(now);
+  return actualTime;
+}
+
 
   static String capitalizeFirstLetter(String text) {
     if (text.isEmpty) {
@@ -88,6 +89,14 @@ class utils {
       }
     });
     // return true;
+  }
+    static String getMonthString(DateTime dateTime) {
+    // Function to convert a DateTime to a month string (e.g., "July")
+    const monthNames = [
+      "", "January", "February", "March", "April", "May", "June", "July",
+      "August", "September", "October", "November", "December"
+    ];
+    return monthNames[dateTime.month];
   }
  static Future<XFile> compressImage(XFile image)async{
     final dir = await path_provider.getTemporaryDirectory();

@@ -10,13 +10,17 @@ class DonationModel {
   String? donationId;
   String? donatorDeviceToken;
   double? donatorLat;
+ 
   double? donatorLong;
+  String? donationDescription;
   String? donatorProfileImage;
   String? donatorAddress;
-  double? quantity;
+  String? quantity;
   String? expiry;
-String? needRider;
-List<dynamic>? pictures;
+  String? needRider;
+  
+  String? month;
+  List<dynamic>? pictures;
   DonationModel({
     // this.receiverUid,
     this.documentId,
@@ -26,10 +30,12 @@ List<dynamic>? pictures;
     this.needRider,
     this.donatorAddress,
     this.donatorDeviceToken,
+    this.donationDescription,
     this.donatorUid,
     this.expiry,
     this.quantity,
     this.type,
+    this.month,
     this.donatorName,
     this.sentDate,
     this.sentTime,
@@ -43,6 +49,8 @@ List<dynamic>? pictures;
     // data['receiverUid'] = donation.receiverUid;
     data['documentId'] = donation.documentId;
     data['donatorUid'] = donation.donatorUid;
+
+    data['donationDescription'] = donation.donationDescription;
     data['donatorLat'] = donation.donatorLat;
     data['donatorLong'] = donation.donatorLong;
     data['donatorPhone'] = donation.donatorPhone;
@@ -54,10 +62,12 @@ List<dynamic>? pictures;
     data['sentDate'] = donation.sentDate;
     data['sentTime'] = donation.sentTime;
     data['needRider'] = donation.needRider;
+    data['quantity'] = donation.quantity;
+    data['month'] = donation.month;
 
     data['donatorDeviceToken'] = donation.donatorDeviceToken;
 
- data['pictures'] = donation.pictures;
+    data['pictures'] = donation.pictures;
 
     return data;
   }
@@ -69,11 +79,17 @@ List<dynamic>? pictures;
     donatorUid = mapData['donatorUid'];
     donatorLat = mapData['donatorLat'];
     type = mapData['type'];
+    
+    month = mapData['month'];
+    donationDescription = mapData['donationDescription'];
     donatorLong = mapData['donatorLong'];
     donatorPhone = mapData['donatorPhone'];
     donatorAddress = mapData['donatorAddress'];
     donationId = mapData['donationId'];
     needRider = mapData['needRider'];
+    quantity = mapData['quantity'];
+
+    pictures = mapData['pictures'];
     donatorProfileImage = mapData['donatorProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];

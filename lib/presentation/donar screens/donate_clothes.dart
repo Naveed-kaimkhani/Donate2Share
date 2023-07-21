@@ -88,9 +88,12 @@ class _DonateclothesesState extends State<Donateclotheses> {
         donatorLat: donator!.lat,
         donatorLong: donator!.long,
         pictures: pictures,
+        quantity: _quantityController.text,
+        
         type: "clothes",
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
+        month: utils.getMonthString(DateTime.now()),
         donationId: donationId,
       );
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
@@ -7,15 +8,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../providers/seller_provider.dart';
+import '../../domain/models/donation_model.dart';
 
 class DonationWidget extends StatefulWidget {
-  // final FoodModel foodModel;
+  final DonationModel donationModel;
   const DonationWidget({
     Key? key,
-    // required this.foodModel,
+    required this.donationModel,
   }) : super(key: key);
-  // bool? isAccepted = false;
-  // String text = "Accepted";
+
   @override
   State<DonationWidget> createState() => _DonationWidgetState();
 }
@@ -24,13 +25,20 @@ class _DonationWidgetState extends State<DonationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+      padding: EdgeInsets.only(
+        left: 8.w,
+        top: 8.h,
+      ),
+      margin: EdgeInsets.only(
+        // left: 8.w,
+        top: 10.h,
+      ),
       height: 100.h,
       width: 325.w,
       decoration: BoxDecoration(
         color: Colors.white,
         // border: Border.all(width: 1, color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(30.r),
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -44,82 +52,97 @@ class _DonationWidgetState extends State<DonationWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              width: 130.h,
-              height: 86.w,
+          CachedNetworkImage(
+            imageBuilder: (context, imageProvider) => Container(
+              height: 86.h,
+              width: 130.w,
               decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(20.r)),
-              child: Container(
-                  // color: Styling.primaryColor,
-                  )
-              //  Image.asset(
-              //   'assets/image.jpg', // Replace with your image path
-              //   width: 130,
-              //   height: 86,
-              //   fit: BoxFit.cover,
-              // ),
+                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
               ),
-          Column(
-            // mainAxisAlignment: Main,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //  crossAxisAlignment: CrossAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Donated by",
-                    style: CustomTextStyle.font_15,
-                  ),
-                  SizedBox(
-                    width: 24.w,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "04:39 PM",
-                        style: CustomTextStyle.font_10_black,
-                      ),
-                      Text(
-                        "29/07/2023",
-                        style: CustomTextStyle.font_10_black,
-                      ),
-                    ],
-                  ),
-                ],
+            ),
+            progressIndicatorBuilder: (context, url, progress) => Center(
+              child: CircularProgressIndicator(
+                value: progress.progress,
               ),
-              Row(
-                children: [
-                  ProfilePic(
-                      url:
-                          "https://firebasestorage.googleapis.com/v0/b/donate2share-40014.appspot.com/o/profile_images%2Fbjveyg5A0SQGVFF7BcgbnSIpxPI2?alt=media&token=2c52f7cb-4f74-466f-b9d9-641f496d86ca",
-                      height: 32.h,
-                      width: 40.w),
-                  Padding(
-                    padding: EdgeInsets.only(left: 6.w),
-                    child: Text(
-                      "Naveed kk",
-                      style: CustomTextStyle.font_25_appColor,
+            ),
+            imageUrl: widget.donationModel.pictures![0],
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 10.w),
+            child: Column(
+              // mainAxisAlignment: Main,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //  crossAxisAlignment: CrossAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Donated by",
+                      style: CustomTextStyle.font_12_black,
                     ),
-                  ),
-                ],
-              ),
-              Text.rich(TextSpan(
-                  text: 'Quantity',
-                  style: CustomTextStyle.font_10_black,
-                  children: <InlineSpan>[
-                    TextSpan(
-                      text: '10 kg',
-                      style: CustomTextStyle.
-                      font_20,
-                    )
-                  ])),
-            ],
+                    SizedBox(
+                      width: 38.w,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          widget.donationModel.sentTime!,
+                          style: CustomTextStyle.font_10_black,
+                        ),
+                        Text(
+                          widget.donationModel.sentDate!,
+                          style: CustomTextStyle.font_10_black,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    ProfilePic(
+                        url: widget.donationModel.donatorProfileImage,
+                        height: 32.h,
+                        width: 39.w),
+                    Padding(
+                      padding: EdgeInsets.only(left: 6.w),
+                      child: Text(
+                        "Naveed kk",
+                        style: CustomTextStyle.font_20_appColor,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Text.rich(TextSpan(
+                    text: 'Quantity: ',
+                    style: CustomTextStyle.font_10_primaryColor,
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text: '${widget.donationModel.quantity} kg',
+                        style: CustomTextStyle.font_10_black,
+                      )
+                    ])),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Text.rich(TextSpan(
+                    text: 'Add: ',
+                    style: CustomTextStyle.font_10_primaryColor,
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text: '${widget.donationModel.donatorAddress}',
+                        style: CustomTextStyle.font_8_black,
+                      )
+                    ])),
+              ],
+            ),
           )
         ],
       ),

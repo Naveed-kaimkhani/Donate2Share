@@ -18,7 +18,6 @@ import '../providers/seller_provider.dart';
 import '../providers/user_provider.dart';
 import 'notification_services.dart';
 
-
 class FirebaseUserRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -26,9 +25,9 @@ class FirebaseUserRepository {
       firestore.collection('NGOs');
   static final CollectionReference _sellerCollection =
       firestore.collection('donars');
-static  final  Reference _storageReference = FirebaseStorage.instance.ref();
+  static final Reference _storageReference = FirebaseStorage.instance.ref();
   NotificationServices _notificationServices = NotificationServices();
- 
+
   static final CollectionReference _donationCollection =
       firestore.collection("donations");
   Future<User?> login(String email, String password, context) async {
@@ -77,11 +76,8 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
 
   loadSellerDataOnAppInit(context) async {
     try {
-      
-
       await Provider.of<SellerProvider>(context, listen: false)
           .getSellerFromServer(context);
-
 
       // Navigate to the home screen after loading the data
     } catch (error) {
@@ -92,11 +88,8 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
 
   loadUserDataOnAppInit(context) async {
     try {
-      
-
       await Provider.of<UserProvider>(context, listen: false)
           .getUserFromServer(context);
-
 
       // Navigate to the home screen after loading the data
     } catch (error) {
@@ -104,7 +97,7 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
       // Handle error if any
     }
   }
-  
+
   @override
   Future<SellerModel?> getSellerDetails() async {
     DocumentSnapshot documentSnapshot =
@@ -189,9 +182,8 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
         .putData(imageFile!);
     String downloadURL =
         await _storageReference.child('profile_images/$uid').getDownloadURL();
-  print("uploaded");
+    print("uploaded");
     return downloadURL;
- 
   }
 
   Future<void> addlatLongToFirebaseDocument(
@@ -228,7 +220,7 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
   Future<void> loadDonarDataOnAppInit(context) async {
     try {
       String? refreshedToken = await _notificationServices.isTokenRefresh();
-     
+
       await Provider.of<SellerProvider>(context, listen: false)
           .getSellerFromServer(context);
 
@@ -238,81 +230,99 @@ static  final  Reference _storageReference = FirebaseStorage.instance.ref();
       // Handle error if any
     }
   }
-static Future<void> saveDonationModelToFirestore(DonationModel donation, context) async {
-   try {
-    // Reference to the "donations" collection
-    CollectionReference donationsCollection =
-        FirebaseFirestore.instance.collection('donations');
 
-    // Convert the donationModel to a Map
-    Map<String, dynamic> donationData = donation.toMap(donation);
+  static Future<void> saveDonationModelToFirestore(
+      DonationModel donation, context) async {
+    try {
+      // Reference to the "donations" collection
+      CollectionReference donationsCollection =
+          FirebaseFirestore.instance.collection('donations');
 
-    // Add the donation data as a new document in the "donations" collection
-    DocumentReference newDonationRef = await donationsCollection.add(donationData);
+      // Convert the donationModel to a Map
+      Map<String, dynamic> donationData = donation.toMap(donation);
 
-    // Get the ID of the newly added document and store it in the donationData map
-    String documentId = newDonationRef.id;
-    donationData['documentId'] = documentId;
+      // Add the donation data as a new document in the "donations" collection
+      DocumentReference newDonationRef =
+          await donationsCollection.add(donationData);
 
-    // Update the document with the added document ID
-    await newDonationRef.update(donationData);
+      // Get the ID of the newly added document and store it in the donationData map
+      String documentId = newDonationRef.id;
+      donationData['documentId'] = documentId;
+
+      // Update the document with the added document ID
+      await newDonationRef.update(donationData);
       utils.toastMessage('Donation stored successfully!');
-    // print('Donation stored successfully!');
-  } catch (e) {
-    utils.toastMessage('Error storing donation: $e');
-    // print('Error storing donation: $e');
+      // print('Donation stored successfully!');
+    } catch (e) {
+      utils.toastMessage('Error storing donation: $e');
+      // print('Error storing donation: $e');
+    }
   }
-}
 
-static Future<List<String>> uploadDonationImage({
-  required List<XFile> imageFile,
-  required String donationId
-}) async {
-  int id = 1;
-  List<String> listOfDonationImages = [];
-  for (XFile element in imageFile) {
-   XFile compressedImage = await utils.compressImage(element);
-    final imageRef = _storageReference
-        .child('donation_images')
-        .child(utils.currentUserUid)
-        // .child(DateTime.now().millisecondsSinceEpoch.toString())
-        .child(donationId)
-        .child(id.toString());
-    
-    await imageRef.putFile(File(compressedImage.path));
-  
-    String downloadURL = await imageRef.getDownloadURL();
-    listOfDonationImages.add(downloadURL);
-    id++;
+  static Future<List<String>> uploadDonationImage(
+      {required List<XFile> imageFile, required String donationId}) async {
+    int id = 1;
+    List<String> listOfDonationImages = [];
+    for (XFile element in imageFile) {
+      XFile compressedImage = await utils.compressImage(element);
+      final imageRef = _storageReference
+          .child('donation_images')
+          .child(utils.currentUserUid)
+          // .child(DateTime.now().millisecondsSinceEpoch.toString())
+          .child(donationId)
+          .child(id.toString());
+
+      await imageRef.putFile(File(compressedImage.path));
+
+      String downloadURL = await imageRef.getDownloadURL();
+      listOfDonationImages.add(downloadURL);
+      id++;
+    }
+
+    return listOfDonationImages;
   }
-  
-  return listOfDonationImages;
-}
 
+  void storeDonation(DonationModel donation, context) async {
+    try {
+      // Reference to the "donations" collection
+      CollectionReference donationsCollection =
+          FirebaseFirestore.instance.collection('donations');
 
-void storeDonation(DonationModel donation,context) async {
-  try {
-    // Reference to the "donations" collection
-    CollectionReference donationsCollection =
-        FirebaseFirestore.instance.collection('donations');
+      // Convert the donationModel to a Map
+      Map<String, dynamic> donationData = donation.toMap(donation);
 
-    // Convert the donationModel to a Map
-    Map<String, dynamic> donationData = donation.toMap(donation);
+      // Add the donation data as a new document in the "donations" collection
+      DocumentReference newDonationRef =
+          await donationsCollection.add(donationData);
 
-    // Add the donation data as a new document in the "donations" collection
-    DocumentReference newDonationRef = await donationsCollection.add(donationData);
+      // Get the ID of the newly added document and store it in the donationData map
+      String documentId = newDonationRef.id;
+      donationData['documentId'] = documentId;
 
-    // Get the ID of the newly added document and store it in the donationData map
-    String documentId = newDonationRef.id;
-    donationData['documentId'] = documentId;
+      // Update the document with the added document ID
+      await newDonationRef.update(donationData);
 
-    // Update the document with the added document ID
-    await newDonationRef.update(donationData);
-
-    print('Donation stored successfully!');
-  } catch (e) {
-    print('Error storing donation: $e');
+      print('Donation stored successfully!');
+    } catch (e) {
+      print('Error storing donation: $e');
+    }
   }
-}
 
+  static Stream<List<DonationModel>> getDonationList() async* {
+    List<DonationModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("donations").get();
+      print(querySnapshot.docs);
+      donationList = querySnapshot.docs.map((doc) {
+        return DonationModel.fromMap(doc.data()as dynamic);
+      }).toList();
+    } catch (e) {
+      // utils.flushBarErrorMessage('Error fetching donations: $e',context);
+      print('Error fetching donations: $e');
+    }
+    print(donationList);
+    yield donationList;
+  }
 }

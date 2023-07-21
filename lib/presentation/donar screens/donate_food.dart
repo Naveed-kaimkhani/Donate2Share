@@ -102,6 +102,9 @@ class _DonateFoodState extends State<DonateFood> {
         donatorLong: donator!.long,
         pictures: pictures,
         type: "food",
+        
+      month: utils.getMonthString(DateTime.now()),
+        quantity: _quantityController.text,
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
         donationId: donationId,

@@ -48,16 +48,39 @@ class CustomTextStyle {
     fontFamily: "Sansita",
     fontWeight: FontWeight.w700,
   );
-  static final font_25_appColor = TextStyle(
+  static final font_15_appColor = TextStyle(
     color: Styling.primaryColor,
     fontSize: 18.sp,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w800,
+  );
+  
+  static final font_20_appColor = TextStyle(
+    color: Styling.primaryColor,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w800,
   );
 
   static final font_10_black = TextStyle(
     color: Colors.black,
     fontSize: 10.sp,
-    // fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w600,
+  );
+
+  static final font_8_black = TextStyle(
+    color: Colors.black,
+    fontSize: 9.sp,
+    fontWeight: FontWeight.w600,
+  );
+  static final font_10_primaryColor = TextStyle(
+    color: Styling.primaryColor,
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w600,
+  );
+
+  static final font_12_black = TextStyle(
+    color: Colors.black,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w600,
   );
 
   static final font_18_black = TextStyle(
@@ -65,7 +88,7 @@ class CustomTextStyle {
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,
   );
-  
+
   static final font_18_white = TextStyle(
     color: Colors.white,
     fontSize: 18.sp,
