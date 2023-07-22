@@ -89,7 +89,6 @@ class _DonateclothesesState extends State<Donateclotheses> {
         donatorLong: donator!.long,
         pictures: pictures,
         quantity: _quantityController.text,
-        
         type: "clothes",
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
@@ -124,8 +123,9 @@ class _DonateclothesesState extends State<Donateclotheses> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         DonationScreenHeader(
           title: "Give Your ",
-          subTitle: "CLothes A second life",
+          subTitle: "CLothes A Second Life",
           image: Images.clothes,
+          padding: 42.w,
         ),
         SizedBox(
           height: 3.h,

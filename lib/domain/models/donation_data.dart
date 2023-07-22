@@ -1,6 +1,6 @@
 
 class DonationData {
-  DonationData(this.month, this.donation);
+  DonationData({required this.month,required this.donation});
   final String month;
   final double donation;
 }

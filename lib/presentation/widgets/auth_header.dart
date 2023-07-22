@@ -42,7 +42,7 @@ class AuthHeader extends StatelessWidget {
               padding: EdgeInsets.only(left: 67.w, top: 120.h),
               child: Text(
                 "WellCome Back",
-                style: CustomTextStyle.font_32,
+                style: CustomTextStyle.font_32_white,
                 // style: TextStyle(color: Colors.white),
               ),
             ),

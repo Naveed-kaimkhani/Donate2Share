@@ -9,9 +9,11 @@ class DonationScreenHeader extends StatelessWidget {
   String title;
   String subTitle;
   String image;
+  double padding;
 
   DonationScreenHeader({
     super.key,
+    required this.padding,
     required this.title,
     required this.subTitle,
     required this.image,
@@ -21,7 +23,7 @@ class DonationScreenHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(image!),
+        Image.asset(image),
         // BackButton()
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,10 +33,10 @@ class DonationScreenHeader extends StatelessWidget {
               child: const AppBarBackButton(),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 46.w),
+              padding: EdgeInsets.only(left: padding),
               child: Text.rich(TextSpan(
-                  text: '         $title',
-                  style: CustomTextStyle.font_32,
+                  text: '             $title',
+                  style: CustomTextStyle.font_32_white,
                   children: <InlineSpan>[
                     TextSpan(
                       text: '\n         $subTitle',

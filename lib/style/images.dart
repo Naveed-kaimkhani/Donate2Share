@@ -8,6 +8,8 @@ class Images {
   static const String clothes = 'assets/clothes.png';
 static const String done = 'assets/done.png';
 static const String home = 'assets/home.png';
+static const String food = 'assets/food.png';
+static const String clothe_icon = 'assets/clothe_icon.png';
 
   static const String donation_screen_header =
       'assets/donation_screen_header.png';

@@ -1,4 +1,5 @@
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/utils/utils.dart';
@@ -72,12 +73,12 @@ class _DonarLoginState extends State<DonarLogin> {
       if (sellerModel != null) {
         StorageService.saveSeller(sellerModel).then((value) async {
           // await Provider.of<SellerProvider>(context, listen: false)
-          //     .getSellerFromServer(); 
+          //     .getSellerFromServer();
           await _firebaseRepository.loadSellerDataOnAppInit(context);
 
           isLoading(false);
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const DonateFood()));
+              MaterialPageRoute(builder: (context) => const DonarNavigation()));
         }).catchError((error) {
           isLoading(false);
           utils.flushBarErrorMessage(error.message.toString(), context);
@@ -175,8 +176,10 @@ class _DonarLoginState extends State<DonarLogin> {
                     child: TextButton(
                         onPressed: () {}, child: const Text("Forget Password")),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 40.w, top: 40),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Center(
                     child: isLoadingNow
                         ? const CircleProgress()
                         : AuthButton(

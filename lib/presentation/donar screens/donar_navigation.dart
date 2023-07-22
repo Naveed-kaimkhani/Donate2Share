@@ -5,8 +5,6 @@ import 'package:donation_app/style/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/styling.dart';
-import 'donate_food.dart';
-
 class DonarNavigation extends StatefulWidget {
   const DonarNavigation({Key? key}) : super(key: key);
   @override
@@ -14,8 +12,9 @@ class DonarNavigation extends StatefulWidget {
 }
 
 class _DonarNavigationState extends State<DonarNavigation> {
+ 
   List pages = [
-    const DonarHomePage(),
+    DonarHomePage(),
     // DonateFood(),
     const FoodTracing(),
     const DonarSetting(),
@@ -28,7 +27,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const DonarHomePage();
+  Widget currentScreen = DonarHomePage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +36,10 @@ class _DonarNavigationState extends State<DonarNavigation> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Styling.primaryColor,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const DonateFood()));
+          
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (context) => const DonateFood()));
+          DonarHomePage();
         },
         child: const Icon(
           Icons.add,
@@ -62,7 +63,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = const DonarHomePage();
+                        currentScreen = DonarHomePage();
                         currentindex = 0;
                       });
                     },

@@ -86,15 +86,15 @@ class _DonateFoodState extends State<DonateFood> {
       // Regex for Pakistani number (+92 123 4567890)
       // if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(_phoneController.text)) {
       isLoading(true);
-  final donationId=utils.getRandomid();
+      final donationId = utils.getRandomid();
       List<String> pictures = await FirebaseUserRepository.uploadDonationImage(
-          imageFile: foodImageList!,donationId: donationId);
+          imageFile: foodImageList!, donationId: donationId);
       DonationModel donationModel = DonationModel(
         donatorUid: utils.currentUserUid,
         donatorName: donator?.name ?? "No name",
         donatorProfileImage: donator!.profileImage,
         donatorPhone: donator!.phone,
-       needRider: riderChoise,
+        needRider: riderChoise,
         donatorAddress: donator!.address,
         donatorDeviceToken: donator!.deviceToken,
         donatorLat: donator!.lat,
@@ -102,8 +102,7 @@ class _DonateFoodState extends State<DonateFood> {
         donatorLong: donator!.long,
         pictures: pictures,
         type: "food",
-        
-      month: utils.getMonthString(DateTime.now()),
+        month: utils.getMonthString(DateTime.now()),
         quantity: _quantityController.text,
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
@@ -141,6 +140,7 @@ class _DonateFoodState extends State<DonateFood> {
           title: "Donate",
           subTitle: "Life Saving Food To Famlies",
           image: Images.donation_screen_header,
+          padding: 24.h,
         ),
         SizedBox(
           height: 3.h,
@@ -291,8 +291,7 @@ class _DonateFoodState extends State<DonateFood> {
           ),
         ),
         riderSelection(),
-        Padding(
-          padding: EdgeInsets.only(left: 42.w, top: 16.h),
+        Center(
           child: isLoadingNow
               ? const CircleProgress()
               : AuthButton(
@@ -303,7 +302,10 @@ class _DonateFoodState extends State<DonateFood> {
                     _validateFields();
                   },
                   color: Styling.primaryColor),
-        )
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
       ]),
     )));
   }
