@@ -1,38 +1,34 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:donation_app/domain/models/donation_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../domain/models/graph_dots.dart';
-
 class ChartWidget extends StatefulWidget {
-  const ChartWidget({super.key});
+  List<DonationData>? chartData;
+  ChartWidget({super.key, required this.chartData});
 
   @override
   State<ChartWidget> createState() => _ChartWidgetState();
 }
 
 class _ChartWidgetState extends State<ChartWidget> {
-  List<SalesData>? _chartData;
   TooltipBehavior? _tooltipBehavior;
 
   @override
   void initState() {
-    _chartData = getChartData();
+    // widget.chartData = getChartData();
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
 
-  List<SalesData> getChartData() {
-    final List<SalesData> chartData = [
-        SalesData(2017, 25),
-      SalesData(2018, 12),
-      SalesData(2019, 24),
-      SalesData(2020, 18),
-      SalesData(2021, 30)
-    ];
-    return chartData;
-  }
+  // List<DonationData> getChartData() {
+  //   final List<DonationData> chartData = [
+  //     DonationData("july", 25),
+  //     DonationData("august", 12),
+  //     // Add more data points here as needed
+  //   ];
+  //   return chartData;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +37,18 @@ class _ChartWidgetState extends State<ChartWidget> {
       // legend: Legend(isVisible: true),
       tooltipBehavior: _tooltipBehavior,
       series: <ChartSeries>[
-        LineSeries<SalesData, double>(
-            // name: 'Sales',
-            dataSource: _chartData!,
-            xValueMapper: (SalesData sales, _) => sales.month,
-            yValueMapper: (SalesData sales, _) => sales.donation,
-            dataLabelSettings: DataLabelSettings(isVisible: true),
-            enableTooltip: true)
+        LineSeries<DonationData, String>(
+          // name: 'Sales',
+          dataSource: widget.chartData!,
+          xValueMapper: (DonationData sales, _) => sales.month,
+          yValueMapper: (DonationData sales, _) => sales.donation,
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+          enableTooltip: true,
+        )
       ],
-      primaryXAxis: NumericAxis(
-        edgeLabelPlacement: EdgeLabelPlacement.shift,
-      ),
-      primaryYAxis: NumericAxis(
-          // labelFormat: '{value}M',
-          // numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0)
-
-          ),
+      primaryXAxis:
+          CategoryAxis(), // Use CategoryAxis for categorical (String) x-values
+      primaryYAxis: NumericAxis(),
     );
   }
-}
-
-class SalesData {
-  SalesData(this.month, this.donation);
-  final double month;
-  final double donation;
 }
