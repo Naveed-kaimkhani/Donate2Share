@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -251,7 +252,8 @@ class FirebaseUserRepository {
 
       // Update the document with the added document ID
       await newDonationRef.update(donationData);
-      utils.toastMessage('Donation stored successfully!');
+      // utils.toastMessage('Donation stored successfully!');
+      donationDonePopup(context);
       // print('Donation stored successfully!');
     } catch (e) {
       utils.toastMessage('Error storing donation: $e');
@@ -316,7 +318,7 @@ class FirebaseUserRepository {
           await FirebaseFirestore.instance.collection("donations").get();
       print(querySnapshot.docs);
       donationList = querySnapshot.docs.map((doc) {
-        return DonationModel.fromMap(doc.data()as dynamic);
+        return DonationModel.fromMap(doc.data() as dynamic);
       }).toList();
     } catch (e) {
       // utils.flushBarErrorMessage('Error fetching donations: $e',context);

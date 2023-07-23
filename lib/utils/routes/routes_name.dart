@@ -1,12 +1,14 @@
-class RoutesName{
- static const String donarLogin = 'DonarLogin';
- static const String ngoNavigation = 'NGONavigation';
- 
- static const String ngoLogin = 'NGOLogin';
- 
- static const String donarSignup = 'DonarSignup';
- 
- static const String ngoSignup = 'NGOSignup';
+class RoutesName {
+  static const String donarLogin = 'DonarLogin';
+  static const String ngoNavigation = 'NGONavigation';
+  static const String donateFood = 'DonateFood';
+  static const String donateClothes = 'Donateclotheses';
+
+  static const String ngoLogin = 'NGOLogin';
+
+  static const String donarSignup = 'DonarSignup';
+
+  static const String ngoSignup = 'NGOSignup';
 //  static const String sellerSignup = 'sellerSignup';
 //  static const String userLogin = 'userLogin';
 //  static const String userSingup = 'userSingup';
@@ -17,5 +19,4 @@ class RoutesName{
 // static const String sellerNavigation = 'SellerNavigation';
 // static const String navigation = 'NavigationPage';
 // static const String chat_screen = 'ChatScreen';
-
 }

@@ -56,7 +56,8 @@ class _DonarLoginState extends State<DonarLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login(_emailController.text, _passwordController.text, context)
+        // .login(_emailController.text, _passwordController.text, context)
+        .login("donar@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -186,7 +187,8 @@ class _DonarLoginState extends State<DonarLogin> {
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              _submitForm();
+                              // _submitForm();
+                              _login();
                             },
                             color: Styling.primaryColor),
                   ),

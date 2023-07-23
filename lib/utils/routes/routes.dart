@@ -1,6 +1,6 @@
-
-
 import 'package:donation_app/presentation/NGO%20screens/ngo_login.dart';
+import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
+import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +9,12 @@ class Routes {
     switch (settings.name) {
       case RoutesName.ngoLogin:
         return _buildRoute(const NGOLogin(), settings);
+
+      case RoutesName.donateFood:
+        return _buildRoute(const DonateFood(), settings);
+
+      case RoutesName.donateClothes:
+        return _buildRoute(const Donateclotheses(), settings);
 
       // case RoutesName.userSingup:
       //   return _buildRoute(const UserSignup(), settings);

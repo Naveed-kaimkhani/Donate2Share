@@ -77,7 +77,9 @@ class _NGOSignUpState extends State<NGOSignUp> {
     // utils.showLoading(context);
     isLoading(true);
     _firebaseUserRepository
-        .signUpUser(_emailController.text, _passwordController.text, context)
+        // .signUpUser(_emailController.text, _passwordController.text, context)
+        .signUpUser("ngo@gmail.com","111111", context)
+
         .then((User? user) async {
           
         final value =

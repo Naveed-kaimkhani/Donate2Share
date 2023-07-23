@@ -123,9 +123,9 @@ class _DonateclothesesState extends State<Donateclotheses> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         DonationScreenHeader(
           title: "Give Your ",
-          subTitle: "CLothes A Second Life",
+          subTitle: "      Clothes A Second Life",
           image: Images.clothes,
-          padding: 42.w,
+          padding: 18.w,
         ),
         SizedBox(
           height: 3.h,
@@ -276,8 +276,7 @@ class _DonateclothesesState extends State<Donateclotheses> {
           ),
         ),
         riderSelection(),
-        Padding(
-          padding: EdgeInsets.only(left: 42.w, top: 8.h),
+        Center(
           child: isLoadingNow
               ? const CircleProgress()
               : AuthButton(

@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import '../../style/styling.dart';
 
-class CircleProgress extends StatelessWidget {
-  const CircleProgress({Key? key}) : super(key: key);
+class ButtonForDialogue extends StatelessWidget {
+  String text;
+  ButtonForDialogue({
+    required this.text,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 325.w,
-      height: 50.h,
+      width: 130.w,
+      height: 36.h,
       decoration: BoxDecoration(
         color: Styling.primaryColor,
         borderRadius: BorderRadius.circular(10.r),
       ),
-      child: const Center(
-        child: SpinKitFadingCircle(
-          color: Colors.white,
-          size: 40.0,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white),
         ),
       ),
     );

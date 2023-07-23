@@ -5,7 +5,6 @@ import 'package:donation_app/presentation/donar%20screens/shimmer_screen.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
-import 'package:donation_app/presentation/widgets/select_food_cloth_button.dart';
 import 'package:donation_app/presentation/widgets/wave_circle.dart';
 import 'package:donation_app/providers/seller_provider.dart';
 import 'package:donation_app/style/images.dart';
@@ -24,7 +23,7 @@ import '../widgets/donation_widget.dart';
 import 'no_data_found.dart';
 
 class DonarHomePage extends StatefulWidget {
-  DonarHomePage({  Key? key}) : super(key: key);
+  DonarHomePage({Key? key}) : super(key: key);
 
   @override
   State<DonarHomePage> createState() => _DonarHomePageState();
@@ -58,7 +57,7 @@ class _DonarHomePageState extends State<DonarHomePage> {
 
     return monthlyDonationData;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     SellerModel? donar =
@@ -66,6 +65,7 @@ class _DonarHomePageState extends State<DonarHomePage> {
 
     return Scaffold(
       body: SafeArea(
+        // child: SizedBox(),
         child: StreamBuilder<List<DonationModel>>(
           stream: FirebaseUserRepository.getDonationList(),
           builder: (context, snapshot) {
@@ -128,7 +128,6 @@ class _DonarHomePageState extends State<DonarHomePage> {
                                 width: 1,
                               )),
                           child: ChartWidget(
-                           
                             chartData: _getMonthlyDonation(snapshot.data!),
                           ),
                         ),

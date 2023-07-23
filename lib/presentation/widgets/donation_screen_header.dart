@@ -30,7 +30,12 @@ class DonationScreenHeader extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(left: 10.w, top: 12.w),
-              child: const AppBarBackButton(),
+              child: InkWell(
+                child: const AppBarBackButton(),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: padding),
