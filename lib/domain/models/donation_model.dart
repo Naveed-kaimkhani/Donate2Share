@@ -1,20 +1,19 @@
 class DonationModel {
   // String? receiverUid;
-  String? donatorUid;
+  String? donarUid;
   String? documentId;
-  String? donatorName;
-  String? donatorPhone;
+  String? donarName;
+  String? donarPhone;
   String? sentDate;
   String? sentTime;
   String? type;
   String? donationId;
-  String? donatorDeviceToken;
-  double? donatorLat;
- 
-  double? donatorLong;
+  String? donarDeviceToken;
+  double? donarLat;
+  double? donarLong;
   String? donationDescription;
-  String? donatorProfileImage;
-  String? donatorAddress;
+  String? donarProfileImage;
+  String? donarAddress;
   String? quantity;
   String? expiry;
   String? needRider;
@@ -25,22 +24,22 @@ class DonationModel {
     // this.receiverUid,
     this.documentId,
     this.donationId,
-    this.donatorLat,
-    this.donatorLong,
+    this.donarLat,
+    this.donarLong,
     this.needRider,
-    this.donatorAddress,
-    this.donatorDeviceToken,
+    this.donarAddress,
+    this.donarDeviceToken,
     this.donationDescription,
-    this.donatorUid,
+    this.donarUid,
     this.expiry,
     this.quantity,
     this.type,
     this.month,
-    this.donatorName,
+    this.donarName,
     this.sentDate,
     this.sentTime,
-    this.donatorProfileImage,
-    this.donatorPhone,
+    this.donarProfileImage,
+    this.donarPhone,
     this.pictures,
   });
 
@@ -48,16 +47,16 @@ class DonationModel {
     var data = Map<String, dynamic>();
     // data['receiverUid'] = donation.receiverUid;
     data['documentId'] = donation.documentId;
-    data['donatorUid'] = donation.donatorUid;
+    data['donarUid'] = donation.donarUid;
 
     data['donationDescription'] = donation.donationDescription;
-    data['donatorLat'] = donation.donatorLat;
-    data['donatorLong'] = donation.donatorLong;
-    data['donatorPhone'] = donation.donatorPhone;
-    data['donatorAddress'] = donation.donatorAddress;
+    data['donarLat'] = donation.donarLat;
+    data['donarLong'] = donation.donarLong;
+    data['donarPhone'] = donation.donarPhone;
+    data['donarAddress'] = donation.donarAddress;
     data['donationId'] = donation.donationId;
-    data['donatorName'] = donation.donatorName;
-    data['donatorProfileImage'] = donation.donatorProfileImage;
+    data['donarName'] = donation.donarName;
+    data['donarProfileImage'] = donation.donarProfileImage;
     data['type'] = donation.type;
     data['sentDate'] = donation.sentDate;
     data['sentTime'] = donation.sentTime;
@@ -65,7 +64,7 @@ class DonationModel {
     data['quantity'] = donation.quantity;
     data['month'] = donation.month;
 
-    data['donatorDeviceToken'] = donation.donatorDeviceToken;
+    data['donarDeviceToken'] = donation.donarDeviceToken;
 
     data['pictures'] = donation.pictures;
 
@@ -75,25 +74,25 @@ class DonationModel {
   DonationModel.fromMap(Map<String, dynamic> mapData) {
     // receiverUid = mapData['receiverUid'];
     documentId = mapData['documentId'];
-    donatorName = mapData['donatorName'];
-    donatorUid = mapData['donatorUid'];
-    donatorLat = mapData['donatorLat'];
+    donarName = mapData['donarName'];
+    donarUid = mapData['donarUid'];
+    donarLat = mapData['donarLat'];
     type = mapData['type'];
     
     month = mapData['month'];
     donationDescription = mapData['donationDescription'];
-    donatorLong = mapData['donatorLong'];
-    donatorPhone = mapData['donatorPhone'];
-    donatorAddress = mapData['donatorAddress'];
+    donarLong = mapData['donarLong'];
+    donarPhone = mapData['donarPhone'];
+    donarAddress = mapData['donarAddress'];
     donationId = mapData['donationId'];
     needRider = mapData['needRider'];
     quantity = mapData['quantity'];
 
     pictures = mapData['pictures'];
-    donatorProfileImage = mapData['donatorProfileImage'];
+    donarProfileImage = mapData['donarProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];
-    donatorDeviceToken = mapData['donatorDeviceToken'];
+    donarDeviceToken = mapData['donarDeviceToken'];
   }
 
   // bool equals(DonationModel user) => user.uid == this.uid;

@@ -15,11 +15,25 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:url_launcher/url_launcher.dart';
 import '../presentation/donar screens/no_internet_connection.dart';
 import '../presentation/widgets/circle_progress.dart';
 class utils {
   static toastMessage(String message) {
     Fluttertoast.showToast(msg: message);
+  }
+
+  static launchphone(String number, context) async {
+    Uri phoneUri = Uri.parse("tel:$number");
+    if (await canLaunch(phoneUri.toString())) {
+      await launch(phoneUri.toString());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Unable to open"),
+        ),
+      );
+    }
   }
 
   static String getCurrentDate() {

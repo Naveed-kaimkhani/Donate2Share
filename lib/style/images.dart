@@ -10,6 +10,8 @@ static const String done = 'assets/done.json';
 static const String home = 'assets/home.png';
 static const String food = 'assets/food.png';
 static const String clothe_icon = 'assets/clothe_icon.png';
+static const String foodpic = 'assets/foodpic.png';
+static const String clothpic = 'assets/clothpic.png';
 
   static const String donation_screen_header =
       'assets/donation_screen_header.png';

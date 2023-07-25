@@ -1,12 +1,17 @@
 import 'package:donation_app/presentation/NGO%20screens/ngo_homepage.dart';
+import 'package:donation_app/presentation/NGO%20screens/ngo_login.dart';
 import 'package:donation_app/presentation/NGO%20screens/test.dart';
+import 'package:donation_app/presentation/admin/admin_login.dart';
+import 'package:donation_app/presentation/admin/admin_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
+import 'package:donation_app/providers/admin_provider.dart';
 import 'package:donation_app/providers/seller_provider.dart';
+import 'package:donation_app/providers/user_provider.dart';
 import 'package:donation_app/utils/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -55,6 +60,8 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => SellerProvider()),
+            ChangeNotifierProvider(create: (_) => UserProvider()),
+            ChangeNotifierProvider(create: (_) => AdminProvider()),
           ],
           child: MaterialApp(
             title: 'Donate2Share',
@@ -64,7 +71,7 @@ class MyApp extends StatelessWidget {
             ),
             // home:DonarHomePage(),
 
-            home: DonarLogin(),
+            home: AdminLogin(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );

@@ -1,10 +1,17 @@
 import 'package:donation_app/presentation/widgets/auth_button.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
+import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../domain/models/donation_data.dart';
+import '../../domain/models/donation_model.dart';
+import '../../domain/models/user_model.dart';
+import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
+import '../widgets/chart_widget.dart';
 
 class NGOHomePage extends StatefulWidget {
   const NGOHomePage({Key? key}) : super(key: key);
@@ -16,6 +23,7 @@ class NGOHomePage extends StatefulWidget {
 class _NGOHomePageState extends State<NGOHomePage> {
   @override
   Widget build(BuildContext context) {
+    UserModel? ngo = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -33,12 +41,9 @@ class _NGOHomePageState extends State<NGOHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Ehsaan Foundations',
+                        Text(ngo!.name ?? "No Name",
                             style: CustomTextStyle.font_24_primaryColor),
-                        CircleAvatar(
-                          backgroundColor: Color(0xff326060),
-                          radius: 22.r,
-                        )
+                        ProfilePic(url: ngo.profileImage, height: 50, width: 48)
                       ],
                     ),
                     SizedBox(height: 11.h),
@@ -64,7 +69,9 @@ class _NGOHomePageState extends State<NGOHomePage> {
                           border: Border.all(
                             color: const Color(0xff326060),
                             width: 1,
-                          )),
+                          )
+                          ),
+                  
                     ),
                     SizedBox(height: 20.h),
                     Divider(

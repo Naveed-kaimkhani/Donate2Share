@@ -8,14 +8,12 @@ import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
 import 'appbar_back_button.dart';
 
-class AuthHeader extends StatelessWidget {
+class DonarDonationHeader extends StatelessWidget {
   final String? text;
   final double? height;
-  final TextStyle style;
-  AuthHeader({
+  DonarDonationHeader({
     Key? key,
     required this.text,
-    required this.style,
     required this.height,
   }) : super(key: key);
 
@@ -38,27 +36,13 @@ class AuthHeader extends StatelessWidget {
             padding: EdgeInsets.only(left: 10.w, top: 12.w),
             child: const AppBarBackButton(),
           ),
-          if (text != null)
-            Padding(
-              padding: EdgeInsets.only(left: 67.w, top: 120.h),
-              child: Text(
-                text!,
-                style: style,
-                // style: TextStyle(color: Colors.white),
-              ),
+          Padding(
+            padding: EdgeInsets.only(left: 100.w, top: 20.h),
+            child: Text(
+              text!,
+              style: CustomTextStyle.font_20_white,
             ),
-          if (text == null)
-            Padding(
-              padding: EdgeInsets.only(
-                left: 100.w,
-              ),
-              child: Image.asset(
-                Images.logo,
-                color: Colors.white,
-                height: 135.h,
-                width: 135.w,
-              ),
-            ),
+          ),
         ],
       ),
     );

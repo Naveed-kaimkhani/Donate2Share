@@ -8,6 +8,8 @@ class RoutesName {
 
   static const String donarSignup = 'DonarSignup';
 
+  static const String trackDonation = 'TrackDonation';
+
   static const String ngoSignup = 'NGOSignup';
 //  static const String sellerSignup = 'sellerSignup';
 //  static const String userLogin = 'userLogin';

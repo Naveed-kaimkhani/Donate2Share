@@ -1,14 +1,15 @@
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation.dart';
-import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
+import 'dart:math';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/images.dart';
 import '../widgets/auth_button.dart';
@@ -56,7 +57,9 @@ class _NGOLoginState extends State<NGOLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login(_emailController.text, _passwordController.text, context)
+        .login("ngo@gmail.com", "111111", context)
+        // .login(_emailController.text, _passwordController.text, context)
+
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -72,12 +75,15 @@ class _NGOLoginState extends State<NGOLogin> {
     _firebaseRepository.getUser().then((UserModel? userModel) {
       if (userModel != null) {
         StorageService.saveUser(userModel).then((value) async {
-          await _firebaseRepository.loadUserDataOnAppInit(context);
+          await Provider.of<UserProvider>(context, listen: false)
+              .getUserFromServer(context);
+
+          // await _firebaseRepository.loadUserDataOnAppInit(context);
 
           await StorageService.initUser();
           isLoading(false);
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => NGONavigationpage()));
+              MaterialPageRoute(builder: (context) => NgoNavigation()));
         }).catchError((error) {
           isLoading(false);
 
@@ -126,6 +132,7 @@ class _NGOLoginState extends State<NGOLogin> {
                   AuthHeader(
                     height: 230.h,
                     text: "WellCome Back",
+                    style: CustomTextStyle.font_32_white,
                   ),
                   SizedBox(
                     height: 20.h,
@@ -176,15 +183,18 @@ class _NGOLoginState extends State<NGOLogin> {
                     child: TextButton(
                         onPressed: () {}, child: const Text("Forget Password")),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 40.w, top: 40),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Center(
                     child: isLoadingNow
                         ? const CircleProgress()
                         : AuthButton(
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              _submitForm();
+                              // _submitForm();
+                              _login();
                             },
                             color: Styling.primaryColor),
                   ),

@@ -29,11 +29,18 @@ static Future<void> initUser()async{
           // await preferences.setInt('initScreen', 1);
           await preferences.setInt('isUser', 1);
 }
+  static Future<void> saveAdmin(UserModel sellerModel) async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _sharedPreferences.setString(
+        'admin', json.encode(sellerModel.toMap(sellerModel)));
+  }
+  
   static Future<void> saveSeller(SellerModel sellerModel) async {
     _sharedPreferences = await SharedPreferences.getInstance();
     _sharedPreferences.setString(
-        'seller', json.encode(sellerModel.toMap(sellerModel)));
+        'admin', json.encode(sellerModel.toMap(sellerModel)));
   }
+  
   
   static Future<SellerModel?> readUser() async {
     _sharedPreferences = await SharedPreferences.getInstance();

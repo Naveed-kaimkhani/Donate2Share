@@ -7,24 +7,29 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
 import '../../domain/models/seller_model.dart';
+import '../../domain/models/user_model.dart';
+import '../../providers/admin_provider.dart';
+import '../../providers/seller_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/circle_progress.dart';
 import '../widgets/input_field.dart';
+import 'admin_navigation.dart';
 
-class DonarLogin extends StatefulWidget {
-  const DonarLogin({Key? key}) : super(key: key);
+class AdminLogin extends StatefulWidget {
+  const AdminLogin({Key? key}) : super(key: key);
 
   @override
-  State<DonarLogin> createState() => _DonarLoginState();
+  State<AdminLogin> createState() => _AdminLoginState();
 }
 
-class _DonarLoginState extends State<DonarLogin> {
+class _AdminLoginState extends State<AdminLogin> {
   final FirebaseUserRepository _firebaseRepository = FirebaseUserRepository();
   final _formKey = GlobalKey<FormState>();
 
@@ -57,11 +62,11 @@ class _DonarLoginState extends State<DonarLogin> {
     isLoading(true);
     _firebaseRepository
         // .login(_emailController.text, _passwordController.text, context)
-        .login("donar@gmail.com", "111111", context)
+        .login("admin@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
-        _getSellerDetails();
+        _getAdminDetails();
       } else {
         isLoading(false);
         utils.flushBarErrorMessage("Failed to login", context);
@@ -69,17 +74,21 @@ class _DonarLoginState extends State<DonarLogin> {
     });
   }
 
-  void _getSellerDetails() {
-    _firebaseRepository.getSellerDetails().then((SellerModel? sellerModel) {
-      if (sellerModel != null) {
-        StorageService.saveSeller(sellerModel).then((value) async {
+  void _getAdminDetails() {
+    _firebaseRepository.getAdminDetails().then((UserModel? adminModel) {
+      if (adminModel != null) {
+        
+        StorageService.saveAdmin(adminModel).then((value) async {
           // await Provider.of<SellerProvider>(context, listen: false)
           //     .getSellerFromServer();
-          await _firebaseRepository.loadSellerDataOnAppInit(context);
+          await Provider.of<AdminProvider>(context, listen: false)
+              .getAdminFromServer(context);
+
+          // await _firebaseRepository.loadSellerDataOnAppInit(context);
 
           isLoading(false);
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const DonarNavigation()));
+              MaterialPageRoute(builder: (context) => const AdminNavigation()));
         }).catchError((error) {
           isLoading(false);
           utils.flushBarErrorMessage(error.message.toString(), context);
@@ -126,8 +135,8 @@ class _DonarLoginState extends State<DonarLogin> {
                 children: [
                   AuthHeader(
                     height: 230.h,
-                    text: "WellCome Back",
-                  style: CustomTextStyle.font_32_white,
+                    text: "WellCome To Admin Panel",
+                    style: CustomTextStyle.font_20_white,
                   ),
                   SizedBox(
                     height: 20.h,

@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
+import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,19 +11,15 @@ import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../providers/seller_provider.dart';
 import '../../domain/models/donation_model.dart';
+import '../donar screens/track_donation.dart';
 
-class DonationWidget extends StatefulWidget {
+class TrackDonationWidget extends StatelessWidget {
   final DonationModel donationModel;
-  const DonationWidget({
+  const TrackDonationWidget({
     Key? key,
     required this.donationModel,
   }) : super(key: key);
 
-  @override
-  State<DonationWidget> createState() => _DonationWidgetState();
-}
-
-class _DonationWidgetState extends State<DonationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +67,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 value: progress.progress,
               ),
             ),
-            imageUrl: widget.donationModel.pictures![0],
+            imageUrl: donationModel.pictures![0],
           ),
           Padding(
             padding: EdgeInsets.only(left: 10.w),
@@ -91,11 +89,11 @@ class _DonationWidgetState extends State<DonationWidget> {
                     Column(
                       children: [
                         Text(
-                          widget.donationModel.sentTime!,
+                          donationModel.sentTime!,
                           style: CustomTextStyle.font_10_black,
                         ),
                         Text(
-                          widget.donationModel.sentDate!,
+                          donationModel.sentDate!,
                           style: CustomTextStyle.font_10_black,
                         ),
                       ],
@@ -105,7 +103,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 Row(
                   children: [
                     ProfilePic(
-                        url: widget.donationModel.donarProfileImage,
+                        url: donationModel.donarProfileImage,
                         height: 32.h,
                         width: 39.w),
                     Padding(
@@ -120,27 +118,24 @@ class _DonationWidgetState extends State<DonationWidget> {
                 SizedBox(
                   height: 4.h,
                 ),
-                Text.rich(TextSpan(
-                    text: 'Quantity: ',
-                    style: CustomTextStyle.font_10_primaryColor,
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: '${widget.donationModel.quantity} kg',
-                        style: CustomTextStyle.font_10_black,
-                      )
-                    ])),
-                SizedBox(
-                  height: 4.h,
-                ),
-                Text.rich(TextSpan(
-                    text: 'Add: ',
-                    style: CustomTextStyle.font_10_primaryColor,
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: '${widget.donationModel.donarAddress}',
-                        style: CustomTextStyle.font_8_black,
-                      )
-                    ])),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 58.w,
+                  ),
+                  child: InkWell(
+                    child: const TrackDonationButton(),
+                    onTap: () {
+                      print("calllllll");
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TrackDonation(
+                                    donation: donationModel,
+                                  )));
+                    },
+                  ),
+                )
               ],
             ),
           )

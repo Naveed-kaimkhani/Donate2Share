@@ -1,6 +1,6 @@
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
-import 'package:donation_app/presentation/donar%20screens/food_tracing.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
 import 'package:donation_app/style/images.dart';
 import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
 import 'package:donation_app/utils/dialogues/select_donation_type.dart';
@@ -18,7 +18,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
   List pages = [
     DonarHomePage(),
     // DonateFood(),
-    const FoodTracing(),
+    const DonarDonationsScreen(),
     const DonarSetting(),
   ];
   int currentindex = 0;
@@ -77,7 +77,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
                     minWidth: 40.w,
                     onPressed: () {
                       setState(() {
-                        currentScreen = const FoodTracing();
+                        currentScreen = const DonarDonationsScreen();
                         currentindex = 1;
                       });
                     },

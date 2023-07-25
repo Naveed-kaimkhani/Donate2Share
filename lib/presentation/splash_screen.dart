@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
           await _firebaseUserRepository.loadUserDataOnAppInit(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const NGONavigationpage()),
+            MaterialPageRoute(builder: (context) => const NgoNavigation()),
           );
         } else {
           await _firebaseUserRepository.loadSellerDataOnAppInit(context);

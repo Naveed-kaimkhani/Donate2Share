@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../data/firebase_user_repository.dart';
 import '../../data/notification_services.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/admin_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
@@ -18,29 +19,25 @@ import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/circle_progress.dart';
 import '../widgets/input_field.dart';
+import 'admin_navigation.dart';
 
-class NGOSignUp extends StatefulWidget {
-  const NGOSignUp({Key? key}) : super(key: key);
+class AdminSignUp extends StatefulWidget {
+  const AdminSignUp({Key? key}) : super(key: key);
 
   @override
-  State<NGOSignUp> createState() => _NGOSignUpState();
+  State<AdminSignUp> createState() => _AdminSignUpState();
 }
 
-class _NGOSignUpState extends State<NGOSignUp> {
+class _AdminSignUpState extends State<AdminSignUp> {
   final FirebaseUserRepository _firebaseUserRepository =
       FirebaseUserRepository();
   final _formKey = GlobalKey<FormState>();
   NotificationServices notificationServices = NotificationServices();
 
-  String? type = "Restaurant";
-  String? donarselectedvalue = "Donar Type";
-  List<String> donarList = ["Individual", "Restaurant", "Restaurant"];
-
   // Uint8List? _profileImage;
   bool? obsecureText = true;
   bool isLoadingNow = false;
   bool _obsecureText = true;
-  Uint8List? _profileImage;
 
   FocusNode nameFocusNode = FocusNode();
   FocusNode phoneFocusNode = FocusNode();
@@ -65,9 +62,7 @@ class _NGOSignUpState extends State<NGOSignUp> {
   }
 
   void _submitForm() {
-    if (_profileImage == null) {
-      utils.flushBarErrorMessage("Please upload profile", context);
-    } else if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       // Form is valid, perform signup logic here
       _signup();
       // Perform signup logic
@@ -80,29 +75,25 @@ class _NGOSignUpState extends State<NGOSignUp> {
     isLoading(true);
     _firebaseUserRepository
         // .signUpUser(_emailController.text, _passwordController.text, context)
-        .signUpUser("ngo@gmail.com","111111", context)
-
+        .signUpUser("admin@gmail.com", "111111", context)
         .then((User? user) async {
-          
-        final value =
-            await _firebaseUserRepository.getUserCurrentLocation(context);
-       
-        //  final Position sellerLocation = await Geolocator.getCurrentPosition();
-        final String address =
-            await utils.getAddressFromLatLng(value!.latitude, value.longitude);
+      final value =
+          await _firebaseUserRepository.getUserCurrentLocation(context);
+
+      //  final Position sellerLocation = await Geolocator.getCurrentPosition();
+      final String address =
+          await utils.getAddressFromLatLng(value!.latitude, value.longitude);
       if (user != null) {
         UserModel userModel = UserModel(
             uid: user.uid,
             name: _nameController.text,
             phone: _phoneController.text,
             email: _emailController.text,
-            address:address,
+            address: address,
             lat: value.latitude,
             long: value.longitude,
-            profileImage: await _firebaseUserRepository.uploadProfileImage(
-                imageFile: _profileImage!, uid: user.uid),
             deviceToken: await notificationServices.getDeviceToken());
-        _saveUser(user, userModel);
+        _saveAdmin(user, userModel);
       } else {
         isLoading(false);
         // utils.hideLoading();
@@ -114,21 +105,18 @@ class _NGOSignUpState extends State<NGOSignUp> {
     });
   }
 
-  void _saveUser(User firebaseUser, UserModel userModel) {
+  void _saveAdmin(User firebaseUser, UserModel userModel) {
     _firebaseUserRepository
-        .saveUserDataToFirestore(userModel)
+        .saveAdminDataToFirestore(userModel)
         .then((value) async {
       await StorageService.saveUser(userModel).then((value) async {
-            await Provider.of<UserProvider>(context, listen: false)
-          .getUserFromServer(context);
-
-        // await _firebaseUserRepository.loadUserDataOnAppInit(context);
-
+        await Provider.of<AdminProvider>(context, listen: false)
+            .getAdminFromServer(context);
         await StorageService.initUser();
 
         isLoading(false);
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => NgoNavigation()));
+            MaterialPageRoute(builder: (context) => AdminNavigation()));
       }).catchError((error) {
         isLoading(false);
         utils.flushBarErrorMessage(error.message.toString(), context);
@@ -181,10 +169,6 @@ class _NGOSignUpState extends State<NGOSignUp> {
                     height: 12.h,
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.only(left: 140.w),
-                    child: uploadProfile(_profileImage),
-                  ),
                   InputField(
                     hint_text: "Full name",
                     currentNode: nameFocusNode,
@@ -275,11 +259,10 @@ class _NGOSignUpState extends State<NGOSignUp> {
                   ),
                   // k,
                   SizedBox(
-                    height: 8.h,
+                    height: 38.h,
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.only(left: 38.w, top: 12.h),
+                  Center(
                     child: isLoadingNow
                         ? const CircleProgress()
                         : AuthButton(
@@ -304,158 +287,5 @@ class _NGOSignUpState extends State<NGOSignUp> {
     setState(() {
       _obsecureText = !_obsecureText;
     });
-  }
-
-  Widget uploadProfile(Uint8List? image) {
-    return image == null
-        ? Stack(
-            children: [
-              Image.asset(
-                "assets/avatar.png",
-                height: 60.h,
-                width: 60.w,
-              ),
-              Positioned(
-                left: 25.w,
-                bottom: 0.h,
-                child: IconButton(
-                  onPressed: () async {
-                    Uint8List? _image = await utils.pickImage();
-                    if (_image != null) {
-                      setState(() {
-                        _profileImage = _image;
-                      });
-                    } else {
-                      debugPrint("Image not loaded");
-                    }
-                  },
-                  icon: Container(
-                    width: 25.w,
-                    height: 25.h,
-                    decoration: BoxDecoration(
-                      color: Styling.primaryColor,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: Container(
-                      width: 20.w,
-                      height: 20.h,
-                      child: Image.asset('assets/gallery.png'),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        : Stack(
-            children: [
-              CircleAvatar(
-                minRadius: 40.r,
-                maxRadius: 40.r,
-                child: ClipOval(
-                    child: Image.memory(
-                  image,
-                  height: 145.h,
-                  width: 145.w,
-                  fit: BoxFit.cover,
-                )),
-                // child: ,
-              ),
-              Positioned(
-                left: 45.w,
-                bottom: 0.h,
-                child: IconButton(
-                  onPressed: () async {
-                    Uint8List? _image = await utils.pickImage();
-                    if (_image != null) {
-                      setState(() {
-                        image = _image;
-                      });
-                    }
-                    debugPrint("Image not loaded");
-                  },
-                  icon: Container(
-                    width: 30.w,
-                    height: 30.h,
-                    decoration: BoxDecoration(
-                      color: Styling.primaryColor,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: SizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: Image.asset('assets/gallery.png'),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-  } // for 1st image
-
-  Widget genderSelection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Row(
-          children: [
-            Radio<String>(
-              focusColor: Styling.primaryColor,
-              activeColor: Styling.primaryColor,
-              value: 'Restaurant',
-              groupValue: type,
-              onChanged: (value) {
-                setState(() {
-                  type = value!;
-                });
-              },
-            ),
-            Text(
-              'Restaurant',
-              style: CustomTextStyle.font_10_black,
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Radio<String>(
-              focusColor: Styling.primaryColor,
-              activeColor: Styling.primaryColor,
-              value: 'Individual',
-              groupValue: type,
-              onChanged: (value) {
-                setState(() {
-                  type = value!;
-                });
-              },
-            ),
-            Text(
-              'Individual',
-              style: CustomTextStyle.font_10_black,
-            ),
-          ],
-        ),
-        // const SizedBox(width: 20),
-        Row(
-          children: [
-            Radio<String>(
-              focusColor: Styling.primaryColor,
-              // fillColor: Styling.primaryColor,
-              activeColor: Styling.primaryColor,
-              value: 'Organization',
-              groupValue: type,
-              onChanged: (value) {
-                setState(() {
-                  type = value!;
-                });
-              },
-            ),
-            Text(
-              'Organization',
-              style: CustomTextStyle.font_10_black,
-            ),
-          ],
-        ),
-      ],
-    );
   }
 }

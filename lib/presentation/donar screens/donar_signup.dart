@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
@@ -90,10 +89,9 @@ class _DonarSignupState extends State<DonarSignup> {
     )
         .then((User? user) async {
       if (user != null) {
-      
         final value =
             await _firebaseUserRepository.getUserCurrentLocation(context);
-       
+
         //  final Position sellerLocation = await Geolocator.getCurrentPosition();
         final String address =
             await utils.getAddressFromLatLng(value!.latitude, value.longitude);
@@ -186,6 +184,7 @@ class _DonarSignupState extends State<DonarSignup> {
                   AuthHeader(
                     height: 180.h,
                     text: null,
+                    style: CustomTextStyle.font_32_white,
                   ),
                   SizedBox(
                     height: 12.h,
@@ -381,7 +380,7 @@ class _DonarSignupState extends State<DonarSignup> {
                 child: IconButton(
                   onPressed: () async {
                     Uint8List? _image = await utils.pickImage();
-                     
+
                     if (_image != null) {
                       setState(() {
                         image = _image;

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/domain/models/seller_model.dart';
 import 'package:donation_app/presentation/donar%20screens/shimmer_screen.dart';
+import 'package:donation_app/presentation/donar%20screens/track_donation.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
@@ -30,34 +31,7 @@ class DonarHomePage extends StatefulWidget {
 }
 
 class _DonarHomePageState extends State<DonarHomePage> {
-  List<DonationData> _getMonthlyDonation(List<DonationModel> donations) {
-    // Create a map to store donations for each month
-    Map<String, double> monthlyDonations = {};
-
-    // Loop through each donation
-    for (DonationModel donation in donations) {
-      // Extract the month from the DonationModel object
-      String month = donation.month!;
-
-      // Check if the month is already a key in the map
-      if (monthlyDonations.containsKey(month)) {
-        // If the month is already a key, add the current donation amount to its value
-        monthlyDonations[month] = (monthlyDonations[month] ?? 0) + 1;
-      } else {
-        // If the month is not a key, create a new entry with the current donation amount
-        monthlyDonations[month] = 1;
-      }
-    }
-
-    // Convert the map to a list of DonationData objects
-    List<DonationData> monthlyDonationData =
-        monthlyDonations.entries.map((entry) {
-      return DonationData(month: entry.key, donation: entry.value);
-    }).toList();
-
-    return monthlyDonationData;
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     SellerModel? donar =
@@ -121,14 +95,9 @@ class _DonarHomePageState extends State<DonarHomePage> {
                         Container(
                           width: 325.w,
                           height: 158.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: const Color(0xff326060),
-                                width: 1,
-                              )),
+                          decoration: chardecoration(),
                           child: ChartWidget(
-                            chartData: _getMonthlyDonation(snapshot.data!),
+                            chartData:FirebaseUserRepository.getMonthlyDonation(snapshot.data!),
                           ),
                         ),
                         SizedBox(height: 20.h),
@@ -146,8 +115,19 @@ class _DonarHomePageState extends State<DonarHomePage> {
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              return DonationWidget(
-                                  donationModel: snapshot.data![index]);
+                              return InkWell(
+                                child: DonationWidget(
+                                    donationModel: snapshot.data![index]),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => TrackDonation(
+                                                donation:
+                                                    snapshot.data![index],
+                                              )));
+                                },
+                              );
                             },
                           ),
                         ),
@@ -161,5 +141,14 @@ class _DonarHomePageState extends State<DonarHomePage> {
         ),
       ),
     );
+  }
+
+  BoxDecoration chardecoration() {
+    return BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xff326060),
+                              width: 1,
+                            ));
   }
 }

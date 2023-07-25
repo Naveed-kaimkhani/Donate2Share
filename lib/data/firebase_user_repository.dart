@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import '../domain/models/donation_data.dart';
 import '../domain/models/donation_model.dart';
 import '../domain/models/seller_model.dart';
 import '../domain/models/user_model.dart';
@@ -26,6 +27,9 @@ class FirebaseUserRepository {
       firestore.collection('NGOs');
   static final CollectionReference _sellerCollection =
       firestore.collection('donars');
+      
+  static final CollectionReference _adminCollection =
+      firestore.collection('admin');
   static final Reference _storageReference = FirebaseStorage.instance.ref();
   NotificationServices _notificationServices = NotificationServices();
 
@@ -117,6 +121,51 @@ class FirebaseUserRepository {
     // }
   }
 
+static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
+    // Create a map to store donations for each month
+    Map<String, double> monthlyDonations = {};
+
+    // Loop through each donation
+    for (DonationModel donation in donations) {
+      // Extract the month from the DonationModel object
+      String month = donation.month!;
+
+      // Check if the month is already a key in the map
+      if (monthlyDonations.containsKey(month)) {
+        // If the month is already a key, add the current donation amount to its value
+        monthlyDonations[month] = (monthlyDonations[month] ?? 0) + 1;
+      } else {
+        // If the month is not a key, create a new entry with the current donation amount
+        monthlyDonations[month] = 1;
+      }
+    }
+
+    // Convert the map to a list of DonationData objects
+    List<DonationData> monthlyDonationData =
+        monthlyDonations.entries.map((entry) {
+      return DonationData(month: entry.key, donation: entry.value);
+    }).toList();
+
+    return monthlyDonationData;
+  }
+
+  Future<UserModel?> getAdminDetails() async {
+    DocumentSnapshot documentSnapshot =
+        await _adminCollection.doc(utils.currentUserUid).get();
+    if (documentSnapshot.data() != null) {
+      UserModel seller =
+          UserModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+      return seller;
+    }
+    return null;
+
+    // else {
+    //   // utils.flushBarErrorMessage("User not found", context)
+    //   utils.toastMessage("No user found");
+    //   Navigator.push
+    // }
+  }
+
   Future<UserModel?> getUser() async {
     // var url = Uri.parse('https://jsonplaceholder.typicode.com/users');
     // var response = await http.get(url);
@@ -150,6 +199,21 @@ class FirebaseUserRepository {
     }
     return null;
   }
+  
+  Future<UserModel?> getAdmin() async {
+    DocumentSnapshot documentSnapshot =
+        await _adminCollection.doc(utils.currentUserUid).get();
+    if (documentSnapshot.data() != null) {
+      UserModel? userModel =
+          UserModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+      if (userModel != null) {
+        return userModel;
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
 
   Future<User?> signUpUser(String email, String password, context) async {
     try {
@@ -167,6 +231,10 @@ class FirebaseUserRepository {
 
   Future<void> saveUserDataToFirestore(UserModel userModel) async {
     await _userCollection.doc(userModel.uid).set(userModel.toMap(userModel));
+  }
+  
+  Future<void> saveAdminDataToFirestore(UserModel userModel) async {
+    await _adminCollection.doc(userModel.uid).set(userModel.toMap(userModel));
   }
 
   Future<void> saveSellerDataToFirestore(SellerModel sellerModel) async {
@@ -253,7 +321,7 @@ class FirebaseUserRepository {
       // Update the document with the added document ID
       await newDonationRef.update(donationData);
       // utils.toastMessage('Donation stored successfully!');
-      donationDonePopup(context);
+      donationDonePopup(context, donation);
       // print('Donation stored successfully!');
     } catch (e) {
       utils.toastMessage('Error storing donation: $e');
@@ -327,4 +395,22 @@ class FirebaseUserRepository {
     print(donationList);
     yield donationList;
   }
+  
+static Stream<List<DonationModel>> getDonarDonations(context) async* {
+  List<DonationModel> donationList = [];
+
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("donations")
+        .where("donarUid", isEqualTo: utils.currentUserUid)
+        .get();
+    donationList = querySnapshot.docs.map((doc) {
+      return DonationModel.fromMap(doc.data() as dynamic);
+    }).toList();
+  } catch (e) {
+    utils.flushBarErrorMessage('Error fetching donations: $e',context);
+    // print('Error fetching donations: $e');
+  }
+  yield donationList;
+}
 }

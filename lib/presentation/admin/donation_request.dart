@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FoodTracing extends StatelessWidget {
-  const FoodTracing({super.key});
+class DonationRequestScreen extends StatelessWidget {
+  const DonationRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

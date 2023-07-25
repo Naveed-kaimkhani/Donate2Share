@@ -13,7 +13,7 @@ class UserModel {
 
   UserModel(
       {required this.uid,
-      required this.profileImage,
+      this.profileImage,
       required this.name,
       required this.phone,
       required this.address,

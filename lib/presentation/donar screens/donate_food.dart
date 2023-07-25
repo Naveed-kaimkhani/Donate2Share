@@ -28,7 +28,7 @@ class DonateFood extends StatefulWidget {
 }
 
 class _DonateFoodState extends State<DonateFood> {
-  SellerModel? donator;
+  SellerModel? donar;
   FocusNode foodNameFocusNode = FocusNode();
 
   FocusNode foodDescriptionFocusNode = FocusNode();
@@ -90,16 +90,18 @@ class _DonateFoodState extends State<DonateFood> {
       List<String> pictures = await FirebaseUserRepository.uploadDonationImage(
           imageFile: foodImageList!, donationId: donationId);
       DonationModel donationModel = DonationModel(
-        donatorUid: utils.currentUserUid,
-        donatorName: donator?.name ?? "No name",
-        donatorProfileImage: donator!.profileImage,
-        donatorPhone: donator!.phone,
+        donarUid: utils.currentUserUid,
+        donarName: donar?.name ?? "No name",
+        donarProfileImage: donar!.profileImage,
+        donarPhone: donar!.phone,
         needRider: riderChoise,
-        donatorAddress: donator!.address,
-        donatorDeviceToken: donator!.deviceToken,
-        donatorLat: donator!.lat,
+        donarAddress: donar!.address,
+        donarDeviceToken: donar!.deviceToken,
+        donationDescription: _foodDescriptionController.text,
+        donarLat: donar!.lat,
+        donarLong: donar!.long,
         expiry: _expiryController.text,
-        donatorLong: donator!.long,
+        
         pictures: pictures,
         type: "food",
         month: utils.getMonthString(DateTime.now()),
@@ -130,7 +132,7 @@ class _DonateFoodState extends State<DonateFood> {
 
   @override
   Widget build(BuildContext context) {
-    donator = Provider.of<SellerProvider>(context, listen: false).seller;
+    donar = Provider.of<SellerProvider>(context, listen: false).seller;
 
     return SafeArea(
         child: Scaffold(
