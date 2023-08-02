@@ -9,9 +9,14 @@ class AppBarBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 20.r,
-        child: Center(child: Image.asset(Images.back)));
+    return InkWell(
+      child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 20.r,
+          child: Center(child: Image.asset(Images.back))),
+      onTap: () {
+        Navigator.pop(context);
+      },
+    );
   }
 }

@@ -10,6 +10,8 @@ import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
 import 'package:donation_app/providers/admin_provider.dart';
+import 'package:donation_app/providers/donars_list_provider.dart';
+import 'package:donation_app/providers/ngos_list_provider.dart';
 import 'package:donation_app/providers/seller_provider.dart';
 import 'package:donation_app/providers/user_provider.dart';
 import 'package:donation_app/utils/routes/routes.dart';
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => SellerProvider()),
             ChangeNotifierProvider(create: (_) => UserProvider()),
             ChangeNotifierProvider(create: (_) => AdminProvider()),
+            ChangeNotifierProvider(create: (_) => DonarsListProvider()),
+            ChangeNotifierProvider(create: (_) => NgoListProvider()),
           ],
           child: MaterialApp(
             title: 'Donate2Share',

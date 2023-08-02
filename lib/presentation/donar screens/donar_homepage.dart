@@ -19,6 +19,7 @@ import '../../domain/models/donation_model.dart';
 import '../../domain/models/graph_dots.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
+import '../widgets/chart_decoration.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/donation_widget.dart';
 import 'no_data_found.dart';
@@ -31,7 +32,6 @@ class DonarHomePage extends StatefulWidget {
 }
 
 class _DonarHomePageState extends State<DonarHomePage> {
-  
   @override
   Widget build(BuildContext context) {
     SellerModel? donar =
@@ -41,7 +41,7 @@ class _DonarHomePageState extends State<DonarHomePage> {
       body: SafeArea(
         // child: SizedBox(),
         child: StreamBuilder<List<DonationModel>>(
-          stream: FirebaseUserRepository.getDonationList(),
+          stream: FirebaseUserRepository.getDonationList(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const WaveCircleProgress();
@@ -54,7 +54,7 @@ class _DonarHomePageState extends State<DonarHomePage> {
               );
             } else {
               return Padding(
-                padding: EdgeInsets.only(top: 20.h, left: 27.w, right: 27.w),
+                padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: SingleChildScrollView(
@@ -68,11 +68,10 @@ class _DonarHomePageState extends State<DonarHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Naveed kk',
+                            Text(donar!.name ?? "Hi Donar",
                                 style: CustomTextStyle.font_24_primaryColor),
                             ProfilePic(
-                                url:
-                                    "https://firebasestorage.googleapis.com/v0/b/donate2share-40014.appspot.com/o/donation_images%2FPcgWf5TwqVhOJTF14MLpf46z34U2%2F101527%2F2?alt=media&token=aa1d8688-ea7f-49d9-9d65-54e09826eb81",
+                                url: donar.profileImage,
                                 height: 44.h,
                                 width: 52.w)
                           ],
@@ -97,7 +96,9 @@ class _DonarHomePageState extends State<DonarHomePage> {
                           height: 158.h,
                           decoration: chardecoration(),
                           child: ChartWidget(
-                            chartData:FirebaseUserRepository.getMonthlyDonation(snapshot.data!),
+                            chartData:
+                                FirebaseUserRepository.getMonthlyDonation(
+                                    snapshot.data!),
                           ),
                         ),
                         SizedBox(height: 20.h),
@@ -119,13 +120,12 @@ class _DonarHomePageState extends State<DonarHomePage> {
                                 child: DonationWidget(
                                     donationModel: snapshot.data![index]),
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => TrackDonation(
-                                                donation:
-                                                    snapshot.data![index],
-                                              )));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => TrackDonation(
+                                  //               donation: snapshot.data![index],
+                                  //             )));
                                 },
                               );
                             },
@@ -143,12 +143,5 @@ class _DonarHomePageState extends State<DonarHomePage> {
     );
   }
 
-  BoxDecoration chardecoration() {
-    return BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xff326060),
-                              width: 1,
-                            ));
-  }
+ 
 }

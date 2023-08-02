@@ -14,8 +14,11 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../domain/models/donation_data.dart';
 import '../domain/models/donation_model.dart';
+import '../domain/models/request_model.dart';
 import '../domain/models/seller_model.dart';
 import '../domain/models/user_model.dart';
+import '../providers/admin_provider.dart';
+import '../providers/donars_list_provider.dart';
 import '../providers/seller_provider.dart';
 import '../providers/user_provider.dart';
 import 'notification_services.dart';
@@ -27,7 +30,7 @@ class FirebaseUserRepository {
       firestore.collection('NGOs');
   static final CollectionReference _sellerCollection =
       firestore.collection('donars');
-      
+
   static final CollectionReference _adminCollection =
       firestore.collection('admin');
   static final Reference _storageReference = FirebaseStorage.instance.ref();
@@ -46,6 +49,16 @@ class FirebaseUserRepository {
       utils.flushBarErrorMessage("Invalid email or password", context);
     }
   }
+  
+  Future<UserModel?> getAdmin() async {
+  QuerySnapshot querySnapshot = await _adminCollection.limit(1).get();
+  if (querySnapshot.docs.isNotEmpty) {
+    UserModel? userModel = UserModel.fromMap(querySnapshot.docs[0].data() as Map<String, dynamic>);
+    return userModel;
+  } else {
+    return null;
+  }
+}
 
   Future<Position?> getUserCurrentLocation(context) async {
     try {
@@ -79,10 +92,16 @@ class FirebaseUserRepository {
     }
   }
 
-  loadSellerDataOnAppInit(context) async {
+  loadDonarDataOnAppInit(context) async {
     try {
       await Provider.of<SellerProvider>(context, listen: false)
           .getSellerFromServer(context);
+
+      await Provider.of<AdminProvider>(context, listen: false)
+          .getAdminFromServer(context);
+
+      await Provider.of<UserProvider>(context, listen: false)
+          .getAllNgoFromServer(context);
 
       // Navigate to the home screen after loading the data
     } catch (error) {
@@ -121,7 +140,7 @@ class FirebaseUserRepository {
     // }
   }
 
-static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
+  static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     // Create a map to store donations for each month
     Map<String, double> monthlyDonations = {};
 
@@ -167,10 +186,6 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
   }
 
   Future<UserModel?> getUser() async {
-    // var url = Uri.parse('https://jsonplaceholder.typicode.com/users');
-    // var response = await http.get(url);
-    // var list = jsonDecode(response.body) as List;
-    // return list.map((e) => UserJson.fromJson(e).toDomain()).toList();
     DocumentSnapshot documentSnapshot =
         await _userCollection.doc(utils.currentUserUid).get();
     if (documentSnapshot.data() != null) {
@@ -199,21 +214,31 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     }
     return null;
   }
-  
-  Future<UserModel?> getAdmin() async {
-    DocumentSnapshot documentSnapshot =
-        await _adminCollection.doc(utils.currentUserUid).get();
-    if (documentSnapshot.data() != null) {
-      UserModel? userModel =
-          UserModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
-      if (userModel != null) {
-        return userModel;
-      } else {
-        return null;
-      }
+
+  static Future<List<UserModel>> getAllAdmin(context) async {
+    List<UserModel> adminList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("admin").get();
+      adminList = querySnapshot.docs.map((doc) {
+        return UserModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching Ngos: $e', context);
+      // print('Error fetching donations: $e');
     }
+    return adminList;
+  }
+  
+static Future<UserModel?> getFirstAdmin(context) async {
+  List<UserModel> adminList = await getAllAdmin(context);
+  if (adminList.isNotEmpty) {
+    return adminList[0];
+  } else {
     return null;
   }
+}
 
   Future<User?> signUpUser(String email, String password, context) async {
     try {
@@ -233,6 +258,23 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     await _userCollection.doc(userModel.uid).set(userModel.toMap(userModel));
   }
   
+static Future<void> sendRequestToAdminForDonation(RequestModel model,context) async {
+  try {
+    // Access the Firestore collection reference where you want to save the request
+    CollectionReference requestCollection = FirebaseFirestore.instance.collection('requests');
+    final DocumentReference requestRef = await  requestCollection.add(model.toMap(model));
+ final String documentId = requestRef.id;
+
+      await requestRef.update({'documentId': documentId});
+    // Successfully saved the request to Firestore
+  } catch (error) {
+    // Handle any errors that may occur during the save process
+    // print('Error saving request: $error');
+    utils.flushBarErrorMessage('Error sending request: $error', context);
+  }
+}
+
+
   Future<void> saveAdminDataToFirestore(UserModel userModel) async {
     await _adminCollection.doc(userModel.uid).set(userModel.toMap(userModel));
   }
@@ -242,6 +284,10 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
         .doc(sellerModel.uid)
         .set(sellerModel.toMap(sellerModel));
   }
+ static Future<void> deleteSellerDataFromFirestore(String uid) async {
+  await _sellerCollection.doc(uid).delete();
+}
+
 
   Future<String> uploadProfileImage(
       {required Uint8List? imageFile, required String uid}) async {
@@ -251,7 +297,6 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
         .putData(imageFile!);
     String downloadURL =
         await _storageReference.child('profile_images/$uid').getDownloadURL();
-    print("uploaded");
     return downloadURL;
   }
 
@@ -286,19 +331,19 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     }
   }
 
-  Future<void> loadDonarDataOnAppInit(context) async {
-    try {
-      String? refreshedToken = await _notificationServices.isTokenRefresh();
+  // Future<void> loadDonarDataOnAppInit(context) async {
+  //   try {
+  //     String? refreshedToken = await _notificationServices.isTokenRefresh();
 
-      await Provider.of<SellerProvider>(context, listen: false)
-          .getSellerFromServer(context);
+  //     await Provider.of<SellerProvider>(context, listen: false)
+  //         .getSellerFromServer(context);
 
-      // Navigate to the home screen after loading the data
-    } catch (error) {
-      utils.flushBarErrorMessage(error.toString(), context);
-      // Handle error if any
-    }
-  }
+  //     // Navigate to the home screen after loading the data
+  //   } catch (error) {
+  //     utils.flushBarErrorMessage(error.toString(), context);
+  //     // Handle error if any
+  //   }
+  // }
 
   static Future<void> saveDonationModelToFirestore(
       DonationModel donation, context) async {
@@ -378,39 +423,69 @@ static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     }
   }
 
-  static Stream<List<DonationModel>> getDonationList() async* {
+  static Stream<List<DonationModel>> getDonationList(context) async* {
     List<DonationModel> donationList = [];
 
     try {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection("donations").get();
-      print(querySnapshot.docs);
       donationList = querySnapshot.docs.map((doc) {
         return DonationModel.fromMap(doc.data() as dynamic);
       }).toList();
     } catch (e) {
-      // utils.flushBarErrorMessage('Error fetching donations: $e',context);
-      print('Error fetching donations: $e');
+      utils.flushBarErrorMessage('Error fetching donations: $e',context);
     }
     print(donationList);
     yield donationList;
   }
-  
-static Stream<List<DonationModel>> getDonarDonations(context) async* {
-  List<DonationModel> donationList = [];
 
-  try {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("donations")
-        .where("donarUid", isEqualTo: utils.currentUserUid)
-        .get();
-    donationList = querySnapshot.docs.map((doc) {
-      return DonationModel.fromMap(doc.data() as dynamic);
-    }).toList();
-  } catch (e) {
-    utils.flushBarErrorMessage('Error fetching donations: $e',context);
-    // print('Error fetching donations: $e');
+  static Future<List<SellerModel>> getConnectedDonars(context) async {
+    List<SellerModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("donars").get();
+      donationList = querySnapshot.docs.map((doc) {
+        return SellerModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
+      // print('Error fetching donations: $e');
+    }
+    return donationList;
   }
-  yield donationList;
-}
+
+  static Future<List<UserModel>> getConnectedNgo(context) async {
+    List<UserModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("NGOs").get();
+      donationList = querySnapshot.docs.map((doc) {
+        return UserModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching Ngos: $e', context);
+      // print('Error fetching donations: $e');
+    }
+    return donationList;
+  }
+
+  static Stream<List<DonationModel>> getDonarDonations(context) async* {
+    List<DonationModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("donations")
+          .where("donarUid", isEqualTo: utils.currentUserUid)
+          .get();
+      donationList = querySnapshot.docs.map((doc) {
+        return DonationModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
+      // print('Error fetching donations: $e');
+    }
+    yield donationList;
+  }
 }

@@ -1,11 +1,6 @@
-import 'package:donation_app/presentation/NGO%20screens/ngo_homepage.dart';
+import 'package:donation_app/presentation/admin/admin_setting.dart';
 import 'package:donation_app/presentation/admin/donation_request.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
 import 'package:donation_app/style/images.dart';
-import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
-import 'package:donation_app/utils/dialogues/select_donation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/styling.dart';
@@ -19,11 +14,11 @@ class AdminNavigation extends StatefulWidget {
 
 class _AdminNavigationState extends State<AdminNavigation> {
   List pages = [
-    const AdminHomePage(),
+    AdminHomePage(),
 
     const DonationRequestScreen(),
-    // DonateFood(),
-    // const DonarDonationsScreen(),
+    const AdminSetting(),
+    const AdminSetting(),
     // const DonarSetting(),
   ];
   int currentindex = 0;
@@ -34,7 +29,7 @@ class _AdminNavigationState extends State<AdminNavigation> {
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const AdminHomePage();
+  Widget currentScreen = AdminHomePage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +51,7 @@ class _AdminNavigationState extends State<AdminNavigation> {
                           minWidth: 40,
                           onPressed: () {
                             setState(() {
-                              currentScreen = const AdminHomePage();
+                              currentScreen = AdminHomePage();
                               currentindex = 0;
                             });
                           },
@@ -85,14 +80,43 @@ class _AdminNavigationState extends State<AdminNavigation> {
                                   ? Colors.white
                                   : Colors.grey,
                               size: 28.h,
-                            )
-                            //  Image.asset(
-                            //   Images.home,
-                            //   height: 26.h,
-                            // //   width: 26.w,
-                            //   color: currentindex == 0 ? Colors.white : Colors.grey,
-                            // ),
-                            ),
+                            )),
+                        SizedBox(
+                          width: 25.w,
+                        ),
+                        MaterialButton(
+                            minWidth: 40.w,
+                            onPressed: () {
+                              setState(() {
+                                currentScreen = const AdminSetting();
+                                currentindex = 2;
+                              });
+                            },
+                            child: Icon(
+                              Icons.chat,
+                              color: currentindex == 2
+                                  ? Colors.white
+                                  : Colors.grey,
+                              size: 28.h,
+                            )),
+                        SizedBox(
+                          width: 25.w,
+                        ),
+                        MaterialButton(
+                            minWidth: 40.w,
+                            onPressed: () {
+                              setState(() {
+                                currentScreen = const AdminSetting();
+                                currentindex = 3;
+                              });
+                            },
+                            child: Icon(
+                              Icons.settings_outlined,
+                              color: currentindex == 3
+                                  ? Colors.white
+                                  : Colors.grey,
+                              size: 28.h,
+                            )),
                       ],
                     ),
                   ])),

@@ -42,6 +42,12 @@ class CustomTextStyle {
     fontWeight: FontWeight.w700,
   );
 
+  static final font_20_primaryColor = TextStyle(
+    color: Styling.primaryColor,
+    fontSize: 20.sp,
+    fontFamily: "Sansita",
+    fontWeight: FontWeight.w700,
+  );
   static final font_32 = TextStyle(
     color: Styling.primaryColor,
     fontSize: 32.sp,

@@ -251,6 +251,7 @@ class _DonateFoodState extends State<DonateFood> {
           currentNode: quantityFocusNode,
           focusNode: quantityFocusNode,
           nextNode: expiryFocusNode,
+          keyboardType:TextInputType.number,
           controller: _quantityController,
           obsecureText: false,
           // validator: (value) {

@@ -24,7 +24,8 @@ class _DonarDonationsScreenState extends State<DonarDonationsScreen> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(      children: [
+          child: Column(
+            children: [
               DonarDonationHeader(text: "All Your Donations", height: 100.h),
               // DonarDonationsScreenHeader()
               StreamBuilder<List<DonationModel>>(
@@ -42,7 +43,7 @@ class _DonarDonationsScreenState extends State<DonarDonationsScreen> {
                   } else {
                     return Padding(
                       padding:
-                          EdgeInsets.only(top: 20.h, left: 27.w, right: 27.w),
+                          EdgeInsets.only(top: 10.h, left: 17.w, right: 17.w),
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height,
                         child: ListView.builder(

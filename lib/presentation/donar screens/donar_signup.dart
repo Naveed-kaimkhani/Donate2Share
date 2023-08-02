@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
+import 'package:donation_app/utils/dialogues/donar_added_dialogue.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../data/firebase_user_repository.dart';
 import '../../data/notification_services.dart';
 import '../../domain/models/seller_model.dart';
+import '../../providers/donars_list_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
 import '../../utils/storage_services.dart';
@@ -20,7 +22,8 @@ import '../widgets/circle_progress.dart';
 import '../widgets/input_field.dart';
 
 class DonarSignup extends StatefulWidget {
-  const DonarSignup({Key? key}) : super(key: key);
+  final bool addedByAdmin;
+  const DonarSignup({Key? key,required this.addedByAdmin}) : super(key: key);
 
   @override
   State<DonarSignup> createState() => _DonarSignupState();
@@ -33,7 +36,7 @@ class _DonarSignupState extends State<DonarSignup> {
 
   String? type = "Restaurant";
   String? donarselectedvalue = "Donar Type";
-  List<String> donarList = ["Individual", "Restaurant", "Restaurant"];
+  List<String> donarList = ["Individual", "Restaurant", "Organization"];
 
   // Uint8List? _profileImage;
   bool? obsecureText = true;
@@ -95,7 +98,7 @@ class _DonarSignupState extends State<DonarSignup> {
         //  final Position sellerLocation = await Geolocator.getCurrentPosition();
         final String address =
             await utils.getAddressFromLatLng(value!.latitude, value.longitude);
-        print(address);
+        // print(address);
         SellerModel sellerModel = SellerModel(
             uid: utils.currentUserUid,
             name: _nameController.text,
@@ -128,16 +131,27 @@ class _DonarSignupState extends State<DonarSignup> {
     _firebaseUserRepository
         .saveSellerDataToFirestore(sellerModel)
         .then((value) async {
-      print("okiiii");
+      // print("okiiii");
       await StorageService.saveSeller(sellerModel).then((value) async {
         //await  StorageService.readUser();
         // await Provider.of<SellerProvider>(context, listen: false)
         //     .getSellerLocally();
-        await _firebaseUserRepository.loadSellerDataOnAppInit(context);
+        await _firebaseUserRepository.loadDonarDataOnAppInit(context);
 
         isLoading(false);
+        if (widget.addedByAdmin) {
+          
+    await Provider.of<DonarsListProvider>(context, listen: false)
+        .getDonarsList(context);
+    // allDonars = Provider.of<DonarsListProvider>(context, listen: false).donars;
+    Provider.of<DonarsListProvider>(context, listen: false)
+        .filterDonars(context);
+          donarAddedPopup(context);
+        } else {
+          
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const DonarNavigation()));
+        }
       });
     }).catchError((error) {
       isLoading(false);
@@ -289,11 +303,10 @@ class _DonarSignupState extends State<DonarSignup> {
 
                   genderSelection(),
                   // // hostelType(),
-                  // SizedBox(
-                  //   height: 8.h,
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 38.w, top: 12.h),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  Center(
                     child: isLoadingNow
                         ? const CircleProgress()
                         : AuthButton(

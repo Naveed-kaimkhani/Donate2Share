@@ -75,7 +75,7 @@ class _DonarLoginState extends State<DonarLogin> {
         StorageService.saveSeller(sellerModel).then((value) async {
           // await Provider.of<SellerProvider>(context, listen: false)
           //     .getSellerFromServer();
-          await _firebaseRepository.loadSellerDataOnAppInit(context);
+          await _firebaseRepository.loadDonarDataOnAppInit(context);
 
           isLoading(false);
           Navigator.pushReplacement(context,

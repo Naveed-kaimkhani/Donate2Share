@@ -1,27 +1,28 @@
-import 'package:donation_app/domain/models/donation_model.dart';
+
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../style/styling.dart';
 
 class TracingScreenBottomNavigation extends StatelessWidget {
-  // final DonationModel donation;
   const TracingScreenBottomNavigation({
     super.key,
     required this.distance,
     required this.halfLength,
+    required this.adminAddress,
     required this.firstLine,
     required this.phone,
-    required this.address,
+    // required this.widget,
   });
 
   final double? distance;
   final double halfLength;
+  // final SellerUserTracing widget;
+  final String adminAddress;
   final double firstLine;
-
-  final String address;
   final String phone;
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +31,8 @@ class TracingScreenBottomNavigation extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40.r), topRight: Radius.circular(40.r)),
+            topLeft: Radius.circular(40.r),
+            topRight: Radius.circular(40.r)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -72,7 +74,8 @@ class TracingScreenBottomNavigation extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
-              Text(address.substring(0, firstLine.toInt())),
+              Text(adminAddress
+                  .substring(0, firstLine.toInt())),
             ],
           ),
           SizedBox(
@@ -94,7 +97,7 @@ class TracingScreenBottomNavigation extends StatelessWidget {
                     color: Colors.white,
                   ),
                   Text(
-                    "Call Admin",
+                    "Call User",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -104,7 +107,9 @@ class TracingScreenBottomNavigation extends StatelessWidget {
               ),
             ),
             onTap: () {
-              utils.launchphone(phone, context);
+            
+              utils.launchphone(
+               phone, context);
             },
           ),
           SizedBox(

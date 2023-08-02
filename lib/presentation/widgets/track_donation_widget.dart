@@ -29,10 +29,10 @@ class TrackDonationWidget extends StatelessWidget {
       ),
       margin: EdgeInsets.only(
         // left: 8.w,
-        top: 10.h,
+        top: 12.h,
       ),
       height: 100.h,
-      width: 325.w,
+      width: 335.w,
       decoration: BoxDecoration(
         color: Colors.white,
         // border: Border.all(width: 1, color: Colors.redAccent),
@@ -116,16 +116,16 @@ class TrackDonationWidget extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 4.h,
+                  height: 2.h,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 58.w,
+                    left: 68.w,
                   ),
                   child: InkWell(
                     child: const TrackDonationButton(),
                     onTap: () {
-                      print("calllllll");
+                      // print("calllllll");
 
                       Navigator.push(
                           context,

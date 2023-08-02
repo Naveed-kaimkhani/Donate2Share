@@ -234,6 +234,7 @@ class _DonateclothesesState extends State<Donateclotheses> {
           hint_text: "eg . 40 dresses",
           currentNode: quantityFocusNode,
           focusNode: quantityFocusNode,
+          keyboardType: TextInputType.number,
           nextNode: quantityFocusNode,
           controller: _quantityController,
           obsecureText: false,

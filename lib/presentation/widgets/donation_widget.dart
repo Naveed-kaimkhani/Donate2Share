@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -137,7 +138,8 @@ class _DonationWidgetState extends State<DonationWidget> {
                     style: CustomTextStyle.font_10_primaryColor,
                     children: <InlineSpan>[
                       TextSpan(
-                        text: '${widget.donationModel.donarAddress}',
+                        text: utils.trimAddressToHalf(
+                            '${widget.donationModel.donarAddress}'),
                         style: CustomTextStyle.font_8_black,
                       )
                     ])),

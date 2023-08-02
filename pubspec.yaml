@@ -60,10 +60,8 @@ dependencies:
   lottie: ^2.4.0
   flutter_image_compress: ^2.0.3
   path_provider: ^2.0.15
-
   custom_info_window: ^1.0.1
   url_launcher: ^6.1.11
-  fl_chart: ^0.63.0
   syncfusion_flutter_charts: ^22.1.39
 dev_dependencies:
   flutter_test:

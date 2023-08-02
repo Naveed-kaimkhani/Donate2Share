@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/models/user_model.dart';
 
-class UserProvider with ChangeNotifier {
+class DonarProvider with ChangeNotifier {
   UserModel? _userDetails;
  List<UserModel>? _allNgoDetails;
    

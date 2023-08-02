@@ -50,13 +50,13 @@ class AuthHeader extends StatelessWidget {
           if (text == null)
             Padding(
               padding: EdgeInsets.only(
-                left: 100.w,
+                left: 80.w,
               ),
               child: Image.asset(
                 Images.logo,
                 color: Colors.white,
                 height: 135.h,
-                width: 135.w,
+                width: 195.w,
               ),
             ),
         ],

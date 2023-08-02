@@ -16,13 +16,24 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:url_launcher/url_launcher.dart';
+import '../domain/models/seller_model.dart';
 import '../presentation/donar screens/no_internet_connection.dart';
 import '../presentation/widgets/circle_progress.dart';
+import 'dialogues/request_sent_dialogue.dart';
+
 class utils {
   static toastMessage(String message) {
     Fluttertoast.showToast(msg: message);
   }
 
+  static Future<dynamic> openRequestSentDialogue(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const RequestSentDialogue();
+      },
+    );
+  }
   static launchphone(String number, context) async {
     Uri phoneUri = Uri.parse("tel:$number");
     if (await canLaunch(phoneUri.toString())) {
@@ -36,6 +47,15 @@ class utils {
     }
   }
 
+  static String trimAddressToHalf(String address) {
+    int halfLength = (address.length / 2).floor();
+    return address.substring(0, halfLength);
+  }
+
+  static List<SellerModel> filterDonars(List<SellerModel> model, String type) {
+    return model.where((seller) => seller.type == type).toList();
+  }
+
   static String getCurrentDate() {
     var now = DateTime.now();
     var formatterDate = DateFormat('dd/MM/yy');
@@ -43,13 +63,12 @@ class utils {
     return actualDate;
   }
 
-static String getCurrentTime() {
-  var now = DateTime.now();
-  var formatterTime = DateFormat('hh:mm a');
-  String actualTime = formatterTime.format(now);
-  return actualTime;
-}
-
+  static String getCurrentTime() {
+    var now = DateTime.now();
+    var formatterTime = DateFormat('hh:mm a');
+    String actualTime = formatterTime.format(now);
+    return actualTime;
+  }
 
   static String capitalizeFirstLetter(String text) {
     if (text.isEmpty) {
@@ -104,15 +123,28 @@ static String getCurrentTime() {
     });
     // return true;
   }
-    static String getMonthString(DateTime dateTime) {
+
+  static String getMonthString(DateTime dateTime) {
     // Function to convert a DateTime to a month string (e.g., "July")
     const monthNames = [
-      "", "January", "February", "March", "April", "May", "June", "July",
-      "August", "September", "October", "November", "December"
+      "",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ];
     return monthNames[dateTime.month];
   }
- static Future<XFile> compressImage(XFile image)async{
+
+  static Future<XFile> compressImage(XFile image) async {
     final dir = await path_provider.getTemporaryDirectory();
     final targetPath = '${dir.absolute.path}/temp.jpg';
 
@@ -126,15 +158,15 @@ static String getCurrentTime() {
     );
     return result!;
   }
-  
+
   static Future<Uint8List?> pickImage() async {
     //    ImagePicker picker=ImagePicker();
     ImagePicker picker = ImagePicker();
     XFile? file = await picker.pickImage(source: ImageSource.gallery);
-  
+
     //print("before redusing size $file");
     if (file != null) {
-    XFile compressedImage = await compressImage(file);
+      XFile compressedImage = await compressImage(file);
       return compressedImage.readAsBytes();
     }
     return null;
