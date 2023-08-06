@@ -123,7 +123,9 @@ class TrackDonationWidget extends StatelessWidget {
                     left: 68.w,
                   ),
                   child: InkWell(
-                    child: const TrackDonationButton(),
+                    child: const TrackDonationButton(
+                      text: "Text",
+                    ),
                     onTap: () {
                       // print("calllllll");
 

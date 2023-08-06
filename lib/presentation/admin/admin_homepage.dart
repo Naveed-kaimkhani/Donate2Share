@@ -9,6 +9,7 @@ import 'package:donation_app/presentation/widgets/connected_ngo_card.dart';
 import 'package:donation_app/providers/ngos_list_provider.dart';
 import 'package:donation_app/style/images.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -209,7 +210,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         decoration: chardecoration(),
                         child: ChartWidget(
                           chartData: FirebaseUserRepository.getMonthlyDonation(
-                              snapshot.data!,),
+                            snapshot.data!,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -224,7 +226,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AdminHomeCard(
-                            donation: foodList!.length,
+                            donation:
+                                utils.countQuantity(snapshot.data!, "clothes"),
                             name: "Food",
                             unit: "kilogram",
                             image: Images.foodpic,
@@ -239,7 +242,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             },
                           ),
                           AdminHomeCard(
-                            donation: clotheList!.length,
+                            donation:
+                                utils.countQuantity(snapshot.data!, "food"),
                             name: "Clothes",
                             unit: "Dress",
                             image: Images.clothpic,

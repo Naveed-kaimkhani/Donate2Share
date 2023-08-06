@@ -21,6 +21,13 @@ class AdminHomeCard extends StatelessWidget {
     required this.unit,
     super.key,
   });
+  TextStyle getCustomTextStyle(int value) {
+    if (value.toString().length == 4) {
+      return CustomTextStyle.font_32_white; // Use the larger font size
+    } else {
+      return CustomTextStyle.font_24_white; // Use the smaller font size
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +57,7 @@ class AdminHomeCard extends StatelessWidget {
                   children: <InlineSpan>[
                     TextSpan(
                       text: '\n$donation',
-                      style: CustomTextStyle.font_32_white,
+                      style: getCustomTextStyle(donation),
                     ),
                     TextSpan(
                       text: '\n$unit',

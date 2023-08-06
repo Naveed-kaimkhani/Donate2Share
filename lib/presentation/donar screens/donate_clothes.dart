@@ -89,7 +89,7 @@ class _DonateclothesesState extends State<Donateclotheses> {
         donarLong: donar!.long,
         pictures: pictures,
         donationDescription: _clothesDescriptionController.text,
-        quantity: _quantityController.text,
+        quantity: int.parse(_quantityController.text),
         type: "clothes",
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),

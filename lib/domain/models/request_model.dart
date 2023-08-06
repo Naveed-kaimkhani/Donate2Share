@@ -9,6 +9,7 @@ class RequestModel {
   String? donationType;
   String? serviceId;
   String? quantity;
+  String? status;
   
   String? description;
   
@@ -33,6 +34,7 @@ class RequestModel {
     this.senderName,
     this.sentDate,
     this.sentTime,
+   this.status,
     this.senderProfileImage,
     this.senderPhone,
   });
@@ -55,6 +57,8 @@ class RequestModel {
     data['senderDeviceToken'] = request.senderDeviceToken;
     data['quantity'] = request.quantity;
     data['description'] = request.description;
+    data['status'] = request.status;
+    
     data['donationType'] = request.donationType;
 
     return data;
@@ -75,6 +79,7 @@ class RequestModel {
     senderProfileImage = mapData['senderProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];
+    status = mapData['status'];
     senderDeviceToken = mapData['senderDeviceToken'];
   }
 

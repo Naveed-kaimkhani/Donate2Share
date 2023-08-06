@@ -101,11 +101,10 @@ class _DonateFoodState extends State<DonateFood> {
         donarLat: donar!.lat,
         donarLong: donar!.long,
         expiry: _expiryController.text,
-        
         pictures: pictures,
         type: "food",
         month: utils.getMonthString(DateTime.now()),
-        quantity: _quantityController.text,
+        quantity: int.parse(_quantityController.text),
         sentDate: utils.getCurrentDate(),
         sentTime: utils.getCurrentTime(),
         donationId: donationId,
@@ -251,7 +250,7 @@ class _DonateFoodState extends State<DonateFood> {
           currentNode: quantityFocusNode,
           focusNode: quantityFocusNode,
           nextNode: expiryFocusNode,
-          keyboardType:TextInputType.number,
+          keyboardType: TextInputType.number,
           controller: _quantityController,
           obsecureText: false,
           // validator: (value) {

@@ -6,21 +6,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../domain/models/donation_model.dart';
 
 class TrackDonationButton extends StatelessWidget {
+ final String text;
   const TrackDonationButton({
     super.key,
+  required  this.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30.h,
+      height: 25.h,
       width: 80.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.r),
           color: Styling.primaryColor),
       child: Center(
         child: Text(
-          "Track",
+         text,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.sp,

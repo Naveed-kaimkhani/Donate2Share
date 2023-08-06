@@ -14,10 +14,10 @@ class DonationModel {
   String? donationDescription;
   String? donarProfileImage;
   String? donarAddress;
-  String? quantity;
+  int? quantity;
   String? expiry;
   String? needRider;
-  
+
   String? month;
   List<dynamic>? pictures;
   DonationModel({
@@ -73,12 +73,13 @@ class DonationModel {
 
   DonationModel.fromMap(Map<String, dynamic> mapData) {
     // receiverUid = mapData['receiverUid'];
+    print("in frommap");
     documentId = mapData['documentId'];
     donarName = mapData['donarName'];
     donarUid = mapData['donarUid'];
     donarLat = mapData['donarLat'];
     type = mapData['type'];
-    
+
     month = mapData['month'];
     donationDescription = mapData['donationDescription'];
     donarLong = mapData['donarLong'];

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +22,7 @@ import '../providers/admin_provider.dart';
 import '../providers/donars_list_provider.dart';
 import '../providers/seller_provider.dart';
 import '../providers/user_provider.dart';
+import '../utils/dialogues/custom_loader.dart';
 import 'notification_services.dart';
 
 class FirebaseUserRepository {
@@ -36,6 +38,8 @@ class FirebaseUserRepository {
   static final Reference _storageReference = FirebaseStorage.instance.ref();
   NotificationServices _notificationServices = NotificationServices();
 
+  static final CollectionReference _requestsCollection =
+      FirebaseFirestore.instance.collection('requests');
   static final CollectionReference _donationCollection =
       firestore.collection("donations");
   Future<User?> login(String email, String password, context) async {
@@ -49,16 +53,17 @@ class FirebaseUserRepository {
       utils.flushBarErrorMessage("Invalid email or password", context);
     }
   }
-  
+
   Future<UserModel?> getAdmin() async {
-  QuerySnapshot querySnapshot = await _adminCollection.limit(1).get();
-  if (querySnapshot.docs.isNotEmpty) {
-    UserModel? userModel = UserModel.fromMap(querySnapshot.docs[0].data() as Map<String, dynamic>);
-    return userModel;
-  } else {
-    return null;
+    QuerySnapshot querySnapshot = await _adminCollection.limit(1).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      UserModel? userModel = UserModel.fromMap(
+          querySnapshot.docs[0].data() as Map<String, dynamic>);
+      return userModel;
+    } else {
+      return null;
+    }
   }
-}
 
   Future<Position?> getUserCurrentLocation(context) async {
     try {
@@ -230,15 +235,15 @@ class FirebaseUserRepository {
     }
     return adminList;
   }
-  
-static Future<UserModel?> getFirstAdmin(context) async {
-  List<UserModel> adminList = await getAllAdmin(context);
-  if (adminList.isNotEmpty) {
-    return adminList[0];
-  } else {
-    return null;
+
+  static Future<UserModel?> getFirstAdmin(context) async {
+    List<UserModel> adminList = await getAllAdmin(context);
+    if (adminList.isNotEmpty) {
+      return adminList[0];
+    } else {
+      return null;
+    }
   }
-}
 
   Future<User?> signUpUser(String email, String password, context) async {
     try {
@@ -257,23 +262,25 @@ static Future<UserModel?> getFirstAdmin(context) async {
   Future<void> saveUserDataToFirestore(UserModel userModel) async {
     await _userCollection.doc(userModel.uid).set(userModel.toMap(userModel));
   }
-  
-static Future<void> sendRequestToAdminForDonation(RequestModel model,context) async {
-  try {
-    // Access the Firestore collection reference where you want to save the request
-    CollectionReference requestCollection = FirebaseFirestore.instance.collection('requests');
-    final DocumentReference requestRef = await  requestCollection.add(model.toMap(model));
- final String documentId = requestRef.id;
+
+  static Future<void> sendRequestToAdminForDonation(
+      RequestModel model, context) async {
+    try {
+      // Access the Firestore collection reference where you want to save the request
+      CollectionReference requestCollection =
+          FirebaseFirestore.instance.collection('requests');
+      final DocumentReference requestRef =
+          await requestCollection.add(model.toMap(model));
+      final String documentId = requestRef.id;
 
       await requestRef.update({'documentId': documentId});
-    // Successfully saved the request to Firestore
-  } catch (error) {
-    // Handle any errors that may occur during the save process
-    // print('Error saving request: $error');
-    utils.flushBarErrorMessage('Error sending request: $error', context);
+      // Successfully saved the request to Firestore
+    } catch (error) {
+      // Handle any errors that may occur during the save process
+      // print('Error saving request: $error');
+      utils.flushBarErrorMessage('Error sending request: $error', context);
+    }
   }
-}
-
 
   Future<void> saveAdminDataToFirestore(UserModel userModel) async {
     await _adminCollection.doc(userModel.uid).set(userModel.toMap(userModel));
@@ -284,10 +291,10 @@ static Future<void> sendRequestToAdminForDonation(RequestModel model,context) as
         .doc(sellerModel.uid)
         .set(sellerModel.toMap(sellerModel));
   }
- static Future<void> deleteSellerDataFromFirestore(String uid) async {
-  await _sellerCollection.doc(uid).delete();
-}
 
+  static Future<void> deleteSellerDataFromFirestore(String uid) async {
+    await _sellerCollection.doc(uid).delete();
+  }
 
   Future<String> uploadProfileImage(
       {required Uint8List? imageFile, required String uid}) async {
@@ -432,16 +439,93 @@ static Future<void> sendRequestToAdminForDonation(RequestModel model,context) as
       donationList = querySnapshot.docs.map((doc) {
         return DonationModel.fromMap(doc.data() as dynamic);
       }).toList();
+      print(querySnapshot.docs.length);
+      print(querySnapshot.docs);
+      print("hnn");
     } catch (e) {
-      utils.flushBarErrorMessage('Error fetching donations: $e',context);
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
     }
     print(donationList);
     yield donationList;
   }
 
+  static Stream<List<RequestModel>> getDonationRequest(context) async* {
+    List<RequestModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("requests").get();
+      donationList = querySnapshot.docs.map((doc) {
+        return RequestModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching requests: $e', context);
+    }
+    yield donationList;
+  }
+
+  static Future<List<DonationModel>> getDonations(context) async {
+    List<DonationModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("donations").get();
+      donationList = querySnapshot.docs.map((doc) {
+        return DonationModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
+    }
+    print(donationList);
+    return donationList;
+  }
+
+  static Future<void> grantDonation(RequestModel request, context) async {
+    try {
+      LoaderOverlay.show(context);
+      // Query the documents where 'quantity' is equal to the argument value
+      QuerySnapshot querySnapshot = await _donationCollection
+          .where('quantity', isGreaterThanOrEqualTo: request.quantity)
+          .where('type', isEqualTo: request.donationType)
+          .get();
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        int currentQuantity = int.parse(documentSnapshot.get('quantity'));
+
+        if (currentQuantity == int.parse(request.quantity!)) {
+          // If currentQuantity is equal to the argument value, set the quantity to zero
+          await documentSnapshot.reference.update({'quantity': 0});
+          break;
+        } else if (currentQuantity > int.parse(request.quantity!)) {
+          // Calculate the remaining quantity if currentQuantity is greater than the argument value
+          int remainingQuantity =
+              currentQuantity - int.parse(request.quantity!);
+          await documentSnapshot.reference.update({
+            'quantity': remainingQuantity,
+          });
+          break;
+        }
+      }
+      await updateRequestStatus(request.documentId!);
+      LoaderOverlay.hide();
+      utils.toastMessage("Request Accepted");
+    } catch (error) {
+      utils.flushBarErrorMessage(
+          'Error updating donation quantity: $error', context);
+      // print('Error updating donation quantity: $error');
+    }
+  }
+
+  static Future<void> updateRequestStatus(String id) async {
+    try {
+      // Update the 'status' field of the document with the provided ID to "accepted"
+      await _requestsCollection.doc(id).update({'status': 'accepted'});
+    } catch (error) {
+      print('Error updating request status: $error');
+    }
+  }
+
   static Future<List<SellerModel>> getConnectedDonars(context) async {
     List<SellerModel> donationList = [];
-
     try {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection("donars").get();

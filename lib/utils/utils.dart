@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:url_launcher/url_launcher.dart';
+import '../domain/models/donation_model.dart';
 import '../domain/models/seller_model.dart';
 import '../presentation/donar screens/no_internet_connection.dart';
 import '../presentation/widgets/circle_progress.dart';
@@ -34,6 +35,24 @@ class utils {
       },
     );
   }
+
+  static int countQuantity(List<DonationModel> donation, String type) {
+    int totalFoodQuantity = 0;
+
+    for (var donationModel in donation) {
+      // Check if the 'type' is 'food'
+      if (donationModel.type == type) {
+        // Parse the 'quantity' string to double and add to the totalFoodQuantity
+        // totalFoodQuantity += int.parse(donationModel.quantity ?? '0')  ;
+
+        totalFoodQuantity +=
+            int.parse(donationModel.quantity?.toString() ?? '0');
+      }
+    }
+
+    return totalFoodQuantity;
+  }
+
   static launchphone(String number, context) async {
     Uri phoneUri = Uri.parse("tel:$number");
     if (await canLaunch(phoneUri.toString())) {
@@ -431,4 +450,5 @@ class utils {
     }
     return 'NA';
   }
+
 }

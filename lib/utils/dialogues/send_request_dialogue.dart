@@ -177,6 +177,7 @@ class _SendRequestDialogueState extends State<SendRequestDialogue> {
         description: controller.text,
         quantity: quantityController.text,
         donationType: _selectedService,
+        status: 'pending',
         // senderLat: user.lat,
         // senderLong: user.long,
         senderAddress: ngo!.address,
