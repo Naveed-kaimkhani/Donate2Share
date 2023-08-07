@@ -19,7 +19,7 @@ class SendRequestDialogue extends StatefulWidget {
 }
 
 class _SendRequestDialogueState extends State<SendRequestDialogue> {
-  String _selectedService = "Food";
+  String _selectedService = "food";
   // String _selectedVehicleType = "Car";
   UserModel? ngo;
   TextEditingController controller = TextEditingController();
@@ -27,14 +27,8 @@ class _SendRequestDialogueState extends State<SendRequestDialogue> {
   TextEditingController quantityController = TextEditingController();
   bool isLoadingNow = false;
   // Updated _services list with unique items
-  final List<String> _services = ['Food', 'Clothes'];
+  final List<String> _services = ['food', 'clothes'];
   // final List<String> _vehicleTypes = ['Car', 'Motorcycle', 'Truck'];
-
-  void isLoading(bool value) {
-    setState(() {
-      isLoadingNow = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,30 +161,29 @@ class _SendRequestDialogueState extends State<SendRequestDialogue> {
     if (quantityController.text.isEmpty && controller.text.isEmpty) {
       utils.flushBarErrorMessage("Enter Information", context);
     } else {
-      
-    RequestModel request = RequestModel(
-        documentId: '',
-        serviceId: utils.getRandomid(),
-        senderUid: utils.currentUserUid,
-        senderName: ngo!.name,
-        senderPhone: ngo!.phone,
-        description: controller.text,
-        quantity: quantityController.text,
-        donationType: _selectedService,
-        status: 'pending',
-        // senderLat: user.lat,
-        // senderLong: user.long,
-        senderAddress: ngo!.address,
-        senderDeviceToken: ngo!.deviceToken,
-        sentDate: utils.getCurrentDate(),
-        sentTime: utils.getCurrentTime(),
-        senderProfileImage: ngo!.profileImage);
-    await FirebaseUserRepository.sendRequestToAdminForDonation(
-        request, context);
+      RequestModel request = RequestModel(
+          documentId: '',
+          serviceId: utils.getRandomid(),
+          senderUid: utils.currentUserUid,
+          senderName: ngo!.name,
+          senderPhone: ngo!.phone,
+          description: controller.text,
+          quantity: int.tryParse(quantityController.text),
+          donationType: _selectedService,
+          status: 'pending',
+          // senderLat: user.lat,
+          // senderLong: user.long,
+          senderAddress: ngo!.address,
+          senderDeviceToken: ngo!.deviceToken,
+          sentDate: utils.getCurrentDate(),
+          sentTime: utils.getCurrentTime(),
+          senderProfileImage: ngo!.profileImage);
 
-    isLoading(false);
-    Navigator.pop(context);
-    utils.openRequestSentDialogue(context);
+      await FirebaseUserRepository.sendRequestToAdminForDonation(
+          request, context);
+
+      Navigator.pop(context);
+      utils.openRequestSentDialogue(context);
     }
   }
 }

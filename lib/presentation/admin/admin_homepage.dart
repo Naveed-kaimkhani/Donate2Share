@@ -227,7 +227,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         children: [
                           AdminHomeCard(
                             donation:
-                                utils.countQuantity(snapshot.data!, "clothes"),
+                                utils.countQuantity(snapshot.data!, "food"),
                             name: "Food",
                             unit: "kilogram",
                             image: Images.foodpic,
@@ -243,7 +243,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           ),
                           AdminHomeCard(
                             donation:
-                                utils.countQuantity(snapshot.data!, "food"),
+                                utils.countQuantity(snapshot.data!, "clothes"),
                             name: "Clothes",
                             unit: "Dress",
                             image: Images.clothpic,

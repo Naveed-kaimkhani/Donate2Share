@@ -1,4 +1,3 @@
-
 import 'package:donation_app/main.dart';
 import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
@@ -36,7 +35,7 @@ class AllDonarsScreenHeader extends StatelessWidget {
             width: 50.w,
           ),
           Text.rich(TextSpan(
-              text: ' $header',
+              text: '$header',
               style: CustomTextStyle.font_32_white,
               children: <InlineSpan>[
                 TextSpan(

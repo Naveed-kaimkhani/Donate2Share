@@ -25,7 +25,7 @@ class clothDonations extends StatelessWidget {
               DonarDonationHeader(text: "All Clothes Donations", height: 100.h),
               // clothDonationsHeader()
               Padding(
-                padding: EdgeInsets.only(top: 20.h, left: 27.w, right: 27.w),
+                padding: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
@@ -34,6 +34,7 @@ class clothDonations extends StatelessWidget {
                       return InkWell(
                         child: DonationWidget(donationModel: clothList[index]),
                         onTap: () {
+                          
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

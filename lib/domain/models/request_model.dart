@@ -8,7 +8,7 @@ class RequestModel {
   String? sentTime;
   String? donationType;
   String? serviceId;
-  String? quantity;
+  int? quantity;
   String? status;
   
   String? description;

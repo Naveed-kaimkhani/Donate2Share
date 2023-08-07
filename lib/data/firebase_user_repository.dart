@@ -33,6 +33,9 @@ class FirebaseUserRepository {
   static final CollectionReference _sellerCollection =
       firestore.collection('donars');
 
+  static final CollectionReference _riderCollection =
+      firestore.collection('riders');
+
   static final CollectionReference _adminCollection =
       firestore.collection('admin');
   static final Reference _storageReference = FirebaseStorage.instance.ref();
@@ -127,6 +130,20 @@ class FirebaseUserRepository {
     }
   }
 
+  // Future<SellerModel?> getSeller() async {
+  //   DocumentSnapshot documentSnapshot =
+  //       await _sellerCollection.doc(utils.currentUserUid).get();
+  //   if (documentSnapshot.data() != null) {
+  //     SellerModel? sellerModel =
+  //         SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+  //     if (sellerModel != null) {
+  //       return sellerModel;
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  //   return null;
+  // }
   @override
   Future<SellerModel?> getSellerDetails() async {
     DocumentSnapshot documentSnapshot =
@@ -138,11 +155,19 @@ class FirebaseUserRepository {
     }
     return null;
 
-    // else {
-    //   // utils.flushBarErrorMessage("User not found", context)
-    //   utils.toastMessage("No user found");
-    //   Navigator.push
-    // }
+  }
+
+  @override
+  Future<SellerModel?> getRiderDetails() async {
+    DocumentSnapshot documentSnapshot =
+        await _riderCollection.doc(utils.currentUserUid).get();
+    if (documentSnapshot.data() != null) {
+      SellerModel seller =
+          SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+      return seller;
+    }
+    return null;
+
   }
 
   static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
@@ -205,20 +230,6 @@ class FirebaseUserRepository {
     return null;
   }
 
-  Future<SellerModel?> getSeller() async {
-    DocumentSnapshot documentSnapshot =
-        await _sellerCollection.doc(utils.currentUserUid).get();
-    if (documentSnapshot.data() != null) {
-      SellerModel? sellerModel =
-          SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
-      if (sellerModel != null) {
-        return sellerModel;
-      } else {
-        return null;
-      }
-    }
-    return null;
-  }
 
   static Future<List<UserModel>> getAllAdmin(context) async {
     List<UserModel> adminList = [];
@@ -264,8 +275,11 @@ class FirebaseUserRepository {
   }
 
   static Future<void> sendRequestToAdminForDonation(
+   
       RequestModel model, context) async {
+   
     try {
+   LoaderOverlay.show(context);
       // Access the Firestore collection reference where you want to save the request
       CollectionReference requestCollection =
           FirebaseFirestore.instance.collection('requests');
@@ -275,7 +289,9 @@ class FirebaseUserRepository {
 
       await requestRef.update({'documentId': documentId});
       // Successfully saved the request to Firestore
+   LoaderOverlay.hide();
     } catch (error) {
+      LoaderOverlay.hide();
       // Handle any errors that may occur during the save process
       // print('Error saving request: $error');
       utils.flushBarErrorMessage('Error sending request: $error', context);
@@ -288,6 +304,12 @@ class FirebaseUserRepository {
 
   Future<void> saveSellerDataToFirestore(SellerModel sellerModel) async {
     await _sellerCollection
+        .doc(sellerModel.uid)
+        .set(sellerModel.toMap(sellerModel));
+  }
+  
+  Future<void> saveRiderDataToFirestore(SellerModel sellerModel) async {
+    await _riderCollection
         .doc(sellerModel.uid)
         .set(sellerModel.toMap(sellerModel));
   }
@@ -463,6 +485,21 @@ class FirebaseUserRepository {
     }
     yield donationList;
   }
+  
+  static Stream<List<RequestModel>> getDonationRequestForSpecificNgo(context) async* {
+    List<RequestModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection("requests").where('senderUid',isEqualTo: utils.currentUserUid).get();
+      donationList = querySnapshot.docs.map((doc) {
+        return RequestModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching requests: $e', context);
+    }
+    yield donationList;
+  }
 
   static Future<List<DonationModel>> getDonations(context) async {
     List<DonationModel> donationList = [];
@@ -488,17 +525,16 @@ class FirebaseUserRepository {
           .where('quantity', isGreaterThanOrEqualTo: request.quantity)
           .where('type', isEqualTo: request.donationType)
           .get();
+          
       for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
-        int currentQuantity = int.parse(documentSnapshot.get('quantity'));
-
-        if (currentQuantity == int.parse(request.quantity!)) {
+        int currentQuantity = documentSnapshot.get('quantity');
+        if (currentQuantity == request.quantity!) {
           // If currentQuantity is equal to the argument value, set the quantity to zero
           await documentSnapshot.reference.update({'quantity': 0});
           break;
-        } else if (currentQuantity > int.parse(request.quantity!)) {
+        } else if (currentQuantity > request.quantity!) {
           // Calculate the remaining quantity if currentQuantity is greater than the argument value
-          int remainingQuantity =
-              currentQuantity - int.parse(request.quantity!);
+          int remainingQuantity = currentQuantity - request.quantity!;
           await documentSnapshot.reference.update({
             'quantity': remainingQuantity,
           });

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
+import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
 import 'package:donation_app/utils/utils.dart';
@@ -87,7 +88,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                       style: CustomTextStyle.font_12_black,
                     ),
                     SizedBox(
-                      width: 38.w,
+                      width: 58.w,
                     ),
                     Column(
                       children: [
@@ -121,28 +122,41 @@ class _DonationWidgetState extends State<DonationWidget> {
                 SizedBox(
                   height: 4.h,
                 ),
-                Text.rich(TextSpan(
-                    text: 'Quantity: ',
-                    style: CustomTextStyle.font_10_primaryColor,
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: '${widget.donationModel.quantity} kg',
-                        style: CustomTextStyle.font_10_black,
-                      )
-                    ])),
-                SizedBox(
-                  height: 4.h,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text.rich(TextSpan(
+                            text: 'Quantity: ',
+                            style: CustomTextStyle.font_10_primaryColor,
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: '${widget.donationModel.quantity} kg',
+                                style: CustomTextStyle.font_10_black,
+                              )
+                            ])),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        Text.rich(TextSpan(
+                            text: 'Add: ',
+                            style: CustomTextStyle.font_10_primaryColor,
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: utils.trimAddressToHalf(
+                                    '${widget.donationModel.donarAddress}'),
+                                style: CustomTextStyle.font_8_black,
+                              )
+                            ])),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 24.w,
+                    ),
+                    const TrackDonationButton(text: "send rider")
+                  ],
                 ),
-                Text.rich(TextSpan(
-                    text: 'Add: ',
-                    style: CustomTextStyle.font_10_primaryColor,
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: utils.trimAddressToHalf(
-                            '${widget.donationModel.donarAddress}'),
-                        style: CustomTextStyle.font_8_black,
-                      )
-                    ])),
               ],
             ),
           )

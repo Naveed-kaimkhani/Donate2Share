@@ -1,4 +1,5 @@
 import 'package:donation_app/presentation/NGO%20screens/ngo_homepage.dart';
+import 'package:donation_app/presentation/NGO%20screens/request_details.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
@@ -18,7 +19,7 @@ class NgoNavigation extends StatefulWidget {
 class _NgoNavigationState extends State<NgoNavigation> {
   List pages = [
     NGOHomePage(),
-    // DonateFood(),
+    RequestDetails(),
     // const DonarDonationsScreen(),
     // const DonarSetting(),
   ];
@@ -34,42 +35,54 @@ class _NgoNavigationState extends State<NgoNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Styling.primaryColor,
-      body: PageStorage(bucket: bucket, child: currentScreen),
-      bottomNavigationBar: BottomAppBar(
-        color: Styling.primaryColor,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: SizedBox(
-          height: 60.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = NGOHomePage();
-                        currentindex = 0;
-                      });
-                    },
-                    child: Image.asset(
-                      Images.home,
-                      height: 26.h,
-                      width: 26.w,
-                      color: currentindex == 0 ? Colors.white : Colors.grey,
+        // backgroundColor: Styling.primaryColor,
+        body: PageStorage(bucket: bucket, child: currentScreen),
+        bottomNavigationBar: BottomAppBar(
+          color: Styling.primaryColor,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: SizedBox(
+              height: 60.h,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = NGOHomePage();
+                              currentindex = 0;
+                            });
+                          },
+                          child: Image.asset(
+                            Images.home,
+                            height: 26.h,
+                            width: 26.w,
+                            color:
+                                currentindex == 0 ? Colors.white : Colors.grey,
+                          ),
+                        ),
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = RequestDetails();
+                              currentindex = 1;
+                            });
+                          },
+                          child: Icon(
+                            size: 26.h,
+                            Icons.notifications_none,
+                            color:
+                                currentindex == 1 ? Colors.white : Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-
-             
-            ],
-          ),
-            ]
-        )
-      ),
-    ));
+                  ])),
+        ));
   }
 }

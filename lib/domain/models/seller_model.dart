@@ -22,7 +22,7 @@ String? deviceToken;
   required  this.email,
   required this.address,
   required this.deviceToken,
-required this.type,
+this.type,
 
   });
 

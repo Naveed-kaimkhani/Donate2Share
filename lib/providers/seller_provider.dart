@@ -19,7 +19,7 @@ class SellerProvider with ChangeNotifier {
 
   Future getSellerFromServer(context) async {
     final FirebaseUserRepository firebaseRepository = FirebaseUserRepository();
-    _sellerDetails = await firebaseRepository.getSeller();
+    _sellerDetails = await firebaseRepository.getSellerDetails();
     if (_sellerDetails == null) {
       utils.flushBarErrorMessage("No user found",context);
     }

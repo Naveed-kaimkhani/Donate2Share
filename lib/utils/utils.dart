@@ -67,7 +67,7 @@ class utils {
   }
 
   static String trimAddressToHalf(String address) {
-    int halfLength = (address.length / 2).floor();
+    int halfLength = (address.length / 3).floor();
     return address.substring(0, halfLength);
   }
 
@@ -450,5 +450,4 @@ class utils {
     }
     return 'NA';
   }
-
 }

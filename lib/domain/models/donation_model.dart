@@ -73,7 +73,6 @@ class DonationModel {
 
   DonationModel.fromMap(Map<String, dynamic> mapData) {
     // receiverUid = mapData['receiverUid'];
-    print("in frommap");
     documentId = mapData['documentId'];
     donarName = mapData['donarName'];
     donarUid = mapData['donarUid'];

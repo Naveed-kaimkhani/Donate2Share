@@ -7,34 +7,24 @@ import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import '../../../data/firebase_user_repository.dart';
-import '../../../providers/seller_provider.dart';
-import '../../domain/models/donation_model.dart';
+
 import '../../domain/models/request_model.dart';
 
-class DonationRequestWidget extends StatefulWidget {
+class NgoSideRequestWidget extends StatefulWidget {
   final RequestModel donationModel;
 //  final List<DonationModel> donationsList;
-  const DonationRequestWidget({
+  const NgoSideRequestWidget({
     Key? key,
     // required this.donationsList,
     required this.donationModel,
   }) : super(key: key);
 
   @override
-  State<DonationRequestWidget> createState() => _DonationRequestWidgetState();
+  State<NgoSideRequestWidget> createState() => _NgoSideRequestWidgetState();
 }
 
-class _DonationRequestWidgetState extends State<DonationRequestWidget> {
-  Future<bool> checkAvailability() async {
-    List<DonationModel> donations =
-        await FirebaseUserRepository.getDonations(context);
-    int available =
-        utils.countQuantity(donations, widget.donationModel.donationType!);
-    bool result = available > widget.donationModel.quantity! ? true : false;
-    return result;
-  }
+class _NgoSideRequestWidgetState extends State<NgoSideRequestWidget> {
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -149,19 +139,12 @@ class _DonationRequestWidgetState extends State<DonationRequestWidget> {
                     SizedBox(
                       width: 40.w,
                     ),
-                    widget.donationModel.status == "accepted"
-                        ? const TrackDonationButton(text: "Accepted")
+                    widget.donationModel.status == "pending"
+                        ? const TrackDonationButton(text: "pending")
                         : InkWell(
-                            child: const TrackDonationButton(
-                              text: "Accept",
-                            ),
+                          child: const TrackDonationButton(text: "Location"),
                             onTap: () async {
-                              await checkAvailability()
-                                  ? FirebaseUserRepository.grantDonation(
-                                      widget.donationModel, context)
-                                  : utils.flushBarErrorMessage(
-                                      "Insufficient ${widget.donationModel.donationType}",
-                                      context);
+                              
                             },
                           ),
                   ],
