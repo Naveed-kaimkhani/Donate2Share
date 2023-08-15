@@ -10,12 +10,10 @@ class RequestModel {
   String? serviceId;
   int? quantity;
   String? status;
-  
   String? description;
-  
   String? senderDeviceToken;
-  // double? senderLat;
-  // double? senderLong;
+  double? senderLat;
+  double? senderLong;
   String? senderProfileImage;
   
   String? senderAddress;
@@ -35,6 +33,8 @@ class RequestModel {
     this.sentDate,
     this.sentTime,
    this.status,
+   this.senderLat,
+   this.senderLong,
     this.senderProfileImage,
     this.senderPhone,
   });
@@ -45,8 +45,8 @@ class RequestModel {
     data['documentId'] = request.documentId;
     data['senderUid'] = request.senderUid;
     data['donationType'] = request.donationType;
-    // data['senderLat'] = request.senderLat;
-    // data['senderLong'] = request.senderLong;
+    data['senderLat'] = request.senderLat;
+    data['senderLong'] = request.senderLong;
     data['senderPhone'] = request.senderPhone;
     data['senderAddress'] = request.senderAddress;
     data['serviceId'] = request.serviceId;
@@ -73,6 +73,9 @@ class RequestModel {
     description = mapData['description'];
     quantity =mapData['quantity'];
     donationType=mapData['donationType'];
+    
+    senderLat=mapData['senderLat'];
+    senderLong=mapData['senderLong'];
     senderPhone = mapData['senderPhone'];
     senderAddress = mapData['senderAddress'];
     serviceId = mapData['serviceId'];

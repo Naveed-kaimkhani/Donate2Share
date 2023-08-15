@@ -35,6 +35,7 @@ class clothDonations extends StatelessWidget {
                         child: DonationWidget(donationModel: clothList[index]),
                         onTap: () {
                           
+
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

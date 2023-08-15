@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
+import 'package:donation_app/presentation/rider/rider_homepage.dart';
 import 'package:donation_app/providers/rider_provider.dart';
 import 'package:donation_app/utils/dialogues/donar_added_dialogue.dart';
 import 'package:donation_app/utils/utils.dart';
@@ -122,13 +123,12 @@ class _RiderSignUpState extends State<RiderSignUp> {
     _firebaseUserRepository
         .saveRiderDataToFirestore(sellerModel)
         .then((value) async {
-      
-    await Provider.of<RiderProvider>(context, listen: false)
+      await Provider.of<RiderProvider>(context, listen: false)
           .getRiderFromServer(context);
 
-          isLoading(false);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const RiderSignUp()));
+      isLoading(false);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const RiderHomePage()));
     }).catchError((error) {
       isLoading(false);
       utils.flushBarErrorMessage(error.message.toString(), context);

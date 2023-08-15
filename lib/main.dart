@@ -8,6 +8,8 @@ import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
+import 'package:donation_app/presentation/rider/rider_homepage.dart';
+import 'package:donation_app/presentation/rider/rider_login.dart';
 import 'package:donation_app/presentation/rider/rider_signup.dart';
 import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
 import 'package:donation_app/providers/admin_provider.dart';

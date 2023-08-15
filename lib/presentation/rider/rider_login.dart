@@ -2,6 +2,7 @@ import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
+import 'package:donation_app/presentation/rider/rider_homepage.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,7 +61,7 @@ class _RiderLoginState extends State<RiderLogin> {
     isLoading(true);
     _firebaseRepository
         // .login(_emailController.text, _passwordController.text, context)
-        .login("rider@gmail.com", "111111", context)
+        .login("nguvm@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -72,18 +73,19 @@ class _RiderLoginState extends State<RiderLogin> {
     });
   }
 
-  void _getSellerDetails() async{
-    _firebaseRepository.getRiderDetails().then((SellerModel? sellerModel) async{
-      if (sellerModel != null){
-          // await _firebaseRepository.loadDonarDataOnAppInit(context);
+  void _getSellerDetails() async {
+    _firebaseRepository
+        .getRiderDetails()
+        .then((SellerModel? sellerModel) async {
+      if (sellerModel != null) {
+        // await _firebaseRepository.loadDonarDataOnAppInit(context);
 
-    await Provider.of<RiderProvider>(context, listen: false)
-          .getRiderFromServer(context);
+        await Provider.of<RiderProvider>(context, listen: false)
+            .getRiderFromServer(context);
 
-          isLoading(false);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const DonarNavigation()));
-        
+        isLoading(false);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const RiderHomePage()));
       } else {
         isLoading(false);
         utils.flushBarErrorMessage("User is null", context);
@@ -126,8 +128,8 @@ class _RiderLoginState extends State<RiderLogin> {
                 children: [
                   AuthHeader(
                     height: 230.h,
-                    text: "WellCome Back",
-                  style: CustomTextStyle.font_32_white,
+                    text: "     Rider Login",
+                    style: CustomTextStyle.font_32_white,
                   ),
                   SizedBox(
                     height: 20.h,

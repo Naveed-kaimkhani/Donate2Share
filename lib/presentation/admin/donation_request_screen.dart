@@ -16,9 +16,7 @@ class DonationRequestScreen extends StatefulWidget {
 }
 
 class _DonationRequestScreenState extends State<DonationRequestScreen> {
- 
- fetchDonationData()async{
- }
+  fetchDonationData() async {}
   @override
   void initState() {
     super.initState();
@@ -29,7 +27,7 @@ class _DonationRequestScreenState extends State<DonationRequestScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      floatingActionButton: const AddNewDonarButton(),
+      // floatingActionButton: const AddNewDonarButton(),
       body: StreamBuilder<List<RequestModel>>(
           stream: FirebaseUserRepository.getDonationRequest(context),
           builder: (context, snapshot) {

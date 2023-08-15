@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../domain/models/donation_data.dart';
 import '../domain/models/donation_model.dart';
+import '../domain/models/donation_ngo_model.dart';
 import '../domain/models/request_model.dart';
 import '../domain/models/seller_model.dart';
 import '../domain/models/user_model.dart';
@@ -54,6 +55,41 @@ class FirebaseUserRepository {
       return userCredential.user;
     } catch (e) {
       utils.flushBarErrorMessage("Invalid email or password", context);
+    }
+  }
+
+  static Future<void> assignRider(
+    // List<SellerModel> sellers,
+    DonationNgoModel rideDetails,
+    context,
+  ) async {
+    try {
+      final DocumentReference requestRef = await _riderCollection
+          .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+          .collection('rides')
+          .add(rideDetails.toMap(rideDetails));
+
+      //for testing purpose. just trying to store documents ids to fetch their data on rider side
+      var data = Map<String, dynamic>();
+      data['donationDocument'] = rideDetails.donationDocumentId;
+      data['ngoUid'] = rideDetails.ngoUid;
+      final DocumentReference Ref = await _riderCollection
+          .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+          .collection('rides')
+          .add(data);
+
+      final String documentId = requestRef.id;
+
+      await requestRef.update({'documentId': documentId});
+
+      utils.toastMessage("Request Sent");
+    } catch (error) {
+      // Handle the error appropriately
+      utils.flushBarErrorMessage('Error sending request: $error', context);
+      throw FirebaseException(
+        plugin: 'FirebaseUserRepository',
+        message: 'Failed to send request to sellers.',
+      );
     }
   }
 
@@ -154,7 +190,6 @@ class FirebaseUserRepository {
       return seller;
     }
     return null;
-
   }
 
   @override
@@ -167,7 +202,6 @@ class FirebaseUserRepository {
       return seller;
     }
     return null;
-
   }
 
   static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
@@ -230,7 +264,6 @@ class FirebaseUserRepository {
     return null;
   }
 
-
   static Future<List<UserModel>> getAllAdmin(context) async {
     List<UserModel> adminList = [];
 
@@ -275,11 +308,9 @@ class FirebaseUserRepository {
   }
 
   static Future<void> sendRequestToAdminForDonation(
-   
       RequestModel model, context) async {
-   
     try {
-   LoaderOverlay.show(context);
+      LoaderOverlay.show(context);
       // Access the Firestore collection reference where you want to save the request
       CollectionReference requestCollection =
           FirebaseFirestore.instance.collection('requests');
@@ -289,7 +320,7 @@ class FirebaseUserRepository {
 
       await requestRef.update({'documentId': documentId});
       // Successfully saved the request to Firestore
-   LoaderOverlay.hide();
+      LoaderOverlay.hide();
     } catch (error) {
       LoaderOverlay.hide();
       // Handle any errors that may occur during the save process
@@ -307,7 +338,7 @@ class FirebaseUserRepository {
         .doc(sellerModel.uid)
         .set(sellerModel.toMap(sellerModel));
   }
-  
+
   Future<void> saveRiderDataToFirestore(SellerModel sellerModel) async {
     await _riderCollection
         .doc(sellerModel.uid)
@@ -461,14 +492,64 @@ class FirebaseUserRepository {
       donationList = querySnapshot.docs.map((doc) {
         return DonationModel.fromMap(doc.data() as dynamic);
       }).toList();
-      print(querySnapshot.docs.length);
-      print(querySnapshot.docs);
-      print("hnn");
     } catch (e) {
       utils.flushBarErrorMessage('Error fetching donations: $e', context);
     }
-    print(donationList);
     yield donationList;
+  }
+
+  static Stream<List<DonationNgoModel>> getAssignedRides(context) async* {
+    try {
+      final CollectionReference requestCollection = FirebaseFirestore.instance
+          .collection("riders")
+          .doc(utils.currentUserUid)
+          .collection('rides');
+
+      yield* requestCollection.snapshots().map((snapshot) {
+        final List<DonationNgoModel> models = snapshot.docs
+            .map((docsSnap) =>
+                DonationNgoModel.fromMap(docsSnap.data() as dynamic))
+            .toList();
+        return models;
+      });
+    } catch (e) {
+      // Handle any potential errors here
+      utils.flushBarErrorMessage('Error fetching requests: $e', context);
+      yield []; // Yield an empty list in case of an error
+    }
+  }
+
+  static Stream<List<dynamic>> getDocumentDetails(
+      String donationDocId, String reqDocId, context) async* {
+    List<dynamic> documents = [];
+
+    try {
+      DocumentSnapshot donationSnapshot = await FirebaseFirestore.instance
+          .collection("donations")
+          .doc(donationDocId)
+          .get();
+
+      if (donationSnapshot.exists) {
+        DonationModel donationModel = DonationModel.fromMap(
+            donationSnapshot.data() as Map<String, dynamic>);
+        documents.add(donationModel);
+      }
+
+      DocumentSnapshot requestSnapshot = await FirebaseFirestore.instance
+          .collection("requests")
+          .doc(reqDocId)
+          .get();
+
+      if (requestSnapshot.exists) {
+        RequestModel requestModel = RequestModel.fromMap(
+            requestSnapshot.data() as Map<String, dynamic>);
+        documents.add(requestModel);
+      }
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching documents: $e', context);
+    }
+
+    yield documents;
   }
 
   static Stream<List<RequestModel>> getDonationRequest(context) async* {
@@ -485,13 +566,16 @@ class FirebaseUserRepository {
     }
     yield donationList;
   }
-  
-  static Stream<List<RequestModel>> getDonationRequestForSpecificNgo(context) async* {
+
+  static Stream<List<RequestModel>> getDonationRequestForSpecificNgo(
+      context) async* {
     List<RequestModel> donationList = [];
 
     try {
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection("requests").where('senderUid',isEqualTo: utils.currentUserUid).get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("requests")
+          .where('senderUid', isEqualTo: utils.currentUserUid)
+          .get();
       donationList = querySnapshot.docs.map((doc) {
         return RequestModel.fromMap(doc.data() as dynamic);
       }).toList();
@@ -499,6 +583,26 @@ class FirebaseUserRepository {
       utils.flushBarErrorMessage('Error fetching requests: $e', context);
     }
     yield donationList;
+  }
+
+  static Future<List<RequestModel>> getDonationRequestToAssignRider(
+      String type, context) async {
+    List<RequestModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("requests")
+          .where('status', isEqualTo: 'accepted')
+          .where('donationType', isEqualTo: type)
+          .get();
+      donationList = querySnapshot.docs.map((doc) {
+        return RequestModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching requests: $e', context);
+    }
+
+    return donationList;
   }
 
   static Future<List<DonationModel>> getDonations(context) async {
@@ -513,8 +617,34 @@ class FirebaseUserRepository {
     } catch (e) {
       utils.flushBarErrorMessage('Error fetching donations: $e', context);
     }
-    print(donationList);
     return donationList;
+  }
+
+  static Future<DonationModel?> getDonationByDocumentID(
+      String documentID, context) async {
+    DonationModel? donation;
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("donations")
+          .where('documentId', isEqualTo: documentID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        donation = DonationModel.fromMap(
+            querySnapshot.docs.first.data() as Map<String, dynamic>);
+      } else {
+        utils.flushBarErrorMessage('Error fetching donation: $e', context);
+
+        // Handle the case where the donation with the specified UID was not found.
+        // You can display an error message or handle it according to your app's logic.
+      }
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching donation: $e', context);
+    }
+
+    return donation;
   }
 
   static Future<void> grantDonation(RequestModel request, context) async {
@@ -525,7 +655,7 @@ class FirebaseUserRepository {
           .where('quantity', isGreaterThanOrEqualTo: request.quantity)
           .where('type', isEqualTo: request.donationType)
           .get();
-          
+
       for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
         int currentQuantity = documentSnapshot.get('quantity');
         if (currentQuantity == request.quantity!) {

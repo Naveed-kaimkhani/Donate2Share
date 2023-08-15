@@ -147,7 +147,7 @@ class _DonationRequestWidgetState extends State<DonationRequestWidget> {
                           )
                         ])),
                     SizedBox(
-                      width: 40.w,
+                      width: 56.w,
                     ),
                     widget.donationModel.status == "accepted"
                         ? const TrackDonationButton(text: "Accepted")

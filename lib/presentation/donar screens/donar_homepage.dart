@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 
 import '../../domain/models/donation_data.dart';
 import '../../domain/models/donation_model.dart';
-import '../../domain/models/graph_dots.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
 import '../widgets/chart_decoration.dart';

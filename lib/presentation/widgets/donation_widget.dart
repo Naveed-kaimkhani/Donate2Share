@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donation_app/domain/models/donation_ngo_model.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/dialogues/custom_loader.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../providers/seller_provider.dart';
 import '../../domain/models/donation_model.dart';
+import '../../domain/models/request_model.dart';
 
 class DonationWidget extends StatefulWidget {
   final DonationModel donationModel;
@@ -113,7 +116,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                     Padding(
                       padding: EdgeInsets.only(left: 6.w),
                       child: Text(
-                        "Naveed kk",
+                        widget.donationModel.donarName!,
                         style: CustomTextStyle.font_20_appColor,
                       ),
                     ),
@@ -132,7 +135,9 @@ class _DonationWidgetState extends State<DonationWidget> {
                             style: CustomTextStyle.font_10_primaryColor,
                             children: <InlineSpan>[
                               TextSpan(
-                                text: '${widget.donationModel.quantity} kg',
+                                text: widget.donationModel.type == 'food'
+                                    ? '${widget.donationModel.quantity} Kg'
+                                    : '${widget.donationModel.quantity} Dress',
                                 style: CustomTextStyle.font_10_black,
                               )
                             ])),
@@ -154,7 +159,45 @@ class _DonationWidgetState extends State<DonationWidget> {
                     SizedBox(
                       width: 24.w,
                     ),
-                    const TrackDonationButton(text: "send rider")
+                    InkWell(
+                      child: const TrackDonationButton(text: "send rider"),
+                      onTap: () async {
+                        LoaderOverlay.show(context);
+                        utils.toastMessage("Assigning rider");
+
+                        List<RequestModel> requests =
+                            await FirebaseUserRepository
+                                .getDonationRequestToAssignRider(
+                                    widget.donationModel.type!, context);
+                        if (requests.isEmpty) {
+                          LoaderOverlay.hide();
+                          utils.flushBarErrorMessage(
+                              "No Pending Request", context);
+                        } else {
+                          DonationNgoModel rideDetails = DonationNgoModel(
+                            donationType: widget.donationModel.type,
+                            ngoUid: requests[0].senderUid,
+                            quantity: widget.donationModel.quantity,
+                            ngoAddress: requests[0].senderAddress,
+                            donarLat: widget.donationModel.donarLat,
+                            donarLong: widget.donationModel.donarLong,
+                            ngoLat: requests[0].senderLat,
+                            ngoLong: requests[0].senderLong,
+                            donarPhone: widget.donationModel.donarPhone,
+                            donarAddress: widget.donationModel.donarAddress,
+                            pictures: widget.donationModel.pictures,
+                            donarProfileImage:
+                                widget.donationModel.donarProfileImage,
+                            sentDate: widget.donationModel.sentDate,
+                            sentTime: widget.donationModel.sentTime,
+                          );
+                          await FirebaseUserRepository.assignRider(
+                              rideDetails, context);
+
+                          LoaderOverlay.hide();
+                        }
+                      },
+                    )
                   ],
                 ),
               ],
