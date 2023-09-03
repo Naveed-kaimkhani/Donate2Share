@@ -8,7 +8,7 @@ class DonationNgoModel {
   String? sentDate;
   String? sentTime;
   String? donationType;
-  String? serviceId;
+  int? donationId;
   int? quantity;
   String? ngoDeviceToken;
   String? ngoProfileImage;
@@ -24,7 +24,7 @@ class DonationNgoModel {
   List<dynamic>? pictures;
   DonationNgoModel({
     this.documentId,
-    this.serviceId,
+    this.donationId,
     this.ngoLat,
     this.ngoLong,
    this.quantity,
@@ -54,10 +54,10 @@ class DonationNgoModel {
     data['documentId'] = request.documentId;
     data['ngoUid'] = request.ngoUid;
     data['donationType'] = request.donationType;
-    data['ngoLat'] = request.ngoLat;
+    data['ngoLat'] = request.ngoLat; 
     data['ngoLong'] = request.ngoLong;
     data['ngoAddress'] = request.ngoAddress;
-    data['serviceId'] = request.serviceId;
+    data['donationId'] = request.donationId;
     data['ngoName'] = request.ngoName;
     data['ngoProfileImage'] = request.ngoProfileImage;
     data['sentDate'] = request.sentDate;
@@ -89,7 +89,7 @@ class DonationNgoModel {
     quantity =mapData['quantity'];
     donationType=mapData['donationType'];
     ngoAddress = mapData['ngoAddress'];
-    serviceId = mapData['serviceId'];
+    donationId = mapData['donationId'];
     ngoProfileImage = mapData['ngoProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];
@@ -99,7 +99,11 @@ class DonationNgoModel {
     donarLat = mapData['donarLat'];
     donationDescription = mapData['donationDescription'];
     donarLong = mapData['donarLong'];
+   ngoLong = mapData['ngoLong'];
+    ngoLat = mapData['ngoLat'];
+    
     donarPhone = mapData['donarPhone'];
+    
     donarAddress = mapData['donarAddress'];
     quantity = mapData['quantity'];
     pictures = mapData['pictures'];

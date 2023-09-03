@@ -106,8 +106,10 @@ class FirebaseUserRepository {
 
   Future<Position?> getUserCurrentLocation(context) async {
     try {
+      print("inside getUser");
       await Geolocator.requestPermission();
       var permission = await Geolocator.checkPermission();
+      print(permission);
       if (permission == LocationPermission.denied) {
         showDialog(
           context: context,

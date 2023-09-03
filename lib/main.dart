@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
             ),
             // home:DonarHomePage(),
 
-            home: AdminLogin(),
+            home:RiderLogin(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );

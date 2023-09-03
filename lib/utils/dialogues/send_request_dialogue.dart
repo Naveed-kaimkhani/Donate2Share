@@ -167,6 +167,8 @@ class _SendRequestDialogueState extends State<SendRequestDialogue> {
           senderUid: utils.currentUserUid,
           senderName: ngo!.name,
           senderPhone: ngo!.phone,
+          senderLat: ngo!.lat,
+          senderLong: ngo!.long,
           description: controller.text,
           quantity: int.tryParse(quantityController.text),
           donationType: _selectedService,

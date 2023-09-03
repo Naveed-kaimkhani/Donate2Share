@@ -15,18 +15,18 @@ import '../../../providers/seller_provider.dart';
 import '../../domain/models/donation_model.dart';
 import '../../domain/models/request_model.dart';
 
-class DonationWidget extends StatefulWidget {
+class RiderSideDonationWidget extends StatefulWidget {
   final DonationModel donationModel;
-  const DonationWidget({
+  const RiderSideDonationWidget({
     Key? key,
     required this.donationModel,
   }) : super(key: key);
 
   @override
-  State<DonationWidget> createState() => _DonationWidgetState();
+  State<RiderSideDonationWidget> createState() => _RiderSideDonationWidgetState();
 }
 
-class _DonationWidgetState extends State<DonationWidget> {
+class _RiderSideDonationWidgetState extends State<RiderSideDonationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -179,11 +179,6 @@ class _DonationWidgetState extends State<DonationWidget> {
                             ngoUid: requests[0].senderUid,
                             quantity: widget.donationModel.quantity,
                             ngoAddress: requests[0].senderAddress,
-                            donarDeviceToken:
-                                widget.donationModel.donarDeviceToken,
-                            donarName: widget.donationModel.donarName,
-                            ngoName: requests[0].senderName,
-                            donationId: int.parse(requests[0].serviceId!),
                             donarLat: widget.donationModel.donarLat,
                             donarLong: widget.donationModel.donarLong,
                             ngoLat: requests[0].senderLat,

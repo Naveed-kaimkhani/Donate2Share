@@ -1,4 +1,4 @@
-
+import 'package:donation_app/presentation/widgets/call_widget.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +22,7 @@ class TracingScreenBottomNavigation extends StatelessWidget {
   final String adminAddress;
   final double firstLine;
   final String phone;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,8 +31,7 @@ class TracingScreenBottomNavigation extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40.r),
-            topRight: Radius.circular(40.r)),
+            topLeft: Radius.circular(40.r), topRight: Radius.circular(40.r)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -97,7 +96,7 @@ class TracingScreenBottomNavigation extends StatelessWidget {
                     color: Colors.white,
                   ),
                   Text(
-                    "Call User",
+                    "Call Donar",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -107,9 +106,7 @@ class TracingScreenBottomNavigation extends StatelessWidget {
               ),
             ),
             onTap: () {
-            
-              utils.launchphone(
-               phone, context);
+              utils.launchphone(phone, context);
             },
           ),
           SizedBox(
