@@ -1,4 +1,5 @@
 import 'package:donation_app/presentation/NGO%20screens/ngo_login.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/presentation/donar%20screens/track_donation.dart';
@@ -13,6 +14,12 @@ class Routes {
 
       case RoutesName.donateFood:
         return _buildRoute(const DonateFood(), settings);
+      case RoutesName.donarSignup:
+        return _buildRoute(
+            const DonarSignup(
+              addedByAdmin: false,
+            ),
+            settings);
 
       case RoutesName.donateClothes:
         return _buildRoute(const Donateclotheses(), settings);

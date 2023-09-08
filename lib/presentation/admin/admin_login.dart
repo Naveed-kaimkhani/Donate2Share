@@ -62,8 +62,8 @@ class _AdminLoginState extends State<AdminLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        // .login(_emailController.text, _passwordController.text, context)
         .login("admin@gmail.com", "111111", context)
+        // .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -78,7 +78,6 @@ class _AdminLoginState extends State<AdminLogin> {
   void _getAdminDetails() {
     _firebaseRepository.getAdminDetails().then((UserModel? adminModel) {
       if (adminModel != null) {
-        
         StorageService.saveAdmin(adminModel).then((value) async {
           // await Provider.of<SellerProvider>(context, listen: false)
           //     .getSellerFromServer();

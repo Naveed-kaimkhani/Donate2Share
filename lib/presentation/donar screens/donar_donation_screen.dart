@@ -49,21 +49,8 @@ class _DonarDonationsScreenState extends State<DonarDonationsScreen> {
                         child: ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            return InkWell(
-                              child: TrackDonationWidget(
-                                  donationModel: snapshot.data![index]),
-                              onTap: () {
-                                print("jfldjfldj");
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => TrackDonation(
-                                //               donation: snapshot.data![index],
-                                //             )
-                                //             )
-                                //             );
-                              },
-                            );
+                            return TrackDonationWidget(
+                                donationModel: snapshot.data![index]);
                           },
                         ),
                       ),

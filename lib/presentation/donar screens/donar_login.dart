@@ -2,6 +2,7 @@ import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
+import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,8 +57,8 @@ class _DonarLoginState extends State<DonarLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        // .login(_emailController.text, _passwordController.text, context)
         .login("donar@gmail.com", "111111", context)
+        // .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -126,8 +127,8 @@ class _DonarLoginState extends State<DonarLogin> {
                 children: [
                   AuthHeader(
                     height: 230.h,
-                    text: "WellCome Back",
-                  style: CustomTextStyle.font_32_white,
+                    text: "WelCome Back",
+                    style: CustomTextStyle.font_32_white,
                   ),
                   SizedBox(
                     height: 20.h,
@@ -196,7 +197,9 @@ class _DonarLoginState extends State<DonarLogin> {
                   Padding(
                     padding: EdgeInsets.only(left: 48.w),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.donarSignup);
+                      },
                       child: Text.rich(TextSpan(
                           text: 'Dont have a account? ',
                           style: CustomTextStyle.font_15,

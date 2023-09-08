@@ -69,7 +69,7 @@ class _TrackDonationState extends State<TrackDonation> {
   }
 
   addMarker() async {
-    adminIcon = await getByteFromAssets("assets/admin.png", 100);
+    adminIcon = await getByteFromAssets("assets/ngo_icon.png", 100);
   }
 
   @override

@@ -32,13 +32,13 @@ class DonarDonationHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 10.w, top: 12.w),
-            child: InkWell(
-              child: const AppBarBackButton(),
-              onTap: () => Navigator.pop(context),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(left: 10.w, top: 12.w),
+          //   child: InkWell(
+          //     child: const AppBarBackButton(),
+          //     onTap: () => Navigator.pop(context),
+          //   ),
+          // ),
           Padding(
             padding: EdgeInsets.only(left: 100.w, top: 20.h),
             child: Text(

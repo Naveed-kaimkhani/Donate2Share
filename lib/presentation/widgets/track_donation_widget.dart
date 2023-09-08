@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donation_app/domain/models/donation_ngo_model.dart';
+import 'package:donation_app/presentation/donar%20screens/food_tracking_by_donar.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/dialogues/custom_loader.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
+import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -109,7 +113,7 @@ class TrackDonationWidget extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(left: 6.w),
                       child: Text(
-                        "Naveed kk",
+                        donationModel.donarName!,
                         style: CustomTextStyle.font_20_appColor,
                       ),
                     ),
@@ -124,17 +128,25 @@ class TrackDonationWidget extends StatelessWidget {
                   ),
                   child: InkWell(
                     child: const TrackDonationButton(
-                      text: "Text",
+                      text: "Track",
                     ),
-                    onTap: () {
+                    onTap: () async {
                       // print("calllllll");
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TrackDonation(
-                                    donation: donationModel,
-                                  )));
+                      LoaderOverlay.show(context);
+                      DonationNgoModel? model =
+                          await FirebaseUserRepository.fetchRidesByRiderId(
+                              donationModel.donationId!, context);
+                      LoaderOverlay.hide();
+                      if (model == null) {
+                        utils.toastMessage("Rider is not assigned Yet");
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FoodTracking(
+                                      requestModel: model,
+                                    )));
+                      }
                     },
                   ),
                 )

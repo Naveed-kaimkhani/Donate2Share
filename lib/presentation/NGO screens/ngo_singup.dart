@@ -80,23 +80,21 @@ class _NGOSignUpState extends State<NGOSignUp> {
     isLoading(true);
     _firebaseUserRepository
         // .signUpUser(_emailController.text, _passwordController.text, context)
-        .signUpUser("ngo@gmail.com","111111", context)
-
+        .signUpUser(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
-          
-        final value =
-            await _firebaseUserRepository.getUserCurrentLocation(context);
-       
-        //  final Position sellerLocation = await Geolocator.getCurrentPosition();
-        final String address =
-            await utils.getAddressFromLatLng(value!.latitude, value.longitude);
+      final value =
+          await _firebaseUserRepository.getUserCurrentLocation(context);
+
+      //  final Position sellerLocation = await Geolocator.getCurrentPosition();
+      final String address =
+          await utils.getAddressFromLatLng(value!.latitude, value.longitude);
       if (user != null) {
         UserModel userModel = UserModel(
             uid: user.uid,
             name: _nameController.text,
             phone: _phoneController.text,
             email: _emailController.text,
-            address:address,
+            address: address,
             lat: value.latitude,
             long: value.longitude,
             profileImage: await _firebaseUserRepository.uploadProfileImage(
@@ -119,16 +117,16 @@ class _NGOSignUpState extends State<NGOSignUp> {
         .saveUserDataToFirestore(userModel)
         .then((value) async {
       await StorageService.saveUser(userModel).then((value) async {
-            await Provider.of<UserProvider>(context, listen: false)
-          .getUserFromServer(context);
+        await Provider.of<UserProvider>(context, listen: false)
+            .getUserFromServer(context);
 
         // await _firebaseUserRepository.loadUserDataOnAppInit(context);
 
         await StorageService.initUser();
 
         isLoading(false);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => NgoNavigation()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => NgoNavigation()));
       }).catchError((error) {
         isLoading(false);
         utils.flushBarErrorMessage(error.message.toString(), context);
@@ -275,22 +273,21 @@ class _NGOSignUpState extends State<NGOSignUp> {
                   ),
                   // k,
                   SizedBox(
-                    height: 8.h,
+                    height: 16.h,
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.only(left: 38.w, top: 12.h),
-                    child: isLoadingNow
-                        ? const CircleProgress()
-                        : AuthButton(
-                            text: "Signup",
-                            func: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
+                  isLoadingNow
+                      ? Center(child: const CircleProgress())
+                      : Center(
+                          child: AuthButton(
+                              text: "Signup",
+                              func: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
 
-                              _submitForm();
-                            },
-                            color: Styling.primaryColor),
-                  ),
+                                _submitForm();
+                              },
+                              color: Styling.primaryColor),
+                        ),
                 ],
               ),
             ),

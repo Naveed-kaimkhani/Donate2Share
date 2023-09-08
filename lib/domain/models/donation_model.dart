@@ -17,6 +17,7 @@ class DonationModel {
   int? quantity;
   String? expiry;
   String? needRider;
+String? status;
 
   String? month;
   List<dynamic>? pictures;
@@ -26,6 +27,7 @@ class DonationModel {
     this.donationId,
     this.donarLat,
     this.donarLong,
+    this.status,
     this.needRider,
     this.donarAddress,
     this.donarDeviceToken,
@@ -63,6 +65,7 @@ class DonationModel {
     data['needRider'] = donation.needRider;
     data['quantity'] = donation.quantity;
     data['month'] = donation.month;
+    data['status'] = donation.status;
 
     data['donarDeviceToken'] = donation.donarDeviceToken;
 
@@ -78,7 +81,7 @@ class DonationModel {
     donarUid = mapData['donarUid'];
     donarLat = mapData['donarLat'];
     type = mapData['type'];
-
+    status = mapData['status'];
     month = mapData['month'];
     donationDescription = mapData['donationDescription'];
     donarLong = mapData['donarLong'];

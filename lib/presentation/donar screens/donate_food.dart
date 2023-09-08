@@ -95,6 +95,7 @@ class _DonateFoodState extends State<DonateFood> {
         donarProfileImage: donar!.profileImage,
         donarPhone: donar!.phone,
         needRider: riderChoise,
+        status: "pending",
         donarAddress: donar!.address,
         donarDeviceToken: donar!.deviceToken,
         donationDescription: _foodDescriptionController.text,

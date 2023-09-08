@@ -31,21 +31,9 @@ class clothDonations extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: clothList.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        child: DonationWidget(donationModel: clothList[index]),
-                        onTap: () {
-                          
-
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => TrackDonation(
-                          //               donation: snapshot.data![index],
-                          //             )
-                          //             )
-                          //             );
-                        },
-                      );
+                      return DonationWidget(
+                        showButton: true,
+                        donationModel: clothList[index]);
                     },
                   ),
                 ),

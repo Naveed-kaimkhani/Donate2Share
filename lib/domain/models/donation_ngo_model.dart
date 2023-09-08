@@ -8,7 +8,7 @@ class DonationNgoModel {
   String? sentDate;
   String? sentTime;
   String? donationType;
-  int? donationId;
+  String? donationId;
   int? quantity;
   String? ngoDeviceToken;
   String? ngoProfileImage;

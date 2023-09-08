@@ -205,6 +205,15 @@ class FirebaseUserRepository {
     }
     return null;
   }
+static Stream<SellerModel?> getRiderStream() {
+  return _riderCollection.doc('A9V29ab9F1f1zoHDMm4IebbfIzk1').snapshots().map((documentSnapshot) {
+    if (documentSnapshot.exists) {
+      return SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+    } else {
+      return null;
+    }
+  });
+}
 
   static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     // Create a map to store donations for each month
@@ -740,4 +749,36 @@ class FirebaseUserRepository {
     }
     yield donationList;
   }
+
+  static Future<DonationNgoModel?> fetchRidesByRiderId(
+      String donationId, context) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('riders') // Replace with your top-level collection name
+          .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+          .collection('rides') // Subcollection name
+          .where('donationId',
+              isEqualTo: donationId) // Filter documents by 'riderId'
+          .get();
+      // Now you can access the documents that match the riderId
+      for (QueryDocumentSnapshot rideDoc in querySnapshot.docs) {
+        // Access the ride document data
+        Map<String, dynamic>? rideData = rideDoc.data() as Map<String, dynamic>;
+        DonationNgoModel? model = DonationNgoModel.fromMap(rideData);
+        if (model != null) {
+          return model;
+        }
+        // Do something with the data (e.g., store it in a list)
+        // ridesList.add(rideData);
+      }
+      return null;
+
+      // You can return the list of rides or process the data as needed
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching rides: $e', context);
+      // print('Error fetching rides: $e');
+      // Handle errors here
+    }
+  }
+
 }

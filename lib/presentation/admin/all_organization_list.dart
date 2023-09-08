@@ -14,17 +14,15 @@ import '../widgets/donar_details_widget.dart';
 
 class AllOrganizations extends StatelessWidget {
 //  final List<SellerModel> donars;
-  const AllOrganizations({ super.key});
+  const AllOrganizations({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     List<SellerModel>? donars =
         Provider.of<DonarsListProvider>(context, listen: false)
-            .getrestaurantdonars;
+            .getOrganizationdonars;
     return SafeArea(
         child: Scaffold(
-          
       floatingActionButton: const AddNewDonarButton(),
       body: SingleChildScrollView(
         child: Column(

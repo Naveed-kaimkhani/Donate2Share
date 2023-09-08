@@ -17,8 +17,10 @@ import '../../domain/models/request_model.dart';
 
 class DonationWidget extends StatefulWidget {
   final DonationModel donationModel;
+  final bool showButton;
   const DonationWidget({
     Key? key,
+    required this.showButton,
     required this.donationModel,
   }) : super(key: key);
 
@@ -39,7 +41,7 @@ class _DonationWidgetState extends State<DonationWidget> {
         top: 10.h,
       ),
       height: 100.h,
-      width: 325.w,
+      width: 335.w,
       decoration: BoxDecoration(
         color: Colors.white,
         // border: Border.all(width: 1, color: Colors.redAccent),
@@ -108,6 +110,8 @@ class _DonationWidgetState extends State<DonationWidget> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ProfilePic(
                         url: widget.donationModel.donarProfileImage,
@@ -126,9 +130,9 @@ class _DonationWidgetState extends State<DonationWidget> {
                   height: 4.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text.rich(TextSpan(
                             text: 'Quantity: ',
@@ -156,55 +160,56 @@ class _DonationWidgetState extends State<DonationWidget> {
                             ])),
                       ],
                     ),
-                    SizedBox(
-                      width: 24.w,
-                    ),
-                    InkWell(
-                      child: const TrackDonationButton(text: "send rider"),
-                      onTap: () async {
-                        LoaderOverlay.show(context);
-                        utils.toastMessage("Assigning rider");
+                    if (widget.showButton)
+                      InkWell(
+                        child: const TrackDonationButton(text: "send rider"),
+                        onTap: () async {
+                          LoaderOverlay.show(context);
+                          utils.toastMessage("Assigning rider");
 
-                        List<RequestModel> requests =
-                            await FirebaseUserRepository
-                                .getDonationRequestToAssignRider(
-                                    widget.donationModel.type!, context);
-                        if (requests.isEmpty) {
-                          LoaderOverlay.hide();
-                          utils.flushBarErrorMessage(
-                              "No Pending Request", context);
-                        } else {
-                          DonationNgoModel rideDetails = DonationNgoModel(
-                            donationType: widget.donationModel.type,
-                            ngoUid: requests[0].senderUid,
-                            quantity: widget.donationModel.quantity,
-                            ngoAddress: requests[0].senderAddress,
-                            donarDeviceToken:
-                                widget.donationModel.donarDeviceToken,
-                            donarName: widget.donationModel.donarName,
-                            ngoName: requests[0].senderName,
-                            donationId: int.parse(requests[0].serviceId!),
-                            donarLat: widget.donationModel.donarLat,
-                            donarLong: widget.donationModel.donarLong,
-                            ngoLat: requests[0].senderLat,
-                            ngoLong: requests[0].senderLong,
-                            donarPhone: widget.donationModel.donarPhone,
-                            donarAddress: widget.donationModel.donarAddress,
-                            pictures: widget.donationModel.pictures,
-                            donarProfileImage:
-                                widget.donationModel.donarProfileImage,
-                            sentDate: widget.donationModel.sentDate,
-                            sentTime: widget.donationModel.sentTime,
-                          );
-                          await FirebaseUserRepository.assignRider(
-                              rideDetails, context);
+                          List<RequestModel> requests =
+                              await FirebaseUserRepository
+                                  .getDonationRequestToAssignRider(
+                                      widget.donationModel.type!, context);
+                          if (requests.isEmpty) {
+                            LoaderOverlay.hide();
+                            utils.flushBarErrorMessage(
+                                "No Pending Food Request by NGO", context);
+                          } else {
+                            DonationNgoModel rideDetails = DonationNgoModel(
+                              donationType: widget.donationModel.type,
+                              ngoUid: requests[0].senderUid,
+                              quantity: widget.donationModel.quantity,
+                              ngoAddress: requests[0].senderAddress,
+                              donarDeviceToken:
+                                  widget.donationModel.donarDeviceToken,
+                              donarName: widget.donationModel.donarName,
+                              ngoName: requests[0].senderName,
+                              donationId: widget.donationModel.donationId,
+                              donarLat: widget.donationModel.donarLat,
+                              donarLong: widget.donationModel.donarLong,
+                              ngoLat: requests[0].senderLat,
+                              ngoLong: requests[0].senderLong,
+                              donarPhone: widget.donationModel.donarPhone,
+                              donarAddress: widget.donationModel.donarAddress,
+                              pictures: widget.donationModel.pictures,
+                              donarProfileImage:
+                                  widget.donationModel.donarProfileImage,
+                              sentDate: widget.donationModel.sentDate,
+                              sentTime: widget.donationModel.sentTime,
+                            );
+                            await FirebaseUserRepository.assignRider(
+                                rideDetails, context);
 
-                          LoaderOverlay.hide();
-                        }
-                      },
-                    )
+                            LoaderOverlay.hide();
+                          }
+                        },
+                      ),
                   ],
                 ),
+                // SizedBox(
+                //   width: 24.w,
+                // ),
               ],
             ),
           )
