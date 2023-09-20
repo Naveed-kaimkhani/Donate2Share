@@ -63,18 +63,18 @@ class DonarsDetailsWidget extends StatelessWidget {
         height: 70.h,
         width: 330.w,
         alignment: Alignment.centerRight,
-        // padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Padding(
-          padding: const EdgeInsets.only(right: 12.0),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-        ),
         decoration: BoxDecoration(
           color: Colors
               .red, // border: Border.all(width: 1, color: Colors.redAccent),
           borderRadius: BorderRadius.circular(20.r),
+        ),
+        // padding: EdgeInsets.symmetric(horizontal: 20),
+        child: const Padding(
+          padding: EdgeInsets.only(right: 12.0),
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
         ),
       ),
 
@@ -149,7 +149,7 @@ class DonarsDetailsWidget extends StatelessWidget {
             Padding(
               padding: donar.address!.length < 31
                   ? EdgeInsets.only(left: 76.w, top: 10.h)
-                  : EdgeInsets.only(left: 50.w, top: 10.h),
+                  : EdgeInsets.only(left: 70.w, top: 10.h),
               child: CallWidget(
                   iconSize: 20.h,
                   radius: 20.r,
@@ -162,4 +162,3 @@ class DonarsDetailsWidget extends StatelessWidget {
     );
   }
 }
-

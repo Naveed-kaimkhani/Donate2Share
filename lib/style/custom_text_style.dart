@@ -78,6 +78,12 @@ class CustomTextStyle {
     fontSize: 10.sp,
     fontWeight: FontWeight.w600,
   );
+  
+  static final font_10_white = TextStyle(
+    color: Colors.white,
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w600,
+  );
 
   static final font_8_black = TextStyle(
     color: Colors.black,
@@ -95,10 +101,23 @@ class CustomTextStyle {
     fontSize: 12.sp,
     fontWeight: FontWeight.w600,
   );
+  
+  static final font_12_white = TextStyle(
+    color: Colors.white,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w600,
+  );
 
   static final font_18_black = TextStyle(
     color: Colors.black,
     fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+  );
+
+
+  static final font_20_black = TextStyle(
+    color: Colors.black,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w600,
   );
 

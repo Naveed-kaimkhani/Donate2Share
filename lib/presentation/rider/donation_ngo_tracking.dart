@@ -63,11 +63,11 @@ class _Donatin_Ngo_TracingState extends State<Donatin_Ngo_Tracing> {
           await _firebaseUserRepository.getUserCurrentLocation(context);
       setState(() {});
       getPolyPoints();
-
+    distance=getDistancebtwRiderNSeller();
       positionStreamSubscription = Geolocator.getPositionStream().listen(
         (Position position) async {
           GoogleMapController controller = await _controller.future;
-          // print(currentLocation);
+await    FirebaseUserRepository.updateRiderLocation(position.latitude, position.longitude);
           setState(() {
             currentLocation = position;
 
@@ -162,7 +162,8 @@ class _Donatin_Ngo_TracingState extends State<Donatin_Ngo_Tracing> {
 
     getUserCurrentLocation();
     addMarker();
-    distance = getDistancebtwRiderNSeller();
+    ngoLocation=LatLng(widget.requestModel.ngoLat!, widget.requestModel.ngoLong!);
+    // distance = getDistancebtwRiderNSeller();
     // getPolyPoints();
   }
 
@@ -203,7 +204,7 @@ class _Donatin_Ngo_TracingState extends State<Donatin_Ngo_Tracing> {
                               const InfoWindow(title: "Current Position")),
                       Marker(
                           markerId: const MarkerId("1"),
-                          position: LatLng(25.531790, 69.011800),
+                          position: LatLng(widget.requestModel.donarLat!,widget.requestModel.donarLong!),
                           icon: BitmapDescriptor.fromBytes(donarIcon!),
                           infoWindow:
                               const InfoWindow(title: "Donation Position")),

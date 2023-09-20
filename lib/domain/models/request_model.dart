@@ -7,6 +7,8 @@ class RequestModel {
   String? sentDate;
   String? sentTime;
   String? donationType;
+
+  String? month;
   String? serviceId;
   int? quantity;
   String? status;
@@ -15,7 +17,7 @@ class RequestModel {
   double? senderLat;
   double? senderLong;
   String? senderProfileImage;
-  
+
   String? senderAddress;
   RequestModel({
     // this.receiverUid,
@@ -23,18 +25,19 @@ class RequestModel {
     this.serviceId,
     // this.senderLat,
     // this.senderLong,
-   required this.description,
-   required this.quantity,
+    required this.description,
+    required this.quantity,
+    required this.month,
     this.senderAddress,
     this.senderDeviceToken,
     this.senderUid,
-   required this.donationType,
+    required this.donationType,
     this.senderName,
     this.sentDate,
     this.sentTime,
-   this.status,
-   this.senderLat,
-   this.senderLong,
+    this.status,
+    this.senderLat,
+    this.senderLong,
     this.senderProfileImage,
     this.senderPhone,
   });
@@ -51,6 +54,7 @@ class RequestModel {
     data['senderAddress'] = request.senderAddress;
     data['serviceId'] = request.serviceId;
     data['senderName'] = request.senderName;
+    data['month'] = request.month;
     data['senderProfileImage'] = request.senderProfileImage;
     data['sentDate'] = request.sentDate;
     data['sentTime'] = request.sentTime;
@@ -58,7 +62,7 @@ class RequestModel {
     data['quantity'] = request.quantity;
     data['description'] = request.description;
     data['status'] = request.status;
-    
+
     data['donationType'] = request.donationType;
 
     return data;
@@ -71,11 +75,11 @@ class RequestModel {
     senderName = mapData['senderName'];
     senderUid = mapData['senderUid'];
     description = mapData['description'];
-    quantity =mapData['quantity'];
-    donationType=mapData['donationType'];
-    
-    senderLat=mapData['senderLat'];
-    senderLong=mapData['senderLong'];
+    quantity = mapData['quantity'];
+    donationType = mapData['donationType'];
+    month = mapData['month'];
+    senderLat = mapData['senderLat'];
+    senderLong = mapData['senderLong'];
     senderPhone = mapData['senderPhone'];
     senderAddress = mapData['senderAddress'];
     serviceId = mapData['serviceId'];

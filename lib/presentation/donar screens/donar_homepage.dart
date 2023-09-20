@@ -100,22 +100,17 @@ class _DonarHomePageState extends State<DonarHomePage> {
                         'Successful Donation',
                         style: CustomTextStyle.font_24,
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context)
-                            .size
-                            .height, // Use a fixed height here
-                        child: ListView.builder(
-                          physics:
-                              NeverScrollableScrollPhysics(), // Disable scrolling
-                          shrinkWrap:
-                              true, // Allow the ListView to take the required height
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return DonationWidget(
-                                showButton: false,
-                                donationModel: snapshot.data![index]);
-                          },
-                        ),
+                      ListView.builder(
+                        physics:
+                            NeverScrollableScrollPhysics(), // Disable scrolling
+                        shrinkWrap:
+                            true, // Allow the ListView to take the required height
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return DonationWidget(
+                              showButton: false,
+                              donationModel: snapshot.data![index]);
+                        },
                       ),
                     ],
                   ),

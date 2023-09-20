@@ -62,8 +62,8 @@ class _AdminLoginState extends State<AdminLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login("admin@gmail.com", "111111", context)
-        // .login(_emailController.text, _passwordController.text, context)
+        // .login("admin@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();

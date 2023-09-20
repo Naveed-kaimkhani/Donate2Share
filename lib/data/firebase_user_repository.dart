@@ -65,7 +65,7 @@ class FirebaseUserRepository {
   ) async {
     try {
       final DocumentReference requestRef = await _riderCollection
-          .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+          .doc('ihSNdpKblXSonGUVL7xEsBh8CZj2')
           .collection('rides')
           .add(rideDetails.toMap(rideDetails));
 
@@ -199,21 +199,27 @@ class FirebaseUserRepository {
     DocumentSnapshot documentSnapshot =
         await _riderCollection.doc(utils.currentUserUid).get();
     if (documentSnapshot.data() != null) {
+      print(documentSnapshot);
       SellerModel seller =
           SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
       return seller;
     }
     return null;
   }
-static Stream<SellerModel?> getRiderStream() {
-  return _riderCollection.doc('A9V29ab9F1f1zoHDMm4IebbfIzk1').snapshots().map((documentSnapshot) {
-    if (documentSnapshot.exists) {
-      return SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
-    } else {
-      return null;
-    }
-  });
-}
+
+  static Stream<SellerModel?> getRiderStream() {
+    return _riderCollection
+        .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+        .snapshots()
+        .map((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        return SellerModel.fromMap(
+            documentSnapshot.data() as Map<String, dynamic>);
+      } else {
+        return null;
+      }
+    });
+  }
 
   static List<DonationData> getMonthlyDonation(List<DonationModel> donations) {
     // Create a map to store donations for each month
@@ -221,6 +227,35 @@ static Stream<SellerModel?> getRiderStream() {
 
     // Loop through each donation
     for (DonationModel donation in donations) {
+      // Extract the month from the DonationModel object
+      String month = donation.month!;
+
+      // Check if the month is already a key in the map
+      if (monthlyDonations.containsKey(month)) {
+        // If the month is already a key, add the current donation amount to its value
+        monthlyDonations[month] = (monthlyDonations[month] ?? 0) + 1;
+      } else {
+        // If the month is not a key, create a new entry with the current donation amount
+        monthlyDonations[month] = 1;
+      }
+    }
+
+    // Convert the map to a list of DonationData objects
+    List<DonationData> monthlyDonationData =
+        monthlyDonations.entries.map((entry) {
+      return DonationData(month: entry.key, donation: entry.value);
+    }).toList();
+
+    return monthlyDonationData;
+  }
+
+  static List<DonationData> getNGOMonthlyDonationData(
+      List<RequestModel> donations) {
+    // Create a map to store donations for each month
+    Map<String, double> monthlyDonations = {};
+
+    // Loop through each donation
+    for (RequestModel donation in donations) {
       // Extract the month from the DonationModel object
       String month = donation.month!;
 
@@ -509,6 +544,42 @@ static Stream<SellerModel?> getRiderStream() {
     yield donationList;
   }
 
+  // static Stream<List<RequestModel>> getNGODonationList(context) async* {
+  //   List<RequestModel> donationList = [];
+
+  //   try {
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection("requests")
+  //         .where('senderUid', isEqualTo: utils.currentUserUid)
+  //         .where('status', isEqualTo: 'accepted')
+  //         .get();
+  //     donationList = querySnapshot.docs.map((doc) {
+  //       return RequestModel.fromMap(doc.data() as dynamic);
+  //     }).toList();
+  //   } catch (e) {
+  //     utils.flushBarErrorMessage('Error fetching donations: $e', context);
+  //   }
+  //   yield donationList;
+  // }
+
+  static Stream<List<RequestModel>> getNGODonationList(context) async* {
+    List<RequestModel> donationList = [];
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("requests")
+          .where('senderUid', isEqualTo: utils.currentUserUid)
+          .where('status', isEqualTo: 'accepted')
+          .get();
+      donationList = querySnapshot.docs.map((doc) {
+        return RequestModel.fromMap(doc.data() as dynamic);
+      }).toList();
+    } catch (e) {
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
+    }
+    yield donationList;
+  }
+
   static Stream<List<DonationNgoModel>> getAssignedRides(context) async* {
     try {
       final CollectionReference requestCollection = FirebaseFirestore.instance
@@ -781,4 +852,16 @@ static Stream<SellerModel?> getRiderStream() {
     }
   }
 
+// Update rider's location in Firestore
+  static Future<void> updateRiderLocation(
+      double latitude, double longitude) async {
+    FirebaseFirestore.instance
+        .collection('riders')
+        .doc(utils.currentUserUid)
+        .update({
+      'lat': latitude,
+      'long': longitude,
+      // Add any additional rider information you need to update
+    });
+  }
 }

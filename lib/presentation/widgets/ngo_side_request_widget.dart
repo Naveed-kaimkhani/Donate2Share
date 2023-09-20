@@ -24,8 +24,6 @@ class NgoSideRequestWidget extends StatefulWidget {
 }
 
 class _NgoSideRequestWidgetState extends State<NgoSideRequestWidget> {
- 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,7 +59,7 @@ class _NgoSideRequestWidgetState extends State<NgoSideRequestWidget> {
             padding: EdgeInsets.only(left: 10.w),
             child: Column(
               // mainAxisAlignment: Main,
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
 
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,24 +67,29 @@ class _NgoSideRequestWidgetState extends State<NgoSideRequestWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.donationModel.senderName ?? "",
+                      // widget.donationModel.senderName ?? "",
+                      "Ehsas",
                       style: CustomTextStyle.font_20_appColor,
                     ),
                     SizedBox(
-                      width: 120.w,
+                      width: 140.w,
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          widget.donationModel.sentTime!,
-                          style: CustomTextStyle.font_10_black,
-                        ),
-                        Text(
-                          widget.donationModel.sentDate!,
-                          style: CustomTextStyle.font_10_black,
-                        ),
-                      ],
+                    Text(
+                      "${widget.donationModel.sentTime!}\n ${widget.donationModel.sentDate!}",
+                      style: CustomTextStyle.font_10_black,
                     ),
+                    // Column(
+                    //   children: [
+                    //     Text(
+                    //       "${widget.donationModel.sentTime!}\n ${ widget.donationModel.sentDate!}",
+                    //       style: CustomTextStyle.font_10_black,
+                    //     ),
+                    //     Text(
+                    //       widget.donationModel.sentDate!,
+                    //       style: CustomTextStyle.font_10_black,
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 SizedBox(
@@ -137,15 +140,13 @@ class _NgoSideRequestWidgetState extends State<NgoSideRequestWidget> {
                           )
                         ])),
                     SizedBox(
-                      width: 40.w,
+                      width: 70.w,
                     ),
                     widget.donationModel.status == "pending"
                         ? const TrackDonationButton(text: "pending")
                         : InkWell(
-                          child: const TrackDonationButton(text: "Location"),
-                            onTap: () async {
-                              
-                            },
+                            child: const TrackDonationButton(text: "Accepted"),
+                            onTap: () async {},
                           ),
                   ],
                 ),

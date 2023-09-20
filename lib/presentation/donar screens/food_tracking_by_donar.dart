@@ -55,8 +55,6 @@ class _FoodTrackingState extends State<FoodTracking> {
   }
 
   void getUserCurrentLocation() async {
-    print(widget.requestModel.donarLat);
-    print(widget.requestModel.donarLong);
     try {
       currentLocation = await utils.convertLatLngToPosition(LatLng(
         widget.requestModel.donarLat!,

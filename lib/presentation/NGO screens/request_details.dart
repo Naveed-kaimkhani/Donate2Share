@@ -26,7 +26,7 @@ class _RequestDetailsState extends State<RequestDetails> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      floatingActionButton: const AddNewDonarButton(),
+      // floatingActionButton: const AddNewDonarButton(),
       body: StreamBuilder<List<RequestModel>>(
           stream:
               FirebaseUserRepository.getDonationRequestForSpecificNgo(context),

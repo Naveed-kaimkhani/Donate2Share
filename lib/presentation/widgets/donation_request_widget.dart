@@ -79,11 +79,13 @@ class _DonationRequestWidgetState extends State<DonationRequestWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.donationModel.senderName ?? "",
+                      "${widget.donationModel.senderName}" ?? "",
                       style: CustomTextStyle.font_20_appColor,
                     ),
                     SizedBox(
-                      width: 120.w,
+                      width: widget.donationModel.senderName!.length > 10
+                          ? 40.w
+                          : 120.w,
                     ),
                     Column(
                       children: [
@@ -147,7 +149,7 @@ class _DonationRequestWidgetState extends State<DonationRequestWidget> {
                           )
                         ])),
                     SizedBox(
-                      width: 56.w,
+                      width: 65.w,
                     ),
                     widget.donationModel.status == "accepted"
                         ? const TrackDonationButton(text: "Accepted")

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/admin_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/images.dart';
@@ -59,7 +61,6 @@ class _NGOLoginState extends State<NGOLogin> {
     _firebaseRepository
         .login("ngo@gmail.com", "111111", context)
         // .login(_emailController.text, _passwordController.text, context)
-
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -77,7 +78,6 @@ class _NGOLoginState extends State<NGOLogin> {
         StorageService.saveUser(userModel).then((value) async {
           await Provider.of<UserProvider>(context, listen: false)
               .getUserFromServer(context);
-
           // await _firebaseRepository.loadUserDataOnAppInit(context);
 
           await StorageService.initUser();
@@ -131,7 +131,7 @@ class _NGOLoginState extends State<NGOLogin> {
                 children: [
                   AuthHeader(
                     height: 230.h,
-                    text: "WellCome Back",
+                    text: "WelCome Back",
                     style: CustomTextStyle.font_32_white,
                   ),
                   SizedBox(
@@ -201,7 +201,9 @@ class _NGOLoginState extends State<NGOLogin> {
                   Padding(
                     padding: EdgeInsets.only(left: 48.w),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.ngoSignup);
+                      },
                       child: Text.rich(TextSpan(
                           text: 'Dont have a account? ',
                           style: CustomTextStyle.font_15,

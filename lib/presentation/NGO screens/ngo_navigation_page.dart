@@ -3,6 +3,7 @@ import 'package:donation_app/presentation/NGO%20screens/request_details.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
+import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/images.dart';
 import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
 import 'package:donation_app/utils/dialogues/select_donation_type.dart';
@@ -20,6 +21,15 @@ class _NgoNavigationState extends State<NgoNavigation> {
   List pages = [
     NGOHomePage(),
     RequestDetails(),
+    Container(
+      child: Center(
+        child: Text(
+          "Coming soon",
+          style: CustomTextStyle.font_12_black,
+        ),
+      ),
+    ),
+  ()
     // const DonarDonationsScreen(),
     // const DonarSetting(),
   ];
@@ -32,6 +42,9 @@ class _NgoNavigationState extends State<NgoNavigation> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = NGOHomePage();
+  SizedBox k = SizedBox(
+    width: 20.w,
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +57,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
           child: SizedBox(
               height: 60.h,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,6 +78,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
                                 currentindex == 0 ? Colors.white : Colors.grey,
                           ),
                         ),
+                        k,
                         MaterialButton(
                           minWidth: 40,
                           onPressed: () {
@@ -78,6 +92,38 @@ class _NgoNavigationState extends State<NgoNavigation> {
                             Icons.notifications_none,
                             color:
                                 currentindex == 1 ? Colors.white : Colors.grey,
+                          ),
+                        ),
+                        k,
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = Container();
+                              currentindex = 2;
+                            });
+                          },
+                          child: Icon(
+                            size: 26.h,
+                            Icons.message,
+                            color:
+                                currentindex == 2 ? Colors.white : Colors.grey,
+                          ),
+                        ),
+                        k,
+                        MaterialButton(
+                          minWidth: 40.w,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = Container();
+                              currentindex = 3;
+                            });
+                          },
+                          child: Icon(
+                            size: 26.h,
+                            Icons.settings,
+                            color:
+                                currentindex == 3 ? Colors.white : Colors.grey,
                           ),
                         ),
                       ],

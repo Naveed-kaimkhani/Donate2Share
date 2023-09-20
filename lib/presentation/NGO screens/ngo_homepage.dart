@@ -1,19 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_app/presentation/NGO%20screens/ngo_home_widget.dart';
 import 'package:donation_app/presentation/donar%20screens/no_data_found.dart';
+import 'package:donation_app/presentation/widgets/admin_home_card.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
-import 'package:donation_app/presentation/widgets/ngo_home_header.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
+import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../../data/firebase_user_repository.dart';
 import '../../domain/models/donation_data.dart';
 import '../../domain/models/donation_model.dart';
+import '../../domain/models/request_model.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/admin_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
+import '../../style/images.dart';
 import '../../style/styling.dart';
 import '../../utils/dialogues/send_request_dialogue.dart';
+import '../admin/cloth_donation.dart';
+import '../admin/food_donations.dart';
 import '../widgets/chart_decoration.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/wave_circle.dart';
@@ -34,8 +41,8 @@ class _NGOHomePageState extends State<NGOHomePage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(top: 20.h, left: 27.w, right: 27.w),
-            child: StreamBuilder<List<DonationModel>>(
-              stream: FirebaseUserRepository.getDonationList(context),
+            child: StreamBuilder<List<RequestModel>>(
+              stream: FirebaseUserRepository.getNGODonationList(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const WaveCircleProgress();
@@ -47,14 +54,16 @@ class _NGOHomePageState extends State<NGOHomePage> {
                   );
                 } else {
                   int? food = snapshot.data
-                      ?.where((donation) => donation.type == 'food')
+                      ?.where((donation) => donation.donationType == 'food')
+                      .toList()
+                      .length;
+                  print("foood lenght${food}");
+                  int? clothes = snapshot.data
+                      ?.where((donation) => donation.donationType == 'clothes')
                       .toList()
                       .length;
 
-                  int? clothes = snapshot.data
-                      ?.where((donation) => donation.type == 'clothes')
-                      .toList()
-                      .length;
+                  print("foood lenght${clothes}");
                   return Column(
                     children: [
                       Column(
@@ -70,7 +79,7 @@ class _NGOHomePageState extends State<NGOHomePage> {
                               Text(ngo!.name ?? "No Name",
                                   style: CustomTextStyle.font_24_primaryColor),
                               ProfilePic(
-                                  url: ngo.profileImage, height: 50, width: 48)
+                                  url: ngo.profileImage, height: 50, width: 50)
                             ],
                           ),
                           SizedBox(height: 11.h),
@@ -79,7 +88,7 @@ class _NGOHomePageState extends State<NGOHomePage> {
                             color: Colors.grey[600],
                           ),
                           SizedBox(
-                            height: 9.h,
+                            height: 4.h,
                           ),
                           Text(
                             'Monthly Donation Analysis',
@@ -93,47 +102,96 @@ class _NGOHomePageState extends State<NGOHomePage> {
                             height: 158.h,
                             decoration: chardecoration(),
                             child: ChartWidget(
-                              chartData:
-                                  FirebaseUserRepository.getMonthlyDonation(
+                              chartData: FirebaseUserRepository
+                                  .getNGOMonthlyDonationData(
                                 snapshot.data!,
                               ),
                             ),
                           ),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 16.h),
+
                           Divider(
                             height: 1,
                             color: Colors.grey[600],
                           ),
-                          SizedBox(height: 6.h),
+                          // SizedBox(height: 6.h),
+                          SizedBox(height: 9.h),
+
                           Text(
                             'Available Donation',
-                            style: CustomTextStyle.font_24,
+                            style: CustomTextStyle.font_20_black,
                           ),
-                          SizedBox(height: 9.h),
-                          NGOHomeHeader(
-                            title: "Total Food available",
-                            subTitle: "Kilograms",
-                            value: food.toString(),
+                          SizedBox(height: 4.h),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AdminHomeCard(
+                                donation: utils.countQuantityForNGO(
+                                    snapshot.data!, "food"),
+                                name: "Food",
+                                unit: "kilogram",
+                                image: Images.foodpic,
+                                padding: 72.w,
+                                func: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => FoodDonations(
+                                  //               foodList: foodList ?? [],
+                                  //             )));
+                                },
+                              ),
+                              AdminHomeCard(
+                                donation: utils.countQuantityForNGO(
+                                    snapshot.data!, "clothes"),
+                                name: "Clothes",
+                                unit: "Dress",
+                                image: Images.clothpic,
+                                padding: 95.w,
+                                func: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => clothDonations(
+                                  //               clothList: clotheList ?? [],
+                                  //             )));
+                                },
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 10.h),
-                          InkWell(
-                            child: NGOHomeHeader(
-                              title: "Total Dress available",
-                              subTitle: "Dresses",
-                              value: clothes.toString(),
-                            ),
-                            onTap: () {},
-                          ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 12.h),
+
                           Divider(
                             height: 1,
                             color: Colors.grey[600],
                           ),
-                          // SizedBox(height: 5.h),
-                          // Center(
-                          //   child: Text('Request for Donation',
-                          //       style: CustomTextStyle.font_24),
-                          // ),
+                          // SizedBox(height: 6.h),
+                          SizedBox(height: 4.h),
+
+                          Text(
+                            'Recent Accepted Request',
+                            style: CustomTextStyle.font_20_black,
+                          ),
+                          // SizedBox(height: 4.h),
+
+                          SizedBox(
+                            height: 110.h,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    child: NGOHomeRecentDonation(
+                                      showButton: false,
+                                      donationModel: snapshot.data![index],
+                                    ),
+                                    onTap: () {},
+                                  );
+                                }),
+                          ),
+
                           SizedBox(height: 8.h),
                           Center(
                             child: AuthButton(
@@ -148,7 +206,8 @@ class _NGOHomePageState extends State<NGOHomePage> {
                               },
                               color: Styling.primaryColor,
                             ),
-                          )
+                          ),
+                          SizedBox(height: 8.h),
                         ],
                       )
                     ],

@@ -3,7 +3,8 @@ class RoutesName {
   static const String ngoNavigation = 'NGONavigation';
   static const String donateFood = 'DonateFood';
   static const String donateClothes = 'Donateclotheses';
-
+ static const String riderSignUp= 'RiderSignUp';
+static const String contactUs= 'ContactUs';
   static const String ngoLogin = 'NGOLogin';
 
   static const String donarSignup = 'DonarSignup';

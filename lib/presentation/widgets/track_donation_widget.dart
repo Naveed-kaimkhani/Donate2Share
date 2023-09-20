@@ -140,6 +140,7 @@ class TrackDonationWidget extends StatelessWidget {
                       if (model == null) {
                         utils.toastMessage("Rider is not assigned Yet");
                       } else {
+                        // ignore: use_build_context_synchronously
                         Navigator.push(
                             context,
                             MaterialPageRoute(

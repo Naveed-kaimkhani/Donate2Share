@@ -3,6 +3,7 @@ import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart'
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/presentation/rider/rider_homepage.dart';
+import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,10 +61,11 @@ class _RiderLoginState extends State<RiderLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        // .login(_emailController.text, _passwordController.text, context)
-        .login("nguvm@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
+        // .login("nguvm@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
+        print("rider found");
         //  final   currentLocation = await Geolocator.getCurrentPosition();
         _getSellerDetails();
       } else {
@@ -74,26 +76,37 @@ class _RiderLoginState extends State<RiderLogin> {
   }
 
   void _getSellerDetails() async {
-    _firebaseRepository
-        .getRiderDetails()
-        .then((SellerModel? sellerModel) async {
-      if (sellerModel != null) {
-        // await _firebaseRepository.loadDonarDataOnAppInit(context);
-
-        await Provider.of<RiderProvider>(context, listen: false)
-            .getRiderFromServer(context);
-
+    try {
+      await Provider.of<RiderProvider>(context, listen: false)
+          .getRiderFromServer(context);
+          print("object");
+          
         isLoading(false);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const RiderHomePage()));
-      } else {
-        isLoading(false);
-        utils.flushBarErrorMessage("User is null", context);
-      }
-    }).catchError((error) {
-      isLoading(false);
-      utils.flushBarErrorMessage(error.message.toString(), context);
-    });
+    } catch (e) {
+      utils.flushBarErrorMessage(e.toString(), context);
+    }
+    // _firebaseRepository
+    //     .getRiderDetails()
+    //     .then((SellerModel? sellerModel) async {
+    //   if (sellerModel != null) {
+    //     // await _firebaseRepository.loadDonarDataOnAppInit(context);
+
+    //     await Provider.of<RiderProvider>(context, listen: false)
+    //         .getRiderFromServer(context);
+
+    //     isLoading(false);
+    //     Navigator.pushReplacement(context,
+    //         MaterialPageRoute(builder: (context) => const RiderHomePage()));
+    //   } else {
+    //     isLoading(false);
+    //     utils.flushBarErrorMessage("User is null", context);
+    //   }
+    // }).catchError((error) {
+    //   isLoading(false);
+    //   utils.flushBarErrorMessage(error.message.toString(), context);
+    // });
   }
 
   @override
@@ -198,7 +211,9 @@ class _RiderLoginState extends State<RiderLogin> {
                   Padding(
                     padding: EdgeInsets.only(left: 48.w),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.riderSignUp);
+                      },
                       child: Text.rich(TextSpan(
                           text: 'Dont have a account? ',
                           style: CustomTextStyle.font_15,

@@ -166,6 +166,7 @@ class _SendRequestDialogueState extends State<SendRequestDialogue> {
           serviceId: utils.getRandomid(),
           senderUid: utils.currentUserUid,
           senderName: ngo!.name,
+          month: utils.getMonthString(DateTime.now()),
           senderPhone: ngo!.phone,
           senderLat: ngo!.lat,
           senderLong: ngo!.long,
