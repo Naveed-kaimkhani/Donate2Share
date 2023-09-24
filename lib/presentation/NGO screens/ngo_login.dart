@@ -72,32 +72,44 @@ class _NGOLoginState extends State<NGOLogin> {
     });
   }
 
-  void _getUserDetails(String uid) {
-    _firebaseRepository.getUser().then((UserModel? userModel) {
-      if (userModel != null) {
-        StorageService.saveUser(userModel).then((value) async {
-          await Provider.of<UserProvider>(context, listen: false)
-              .getUserFromServer(context);
-          // await _firebaseRepository.loadUserDataOnAppInit(context);
-
-          await StorageService.initUser();
-          isLoading(false);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => NgoNavigation()));
-        }).catchError((error) {
-          isLoading(false);
-
-          utils.flushBarErrorMessage(error.message.toString(), context);
-        });
-      } else {
-        isLoading(false);
-        utils.flushBarErrorMessage("User is null", context);
-      }
-    }).catchError((error) {
-      isLoading(false);
-      utils.flushBarErrorMessage(error.message.toString(), context);
-    });
+  Future<void> _getUserDetails(String uid) async {
+    try {
+      await Provider.of<UserProvider>(context, listen: false)
+          .getUserFromServer(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return const NgoNavigation();
+      }));
+    } catch (e) {
+      utils.flushBarErrorMessage(e.toString(), context);
+    }
   }
+
+  // void _getUserDetails(String uid) {
+  //   _firebaseRepository.getUser().then((UserModel? userModel) {
+  //     if (userModel != null) {
+  //       StorageService.saveUser(userModel).then((value) async {
+  //         await Provider.of<UserProvider>(context, listen: false)
+  //             .getUserFromServer(context);
+  //         // await _firebaseRepository.loadUserDataOnAppInit(context);
+
+  //         await StorageService.initUser();
+  //         isLoading(false);
+  //         Navigator.pushReplacement(context,
+  //             MaterialPageRoute(builder: (context) => NgoNavigation()));
+  //       }).catchError((error) {
+  //         isLoading(false);
+
+  //         utils.flushBarErrorMessage(error.message.toString(), context);
+  //       });
+  //     } else {
+  //       isLoading(false);
+  //       utils.flushBarErrorMessage("User is null", context);
+  //     }
+  //   }).catchError((error) {
+  //     isLoading(false);
+  //     utils.flushBarErrorMessage(error.message.toString(), context);
+  //   });
+  // }
 
   @override
   void dispose() {

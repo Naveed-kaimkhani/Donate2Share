@@ -81,7 +81,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AllRestaurants(
+                  builder: (context) => const AllRestaurants(
                       // donars: restaurantList!,
                       )));
         },
@@ -97,7 +97,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AllIndividuals(
+                    builder: (context) => const AllIndividuals(
                         // donars: individualDonarsList!,
                         )));
           }),
@@ -112,7 +112,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AllOrganizations(
+                  builder: (context) => const AllOrganizations(
                       // donars: organizationList!,
                       )));
         },
@@ -293,7 +293,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            ConnectedNGOScreen()));
+                                            const ConnectedNGOScreen()));
                               }),
                         ],
                       ),

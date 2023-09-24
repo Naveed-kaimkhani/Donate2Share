@@ -13,76 +13,80 @@ class NGOSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // HomeHeader(barTitle: "Settings", height: 115.h),
-          AllDonarsScreenHeader(
-            header: "Settings",
-            subHeader: "",
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          SettingScreenWidget(
-            text: "profile",
-            icon: Icons.admin_panel_settings,
-            routeName: "password",
-          ),
-          //  ServicesNSettingHeade(text: 'Setting Available'),
-          const CustomDivider(),
-          SettingScreenWidget(
-            text: "Change Password",
-            icon: Icons.password_outlined,
-            routeName: "PasswordOption",
-          ),
-          const CustomDivider(),
-          SettingScreenWidget(
-            text: "Privacy Policy",
-            // imageURL: Images.wheel,
-            icon: Icons.privacy_tip_outlined,
-            routeName: " ",
-          ),
-          const CustomDivider(),
-          SettingScreenWidget(
-            text: "Contact Us",
-            // imageURL: Images.mechanic_pic,
-            icon: Icons.phone,
-            routeName: RoutesName.contactUs,
-          ),
-          const CustomDivider(),
-          SettingScreenWidget(
-            text: "About Us",
-            // imageURL: Images.mechanic_pic,
-            icon: Icons.admin_panel_settings,
-            routeName: RoutesName.contactUs,
-          ),
-          const CustomDivider(),
-          SizedBox(
-            height: 20.h,
-          ),
-          GestureDetector(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 20.w,
-                ),
-                Icon(
-                  Icons.logout_outlined,
-                  color: Styling.primaryColor,
-                  size: 25.h,
-                ),
-                Text(
-                  "LogOut",
-                  style: CustomTextStyle.font_15_primaryColor,
-                )
-              ],
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            // HomeHeader(barTitle: "Settings", height: 115.h),
+            // SizedBox(
+            //   height: 9.h,
+            // ),
+            const AllDonarsScreenHeader(
+              header: "Settings",
+              subHeader: "",
             ),
-            onTap: () {
-              showLogoutPopup(context);
-            },
-          ),
-        ],
+            SizedBox(
+              height: 20.h,
+            ),
+            SettingScreenWidget(
+              text: "profile",
+              icon: Icons.admin_panel_settings,
+              routeName: "UpdateNGOProfile",
+            ),
+            //  ServicesNSettingHeade(text: 'Setting Available'),
+            const CustomDivider(),
+            SettingScreenWidget(
+              text: "Change Password",
+              icon: Icons.password_outlined,
+              routeName: "NgoChangePassword",
+            ),
+            const CustomDivider(),
+            SettingScreenWidget(
+              text: "Privacy Policy",
+              // imageURL: Images.wheel,
+              icon: Icons.privacy_tip_outlined,
+              routeName: RoutesName.privacyPolicyScreen,
+            ),
+            const CustomDivider(),
+            SettingScreenWidget(
+              text: "Contact Us",
+              icon: Icons.phone,
+              routeName: RoutesName.aboutUs,
+            ),
+            const CustomDivider(),
+            SettingScreenWidget(
+              text: "About Us",
+              // imageURL: Images.mechanic_pic,
+              icon: Icons.admin_panel_settings,
+              routeName: RoutesName.contactUs,
+            ),
+            const CustomDivider(),
+            SizedBox(
+              height: 20.h,
+            ),
+            GestureDetector(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                  Icon(
+                    Icons.logout_outlined,
+                    color: Styling.primaryColor,
+                    size: 25.h,
+                  ),
+                  Text(
+                    "LogOut",
+                    style: CustomTextStyle.font_15_primaryColor,
+                  )
+                ],
+              ),
+              onTap: () {
+                showLogoutPopup(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

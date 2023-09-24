@@ -11,10 +11,12 @@ import 'appbar_back_button.dart';
 class DonarDonationHeader extends StatelessWidget {
   final String? text;
   final double? height;
+  final bool backButton;
   DonarDonationHeader({
     Key? key,
     required this.text,
     required this.height,
+    required this.backButton,
   }) : super(key: key);
 
   @override
@@ -32,13 +34,10 @@ class DonarDonationHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Padding(
-          //   padding: EdgeInsets.only(left: 10.w, top: 12.w),
-          //   child: InkWell(
-          //     child: const AppBarBackButton(),
-          //     onTap: () => Navigator.pop(context),
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.only(left: 10.w, top: 12.w),
+            child:backButton? const AppBarBackButton():Container()
+          ),
           Padding(
             padding: EdgeInsets.only(left: 100.w, top: 20.h),
             child: Text(

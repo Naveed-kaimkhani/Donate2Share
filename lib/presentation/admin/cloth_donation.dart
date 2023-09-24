@@ -22,7 +22,11 @@ class clothDonations extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              DonarDonationHeader(text: "All Clothes Donations", height: 100.h),
+              DonarDonationHeader(
+                text: "All Clothes Donations",
+                height: 100.h,
+                backButton: true,
+              ),
               // clothDonationsHeader()
               Padding(
                 padding: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
@@ -32,8 +36,7 @@ class clothDonations extends StatelessWidget {
                     itemCount: clothList.length,
                     itemBuilder: (context, index) {
                       return DonationWidget(
-                        showButton: true,
-                        donationModel: clothList[index]);
+                          showButton: true, donationModel: clothList[index]);
                     },
                   ),
                 ),

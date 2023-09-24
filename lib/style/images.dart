@@ -14,11 +14,9 @@ static const String food = 'assets/food.png';
 static const String clothe_icon = 'assets/clothe_icon.png';
 static const String foodpic = 'assets/foodpic.png';
 static const String clothpic = 'assets/clothpic.png';
-
 static const String rest = 'assets/rest.png';
-
-  static const String donation_screen_header =
-      'assets/donation_screen_header.png';
-
-  static const String back = 'assets/back.png';
+static const String donation_screen_header = 'assets/donation_screen_header.png';
+static const String back = 'assets/back.png';
+static const String aboutUs = 'assets/about_us.svg';
+static const String contactUs = 'assets/contact_us.svg';
 }

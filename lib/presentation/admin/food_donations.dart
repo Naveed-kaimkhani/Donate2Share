@@ -15,7 +15,7 @@ class FoodDonations extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              DonarDonationHeader(text: "All Food Donations", height: 100.h),
+              DonarDonationHeader(text: "All Food Donations", height: 100.h,backButton: true,),
               // FoodDonationsHeader()
               Padding(
                 padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),

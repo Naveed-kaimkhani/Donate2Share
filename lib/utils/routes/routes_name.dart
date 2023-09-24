@@ -3,18 +3,16 @@ class RoutesName {
   static const String ngoNavigation = 'NGONavigation';
   static const String donateFood = 'DonateFood';
   static const String donateClothes = 'Donateclotheses';
- static const String riderSignUp= 'RiderSignUp';
-static const String contactUs= 'ContactUs';
+  static const String riderSignUp = 'RiderSignUp';
+  static const String contactUs = 'ContactUs';
   static const String ngoLogin = 'NGOLogin';
-
   static const String donarSignup = 'DonarSignup';
-
   static const String trackDonation = 'TrackDonation';
-
+  static const String updateNGOProfile = 'UpdateNGOProfile';
   static const String ngoSignup = 'NGOSignup';
-//  static const String sellerSignup = 'sellerSignup';
-//  static const String userLogin = 'userLogin';
-//  static const String userSingup = 'userSingup';
+  static const String ngoChangePassword = 'NgoChangePassword';
+  static const String privacyPolicyScreen = 'PrivacyPolicyScreen';
+  static const String aboutUs = 'AboutUs';
 //  static const String petrolProviders = 'PetrolProviders';
 //  static const String punctureMaker = 'PunctureMaker';
 //  static const String contactUs = 'ContactUs';

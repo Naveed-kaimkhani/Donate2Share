@@ -15,7 +15,7 @@ class AppBarBackButton extends StatelessWidget {
           radius: 20.r,
           child: Center(child: Image.asset(Images.back))),
       onTap: () {
-        // Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
   }

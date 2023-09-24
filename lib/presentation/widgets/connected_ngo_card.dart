@@ -26,10 +26,13 @@ class ConnectedNGOCard extends StatelessWidget {
             itemCount: NgoList!.length,
             itemBuilder: (context, index) {
               return NgoList.isEmpty
-                  ? Text("No Ngo Found")
-                  : NGOCard(
-                      url: NgoList[index].profileImage!,
-                      name: NgoList[index].name!,
+                  ? const Text("No Ngo Found")
+                  : Padding(
+                      padding: EdgeInsets.only(left: 6.w, right: 6.w),
+                      child: NGOCard(
+                        url: NgoList[index].profileImage!,
+                        name: NgoList[index].name!,
+                      ),
                     );
             }));
   }

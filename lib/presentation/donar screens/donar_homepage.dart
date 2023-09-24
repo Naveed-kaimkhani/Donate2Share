@@ -1,5 +1,6 @@
 import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/domain/models/seller_model.dart';
+import 'package:donation_app/presentation/donation_details.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/wave_circle.dart';
 import 'package:donation_app/providers/seller_provider.dart';
@@ -107,9 +108,16 @@ class _DonarHomePageState extends State<DonarHomePage> {
                             true, // Allow the ListView to take the required height
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return DonationWidget(
-                              showButton: false,
-                              donationModel: snapshot.data![index]);
+                          return InkWell(
+                            child: DonationWidget(
+                                showButton: false,
+                                donationModel: snapshot.data![index]),
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (coontext){
+                              return DonationDetails(donationModel: snapshot.data![index],);
+                            }));
+                          },
+                          );
                         },
                       ),
                     ],

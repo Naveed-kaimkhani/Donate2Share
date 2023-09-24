@@ -57,8 +57,8 @@ class _DonarLoginState extends State<DonarLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        // .login("ngo@gmail.com", "111111", context)
-        .login(_emailController.text, _passwordController.text, context)
+        .login("donar@gmail.com", "111111", context)
+        // .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();

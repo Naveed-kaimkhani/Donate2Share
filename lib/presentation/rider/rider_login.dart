@@ -61,8 +61,8 @@ class _RiderLoginState extends State<RiderLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login(_emailController.text, _passwordController.text, context)
-        // .login("nguvm@gmail.com", "111111", context)
+        // .login(_emailController.text, _passwordController.text, context)
+        .login("rider@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
         print("rider found");
@@ -79,11 +79,11 @@ class _RiderLoginState extends State<RiderLogin> {
     try {
       await Provider.of<RiderProvider>(context, listen: false)
           .getRiderFromServer(context);
-          print("object");
-          
-        isLoading(false);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const RiderHomePage()));
+      print("object");
+
+      isLoading(false);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const RiderHomePage()));
     } catch (e) {
       utils.flushBarErrorMessage(e.toString(), context);
     }

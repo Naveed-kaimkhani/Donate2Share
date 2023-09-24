@@ -63,6 +63,8 @@ dependencies:
   custom_info_window: ^1.0.1
   url_launcher: ^6.1.11
   syncfusion_flutter_charts: ^22.1.39
+  flutter_svg: ^2.0.7
+  carousel_slider: ^4.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

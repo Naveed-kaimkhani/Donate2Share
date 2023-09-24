@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
             ),
             // home: AdminLogin(),
-            home: const NGOLogin(),
+            home: const DonarLogin(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );

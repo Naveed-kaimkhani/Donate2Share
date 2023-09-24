@@ -1,4 +1,5 @@
 import 'package:donation_app/presentation/NGO%20screens/ngo_homepage.dart';
+import 'package:donation_app/presentation/NGO%20screens/ngo_setting.dart';
 import 'package:donation_app/presentation/NGO%20screens/request_details.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
@@ -19,8 +20,8 @@ class NgoNavigation extends StatefulWidget {
 
 class _NgoNavigationState extends State<NgoNavigation> {
   List pages = [
-    NGOHomePage(),
-    RequestDetails(),
+    const NGOHomePage(),
+    const RequestDetails(),
     Container(
       child: Center(
         child: Text(
@@ -29,7 +30,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
         ),
       ),
     ),
-  ()
+    const NGOSetting()
     // const DonarDonationsScreen(),
     // const DonarSetting(),
   ];
@@ -41,7 +42,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = NGOHomePage();
+  Widget currentScreen = const NGOHomePage();
   SizedBox k = SizedBox(
     width: 20.w,
   );
@@ -66,7 +67,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
                           minWidth: 40,
                           onPressed: () {
                             setState(() {
-                              currentScreen = NGOHomePage();
+                              currentScreen = const NGOHomePage();
                               currentindex = 0;
                             });
                           },
@@ -83,7 +84,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
                           minWidth: 40,
                           onPressed: () {
                             setState(() {
-                              currentScreen = RequestDetails();
+                              currentScreen = const RequestDetails();
                               currentindex = 1;
                             });
                           },
@@ -115,7 +116,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
                           minWidth: 40.w,
                           onPressed: () {
                             setState(() {
-                              currentScreen = Container();
+                              currentScreen = const NGOSetting();
                               currentindex = 3;
                             });
                           },

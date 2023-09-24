@@ -1,6 +1,8 @@
 import 'package:donation_app/domain/models/donation_ngo_model.dart';
+import 'package:donation_app/presentation/widgets/donar_donations_header.dart';
 import 'package:donation_app/presentation/widgets/tracking_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../data/firebase_user_repository.dart';
 import '../../domain/models/seller_model.dart';
@@ -17,36 +19,36 @@ class RiderHomePage extends StatelessWidget {
         Provider.of<RiderProvider>(context, listen: false).rider;
     return SafeArea(
         child: Scaffold(
-      body: StreamBuilder<List<DonationNgoModel>>(
-          stream: FirebaseUserRepository.getAssignedRides(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const WaveCircleProgress();
-              // return SizedBox();
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const NoDataFoundScreen(
-                text: "No Donation",
-              );
-            } else {
-              return SizedBox(
-                height: MediaQuery.of(context).size.width,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: ((context, index) {
-                    return InkWell(child: TrackingWidget(model: snapshot.data![index]),
-                    onTap: (){
-                      
-                    },
-                    );
-                  })),
-              );
-              
-            }
-          },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            DonarDonationHeader(text: "Your Pending Rides", height: 100.h,backButton: false,),
+            StreamBuilder<List<DonationNgoModel>>(
+              stream: FirebaseUserRepository.getAssignedRides(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const WaveCircleProgress();
+                  // return SizedBox();
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const NoDataFoundScreen(
+                    text: "No pending rides",
+                  );
+                } else {
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: ((context, index) {
+                        return TrackingWidget(model: snapshot.data![index]);
+                      }));
+                }
+              },
+            ),
+          ],
         ),
+      ),
     ));
   }
 }

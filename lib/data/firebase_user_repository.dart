@@ -65,7 +65,7 @@ class FirebaseUserRepository {
   ) async {
     try {
       final DocumentReference requestRef = await _riderCollection
-          .doc('ihSNdpKblXSonGUVL7xEsBh8CZj2')
+          .doc('ktpVdGvLpbWs3PT4XOCMqi9CjCr2')
           .collection('rides')
           .add(rideDetails.toMap(rideDetails));
 
@@ -826,7 +826,7 @@ class FirebaseUserRepository {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('riders') // Replace with your top-level collection name
-          .doc('A9V29ab9F1f1zoHDMm4IebbfIzk1')
+          .doc('ktpVdGvLpbWs3PT4XOCMqi9CjCr2')
           .collection('rides') // Subcollection name
           .where('donationId',
               isEqualTo: donationId) // Filter documents by 'riderId'

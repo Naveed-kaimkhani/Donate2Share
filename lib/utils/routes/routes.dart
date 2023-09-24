@@ -1,9 +1,13 @@
+import 'package:donation_app/presentation/NGO%20screens/ngo_change_password.dart';
 import 'package:donation_app/presentation/NGO%20screens/ngo_login.dart';
 import 'package:donation_app/presentation/NGO%20screens/ngo_singup.dart';
+import 'package:donation_app/presentation/NGO%20screens/update_ngo_profile.dart';
+import 'package:donation_app/presentation/about_us.dart';
+import 'package:donation_app/presentation/contact_us.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
-import 'package:donation_app/presentation/donar%20screens/track_donation.dart';
+import 'package:donation_app/presentation/privacy_policy_screen.dart';
 import 'package:donation_app/presentation/rider/rider_signup.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +21,10 @@ class Routes {
         return _buildRoute(const NGOSignUp(), settings);
       case RoutesName.riderSignUp:
         return _buildRoute(const RiderSignUp(), settings);
-
       case RoutesName.donateFood:
         return _buildRoute(const DonateFood(), settings);
+      case RoutesName.updateNGOProfile:
+        return _buildRoute(UpdateNGoProfile(), settings);
       case RoutesName.donarSignup:
         return _buildRoute(
             const DonarSignup(
@@ -29,12 +34,14 @@ class Routes {
 
       case RoutesName.donateClothes:
         return _buildRoute(const Donateclotheses(), settings);
-
-      // case RoutesName.trackDonation:
-      //   return _buildRoute( TrackDonation(), settings);
-
-      // case RoutesName.userSingup:
-      //   return _buildRoute(const UserSignup(), settings);
+      case RoutesName.ngoChangePassword:
+        return _buildRoute(const NgoChangePassword(), settings);
+      case RoutesName.contactUs:
+        return _buildRoute(ContactUs(), settings);
+      case RoutesName.privacyPolicyScreen:
+        return _buildRoute(const PrivacyPolicyScreen(), settings);
+      case RoutesName.aboutUs:
+        return _buildRoute(AboutUs(), settings);
 
       // case RoutesName.sellerSignup:
       //   return _buildRoute(const SellerSignUp(), settings);

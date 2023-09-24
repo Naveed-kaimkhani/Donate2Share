@@ -4,18 +4,13 @@ import 'package:donation_app/presentation/donar%20screens/food_tracking_by_donar
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
-import 'package:donation_app/style/styling.dart';
 import 'package:donation_app/utils/dialogues/custom_loader.dart';
-import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
-import '../../../providers/seller_provider.dart';
 import '../../domain/models/donation_model.dart';
-import '../donar screens/track_donation.dart';
+import '../NGO screens/test.dart';
 
 class TrackDonationWidget extends StatelessWidget {
   final DonationModel donationModel;
@@ -144,7 +139,7 @@ class TrackDonationWidget extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FoodTracking(
+                                builder: (context) => FoodTrackingByDonar(
                                       requestModel: model,
                                     )));
                       }

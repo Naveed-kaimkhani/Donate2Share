@@ -5,13 +5,16 @@ import 'package:donation_app/style/styling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../style/images.dart';
+
 class AllDonarsScreenHeader extends StatelessWidget {
   final String header;
   final String subHeader;
-
+  // final Function() func;
   const AllDonarsScreenHeader({
     required this.header,
     required this.subHeader,
+    // required this.func,
     super.key,
   });
 
@@ -36,7 +39,7 @@ class AllDonarsScreenHeader extends StatelessWidget {
           ),
           Text.rich(TextSpan(
               text: '$header',
-              style: CustomTextStyle.font_32_white,
+              style: CustomTextStyle.font_24_white,
               children: <InlineSpan>[
                 TextSpan(
                   text: '\n        $subHeader',

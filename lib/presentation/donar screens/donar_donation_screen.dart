@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../data/firebase_user_repository.dart';
 import '../../domain/models/donation_model.dart';
-import '../../style/custom_text_style.dart';
-import '../widgets/auth_header.dart';
-import '../widgets/donation_widget.dart';
 import '../widgets/wave_circle.dart';
 import 'no_data_found.dart';
 
@@ -26,7 +23,11 @@ class _DonarDonationsScreenState extends State<DonarDonationsScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              DonarDonationHeader(text: "All Your Donations", height: 100.h),
+              DonarDonationHeader(
+                text: "All Your Donations",
+                height: 100.h,
+                backButton: false,
+              ),
               // DonarDonationsScreenHeader()
               StreamBuilder<List<DonationModel>>(
                 stream: FirebaseUserRepository.getDonarDonations(context),

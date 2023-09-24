@@ -1,121 +1,67 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:donation_app/data/firebase_user_repository.dart';
-import 'package:donation_app/presentation/widgets/circle_progress.dart';
-import 'package:donation_app/presentation/widgets/wave_circle.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../domain/models/donation_model.dart';
 import '../../domain/models/donation_ngo_model.dart';
-import '../../domain/models/seller_model.dart';
-import '../donar screens/tracing_screen_bottom_navigation.dart';
+import '../../style/styling.dart';
 import '../widgets/loading_map.dart';
-import '../widgets/user_marker_info_window.dart';
-import 'no_data_found.dart';
+import '../widgets/tracing_screen_bottom_navigation.dart';
 
-class FoodTracking extends StatefulWidget {
+class FoodTrackingByDonar extends StatefulWidget {
   final DonationNgoModel requestModel;
-  const FoodTracking({super.key, required this.requestModel});
+  const FoodTrackingByDonar({super.key, required this.requestModel});
 
   @override
-  State<FoodTracking> createState() => _FoodTrackingState();
+  State<FoodTrackingByDonar> createState() => _FoodTrackingByDonarState();
 }
 
-class _FoodTrackingState extends State<FoodTracking> {
+class _FoodTrackingByDonarState extends State<FoodTrackingByDonar> {
   // List<SellerModel>? _listOfSellers;
   final CustomInfoWindowController _windowinfoController =
       CustomInfoWindowController();
-  final FirebaseUserRepository _firebaseUserRepository =
-      FirebaseUserRepository();
-  SellerModel? rider;
-  final String apiKey = 'AIzaSyArAQyQpUk0j3303XE7HSqxBbCdcLUJ9cE';
-  LatLng? donarLocation = const LatLng(0.0, 0.0);
-  LatLng? ngoLocation;
-  Position? riderLocation;
-  Uint8List? riderIcon;
-  Uint8List? donarIcon;
-  Uint8List? ngoIcon;
+  final String apiKey = 'AIzaSyBhJ2QJhSVwOR7lNCQQGDqE2vraGinYlB0';
+  LatLng? sourceLocation = const LatLng(0.0, 0.0);
+  LatLng? riderLocation;
+  // SellerModel? seller;
+  Uint8List? sellerTracingIcon;
+  String? donarPhone;
+  // Uint8List? sellerLocation;
   final Completer<GoogleMapController> _controller = Completer();
 
+  List<LatLng> polyLineCoordinates = [];
   Position? currentLocation;
-  StreamSubscription<Position>? positionStreamSubscription;
+  // StreamSubscription<Position>? positionStreamSubscription;
   double? distance;
-  final Set<Polyline> _polyline = {};
-  List<LatLng>? latlng;
 
-  double getDistancebtwRiderNSeller() {
-    return Geolocator.distanceBetween(
-        currentLocation!.latitude,
-        currentLocation!.longitude,
-        widget.requestModel.ngoLat!,
-        widget.requestModel.ngoLong!);
-  }
-
-  void getUserCurrentLocation() async {
-    try {
-      currentLocation = await utils.convertLatLngToPosition(LatLng(
-        widget.requestModel.donarLat!,
-        widget.requestModel.donarLong!,
-      ));
-      ngoLocation =
-          LatLng(widget.requestModel.ngoLat!, widget.requestModel.ngoLong!);
-      setState(() {});
-      getPolyPoints();
-
-      distance = getDistancebtwRiderNSeller();
-      // positionStreamSubscription = Geolocator.getPositionStream().listen(
-      //   (Position position) async {
-      //     GoogleMapController controller = await _controller.future;
-      //     // print(currentLocation);
-      //     setState(() {
-      //       currentLocation = position;
-
-      //       distance = getDistancebtwRiderNSeller();
-
-      //       // controller.animateCamera(
-      //       //     CameraUpdate.newCameraPosition(
-      //       //       CameraPosition(
-      //       //         target: LatLng(
-      //       //             currentLocation!.latitude, currentLocation!.longitude),
-      //       //         zoom: 18,
-      //       //       ),
-      //       //     ),
-      //       //     );
-      //     });
-      //   },
-      //   onError: (e) {
-      //     print(e);
-      //     // utils.flushBarErrorMessage(e.toString(), context);
-      //   },
-      // );
-    } catch (error) {
-      print(error);
-      // utils.flushBarErrorMessage(error.toString(), context);
-      return null; // or throw the error
-    }
+  double getDistancebtwRiderNSeller(
+    double riderLat,
+    double riderLong,
+  ) {
+    return Geolocator.distanceBetween(riderLat, riderLong,
+        widget.requestModel.donarLat!, widget.requestModel.donarLong!);
   }
 
   void getPolyPoints() async {
-    //asif taj wala
-    List<LatLng> latlng = [
-      LatLng(currentLocation!.latitude, currentLocation!.longitude),
-      LatLng(25.531790, 69.011800),
-      // LatLng(widget.requestModel.donarLat!, widget.requestModel.donarLong!),
-      LatLng(widget.requestModel.ngoLat!, widget.requestModel.ngoLong!),
-    ];
-    for (int i = 0; i < latlng.length; i++) {
-      setState(() {
-        _polyline.add(Polyline(
-          polylineId: PolylineId(i.toString()),
-          visible: true,
-          width: 8,
-          points: latlng,
-          color: Colors.blue,
-        ));
-      });
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      apiKey,
+      PointLatLng(
+          widget.requestModel.donarLat!, widget.requestModel.donarLong!),
+      PointLatLng(riderLocation!.latitude, riderLocation!.longitude),
+
+      // PointLatLng(25.5238, 69.0141),
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) =>
+          polyLineCoordinates.add(LatLng(point.latitude, point.longitude)));
+      setState(() {});
     }
     addMarker();
   }
@@ -131,18 +77,44 @@ class _FoodTrackingState extends State<FoodTracking> {
   }
 
   addMarker() async {
-    riderIcon = await getByteFromAssets("assets/man.png", 70);
-    donarIcon = await getByteFromAssets("assets/donation_icon.png", 70);
-    ngoIcon = await getByteFromAssets("assets/ngo_icon.png", 70);
+    sellerTracingIcon = await getByteFromAssets("assets/man.png", 100);
+    // sellerLocation = await getByteFromAssets("assets/SellerLocation.png", 70);
+  }
 
-    // setState(() {
+// Initialize Firestore
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // });
+// Start listening to rider location updates
+  void listenToRiderLocation() async {
+    await firestore
+        .collection('riders')
+        .doc("ktpVdGvLpbWs3PT4XOCMqi9CjCr2")
+        .snapshots()
+        .listen((snapshot) {
+      if (snapshot.exists) {
+        // Handle rider's location update
+        double latitude = snapshot['lat'];
+        double longitude = snapshot['long'];
+
+        donarPhone = snapshot['phone'];
+        setState(() {
+          riderLocation = LatLng(latitude, longitude);
+
+          distance = getDistancebtwRiderNSeller(
+              riderLocation!.latitude, riderLocation!.longitude);
+        });
+        // Update the rider's location on the map or do other processing as needed
+      }
+      getPolyPoints();
+    });
+    if (riderLocation != null) {
+      getPolyPoints();
+    }
   }
 
   @override
   void dispose() {
-    positionStreamSubscription?.cancel();
+    // positionStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -150,12 +122,18 @@ class _FoodTrackingState extends State<FoodTracking> {
   void initState() {
     super.initState();
     utils.checkConnectivity(context);
-    getUserCurrentLocation();
-    // addMarker();
-    // getPolyPoints();
+    sourceLocation =
+        LatLng(widget.requestModel.donarLat!, widget.requestModel.donarLong!);
+    // seller = Provider.of<SellerProvider>(context, listen: false).seller;
+    // _listOfSellers =
+    //     Provider.of<AllSellerDataProvider>(context, listen: false).sellers;
+    addMarker();
+    listenToRiderLocation();
+    // initializeValues();
+
+    // getUserCurrentLocation();
   }
 
-//donarIcon==null?CircleProgress():
   @override
   Widget build(BuildContext context) {
     String dis = distance.toString();
@@ -163,100 +141,79 @@ class _FoodTrackingState extends State<FoodTracking> {
         dis.length / 3; // Calculate the half length of the string
     double firstLine = (widget.requestModel.donarAddress!.length / 2);
     return SafeArea(
-      child: StreamBuilder<SellerModel?>(
-        stream: FirebaseUserRepository.getRiderStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const WaveCircleProgress();
-            // return SizedBox();
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else if (!snapshot.hasData) {
-            return const NoDataFoundScreen(
-              text: "No Donation",
-            );
-          } else {
-            return SafeArea(
-              child: Scaffold(
-                bottomNavigationBar: TracingScreenBottomNavigation(
-                  distance: distance,
-                  halfLength: halfLength,
-                  adminAddress: widget.requestModel.donarAddress!,
-                  phone: widget.requestModel.donarPhone!,
-                  firstLine: firstLine,
-                ),
-                body: Stack(
-                  children: [
-                    GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(currentLocation!.latitude,
-                              currentLocation!.longitude),
-                          zoom: 18),
-                      compassEnabled: true,
-                      markers: {
-                        Marker(
-                            markerId: const MarkerId(
-                              "0",
-                            ),
-                            position: LatLng(currentLocation!.latitude,
-                                currentLocation!.longitude),
-                            // icon: BitmapDescriptor.fromBytes(riderIcon!),
-                            infoWindow:
-                                const InfoWindow(title: "Food Position")),
-                        Marker(
-                            markerId: const MarkerId("1"),
-                            position: LatLng(
-                                snapshot.data!.lat!, snapshot.data!.long!),
-
-                            /// rider location
-                            // icon: BitmapDescriptor.fromBytes(donarIcon!),
-
-                            icon: BitmapDescriptor.defaultMarker,
-                            infoWindow:
-                                const InfoWindow(title: "Rider Position")),
-                        Marker(
-                            markerId: const MarkerId("2"),
-                            position: ngoLocation!,
-                            // icon: BitmapDescriptor.fromBytes(ngoIcon!),
-                            icon: BitmapDescriptor.defaultMarker,
-                            // onTap: () {
-                            //   _windowinfoController.addInfoWindow!(
-                            //     UserMarkerInfoWindow(
-                            //       request: widget.requestModel,
-                            //     ),
-                            //     LatLng(widget.requestModel.ngoLat!,
-                            //         widget.requestModel.ngoLong!),
-                            //   );
-                            // },
-                            infoWindow:
-                                const InfoWindow(title: "Ngo Position")),
-                      },
-                      onMapCreated: (GoogleMapController controller) {
-                        if (!_controller.isCompleted) {
-                          _controller.complete(controller);
-                          _windowinfoController.googleMapController =
-                              controller;
-                        }
-                      },
-                      // onTap: (position) {
-                      //   _windowinfoController.hideInfoWindow!();
-                      // },
-                      polylines: _polyline,
-                    ),
-                    const BackButton(),
-                    // CustomInfoWindow(
-                    //   controller: _windowinfoController,
-                    //   height: 150,
-                    //   width: 300,
-                    //   offset: 10,
-                    // ),
-                  ],
-                ),
+      child: riderLocation == null &&
+              sellerTracingIcon == null &&
+              distance == null
+          ? const LoadingMap()
+          : Scaffold(
+              bottomNavigationBar: TracingScreenBottomNavigation(
+                distance: distance,
+                halfLength: halfLength,
+                address: widget.requestModel.donarAddress!,
+                // senderAddress: widget.requestModel.senderAddress,
+                phone: donarPhone!,
+                firstLine: firstLine,
               ),
-            );
-          }
-        },
-      ),
+              body: Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(sourceLocation!.latitude,
+                            sourceLocation!.longitude),
+                        zoom: 18),
+                    compassEnabled: true,
+                    markers: {
+                      Marker(
+                          markerId: const MarkerId(
+                            "0",
+                          ),
+                          position: LatLng(sourceLocation!.latitude,
+                              sourceLocation!.longitude),
+                          icon: BitmapDescriptor.defaultMarker,
+                          infoWindow: const InfoWindow(title: "Your Position")),
+                      Marker(
+                        markerId: const MarkerId("1"),
+                        position: riderLocation!,
+                        icon: sellerTracingIcon == null
+                            ? BitmapDescriptor.defaultMarker
+                            : BitmapDescriptor.fromBytes(sellerTracingIcon!),
+                        onTap: () {
+                          // _windowinfoController.addInfoWindow!(
+                          //   UserMarkerInfoWindow(
+                          //     request: widget.requestModel,
+                          //   ),
+                          //   LatLng(widget.requestModel.senderLat!,
+                          //       widget.requestModel.senderLong!),
+                          // );
+                        },
+                      ),
+                    },
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                      _windowinfoController.googleMapController = controller;
+                    },
+                    onTap: (position) {
+                      _windowinfoController.hideInfoWindow!();
+                    },
+                    polylines: {
+                      Polyline(
+                        polylineId: const PolylineId('route'),
+                        points: polyLineCoordinates,
+                        color: Styling.primaryColor,
+                        width: 6,
+                      )
+                    },
+                  ),
+                  const BackButton(),
+                  CustomInfoWindow(
+                    controller: _windowinfoController,
+                    height: 150,
+                    width: 300,
+                    offset: 10,
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

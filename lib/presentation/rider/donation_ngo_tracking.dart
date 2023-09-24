@@ -2,19 +2,13 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:donation_app/data/firebase_user_repository.dart';
-import 'package:donation_app/providers/rider_provider.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:provider/provider.dart';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../domain/models/donation_ngo_model.dart';
 import '../../domain/models/seller_model.dart';
-import '../../providers/seller_provider.dart';
-import '../../style/styling.dart';
 import '../donar screens/tracing_screen_bottom_navigation.dart';
 import '../widgets/loading_map.dart';
 import '../widgets/user_marker_info_window.dart';
@@ -53,8 +47,8 @@ class _Donatin_Ngo_TracingState extends State<Donatin_Ngo_Tracing> {
     return Geolocator.distanceBetween(
         currentLocation!.latitude,
         currentLocation!.longitude,
-        widget.requestModel.ngoLat!,
-        widget.requestModel.ngoLong!);
+        widget.requestModel.donarLat!,
+        widget.requestModel.donarLong!);
   }
 
   void getUserCurrentLocation() async {
@@ -63,11 +57,12 @@ class _Donatin_Ngo_TracingState extends State<Donatin_Ngo_Tracing> {
           await _firebaseUserRepository.getUserCurrentLocation(context);
       setState(() {});
       getPolyPoints();
-    distance=getDistancebtwRiderNSeller();
+      distance = getDistancebtwRiderNSeller();
       positionStreamSubscription = Geolocator.getPositionStream().listen(
         (Position position) async {
-          GoogleMapController controller = await _controller.future;
-await    FirebaseUserRepository.updateRiderLocation(position.latitude, position.longitude);
+          // GoogleMapController controller = await _controller.future;
+          await FirebaseUserRepository.updateRiderLocation(
+              position.latitude, position.longitude);
           setState(() {
             currentLocation = position;
 
@@ -162,7 +157,8 @@ await    FirebaseUserRepository.updateRiderLocation(position.latitude, position.
 
     getUserCurrentLocation();
     addMarker();
-    ngoLocation=LatLng(widget.requestModel.ngoLat!, widget.requestModel.ngoLong!);
+    ngoLocation =
+        LatLng(widget.requestModel.ngoLat!, widget.requestModel.ngoLong!);
     // distance = getDistancebtwRiderNSeller();
     // getPolyPoints();
   }
@@ -204,7 +200,8 @@ await    FirebaseUserRepository.updateRiderLocation(position.latitude, position.
                               const InfoWindow(title: "Current Position")),
                       Marker(
                           markerId: const MarkerId("1"),
-                          position: LatLng(widget.requestModel.donarLat!,widget.requestModel.donarLong!),
+                          position: LatLng(widget.requestModel.donarLat!,
+                              widget.requestModel.donarLong!),
                           icon: BitmapDescriptor.fromBytes(donarIcon!),
                           infoWindow:
                               const InfoWindow(title: "Donation Position")),
