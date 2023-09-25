@@ -7,21 +7,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../domain/models/seller_model.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/seller_provider.dart';
 import '../../providers/user_provider.dart';
 import '../widgets/all_donars_screen_header.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/input_field.dart';
 import '../widgets/profile_pic.dart';
+import 'donar_navigation.dart';
 
-class NgoChangePassword extends StatefulWidget {
-  const NgoChangePassword({Key? key}) : super(key: key);
+class DonarChangePassword extends StatefulWidget {
+  const DonarChangePassword({Key? key}) : super(key: key);
 
   @override
-  State<NgoChangePassword> createState() => _NgoChangePasswordState();
+  State<DonarChangePassword> createState() => _DonarChangePasswordState();
 }
 
-class _NgoChangePasswordState extends State<NgoChangePassword> {
+class _DonarChangePasswordState extends State<DonarChangePassword> {
   TextEditingController _passController = TextEditingController();
   TextEditingController _newPasswordController = TextEditingController();
   bool _obsecureText = true;
@@ -66,7 +69,7 @@ class _NgoChangePasswordState extends State<NgoChangePassword> {
           utils.toastMessage("Password updated Successfully");
 
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => NgoNavigation()));
+              MaterialPageRoute(builder: (context) => const DonarNavigation()));
         }).onError((error, stackTrace) {
           isLoadingg(false);
           String errorMessage = utils.getFriendlyErrorMessage(
@@ -97,7 +100,7 @@ class _NgoChangePasswordState extends State<NgoChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? user = Provider.of<UserProvider>(context, listen: false).ngo;
+    SellerModel? user = Provider.of<SellerProvider>(context, listen: false).seller;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -125,7 +128,7 @@ class _NgoChangePasswordState extends State<NgoChangePassword> {
                         width: 50.w,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -144,7 +147,7 @@ class _NgoChangePasswordState extends State<NgoChangePassword> {
               // SizedBox(
               //   height: 14.h,
               // ),
-              Divider(
+              const Divider(
                 thickness: 2.0,
               ),
               SizedBox(
@@ -221,7 +224,7 @@ class _NgoChangePasswordState extends State<NgoChangePassword> {
               Align(
                 alignment: Alignment.center,
                 child: isLoading
-                    ? CircleProgress()
+                    ? const CircleProgress()
                     : AuthButton(
                         text: 'Change Password',
                         color: Styling.primaryColor,

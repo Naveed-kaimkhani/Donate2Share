@@ -144,7 +144,8 @@ class _DonationWidgetState extends State<DonationWidget> {
                                     : '${widget.donationModel.quantity} Dress',
                                 style: CustomTextStyle.font_10_black,
                               )
-                            ])),
+                            ])
+                            ),
                         SizedBox(
                           height: 4.h,
                         ),

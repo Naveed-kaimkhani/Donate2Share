@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_app/presentation/NGO%20screens/ngo_home_widget.dart';
+import 'package:donation_app/presentation/NGO%20screens/ngo_side_food_request.dart';
 import 'package:donation_app/presentation/donar%20screens/no_data_found.dart';
 import 'package:donation_app/presentation/widgets/admin_home_card.dart';
 import 'package:donation_app/presentation/widgets/auth_button.dart';
@@ -9,18 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../data/firebase_user_repository.dart';
-import '../../domain/models/donation_data.dart';
 import '../../domain/models/donation_model.dart';
 import '../../domain/models/request_model.dart';
 import '../../domain/models/user_model.dart';
-import '../../providers/admin_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/images.dart';
 import '../../style/styling.dart';
 import '../../utils/dialogues/send_request_dialogue.dart';
-import '../admin/cloth_donation.dart';
-import '../admin/food_donations.dart';
 import '../widgets/chart_decoration.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/wave_circle.dart';
@@ -33,6 +29,11 @@ class NGOHomePage extends StatefulWidget {
 }
 
 class _NGOHomePageState extends State<NGOHomePage> {
+  
+  List<RequestModel>? foodList;
+
+  List<RequestModel>? clothList;
+
   @override
   Widget build(BuildContext context) {
     UserModel? ngo = Provider.of<UserProvider>(context, listen: false).ngo;
@@ -53,17 +54,12 @@ class _NGOHomePageState extends State<NGOHomePage> {
                     text: "No Donation",
                   );
                 } else {
-                  int? food = snapshot.data
-                      ?.where((donation) => donation.donationType == 'food')
-                      .toList()
-                      .length;
-                  print("foood lenght${food}");
-                  int? clothes = snapshot.data
-                      ?.where((donation) => donation.donationType == 'clothes')
-                      .toList()
-                      .length;
-
-                  print("foood lenght${clothes}");
+                  
+            foodList = utils.filterRequestionDonations(snapshot.data!,"food");
+            clothList = utils.filterRequestionDonations(snapshot.data!,"clothes");
+            
+                  // int? food = donationLength(snapshot.data!, "food")
+                  // int? clothes = donationLength(snapshot.data!,"clothes");
                   return Column(
                     children: [
                       Column(
@@ -134,12 +130,12 @@ class _NGOHomePageState extends State<NGOHomePage> {
                                 image: Images.foodpic,
                                 padding: 72.w,
                                 func: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => FoodDonations(
-                                  //               foodList: foodList ?? [],
-                                  //             )));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NGOSideFoodRequest(
+                                                foodList: foodList!,
+                                              )));
                                 },
                               ),
                               AdminHomeCard(
@@ -150,12 +146,12 @@ class _NGOHomePageState extends State<NGOHomePage> {
                                 image: Images.clothpic,
                                 padding: 95.w,
                                 func: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => clothDonations(
-                                  //               clothList: clotheList ?? [],
-                                  //             )));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NGOSideFoodRequest(
+                                                foodList:clothList! ,
+                                              )));
                                 },
                               ),
                             ],

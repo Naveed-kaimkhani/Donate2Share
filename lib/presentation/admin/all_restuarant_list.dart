@@ -25,6 +25,7 @@ class AllRestaurants extends StatelessWidget {
             const AllDonarsScreenHeader(
               header: "Restaurant",
               subHeader: "Donars",
+              backButton: true,
             ),
             allDonars!.isEmpty
                 ? const NoDataFoundScreen(text: "No Donars Found")

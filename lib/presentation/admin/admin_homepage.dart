@@ -39,15 +39,15 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  List<DonationModel> filterFoodDonations(List<DonationModel> donationList) {
-    return donationList.where((donation) => donation.type == "food").toList();
-  }
+  // List<DonationModel> filterFoodDonations(List<DonationModel> donationList) {
+  //   return donationList.where((donation) => donation.type == "food").toList();
+  // }
 
-  List<DonationModel> filterCLothesDonations(List<DonationModel> donationList) {
-    return donationList
-        .where((donation) => donation.type == "clothes")
-        .toList();
-  }
+  // List<DonationModel> filterCLothesDonations(List<DonationModel> donationList) {
+  //   return donationList
+  //       .where((donation) => donation.type == "clothes")
+  //       .toList();
+  // }
 
   // List<Widget> connectedDonars=[]
   // List<SellerModel>? allDonars;
@@ -120,18 +120,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
     ];
   }
 
-  // List<SellerModel> filterDonars(List<SellerModel> model, String type) {
-  //   return model.where((seller) => seller.type == type).toList();
-  // }
-
   getDonars() async {
     await Provider.of<DonarsListProvider>(context, listen: false)
         .getDonarsList(context);
     // allDonars = Provider.of<DonarsListProvider>(context, listen: false).donars;
     Provider.of<DonarsListProvider>(context, listen: false)
         .filterDonars(context);
-    //  = filterDonars(allDonars!, "Restaurant");
-    //  = filterDonars(allDonars!, "Organization");
 
     individualDonarsList =
         Provider.of<DonarsListProvider>(context, listen: false)
@@ -164,11 +158,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     UserModel? admin = Provider.of<AdminProvider>(context, listen: false).admin;
-    // List<SellerModel>? individuals = Provider.of<DonarsListProvider>(context, listen: false).getIndividualdonars;
-    // List<SellerModel>? organizations= Provider.of<DonarsListProvider>(context, listen: false).getOrganizationdonars;
-    // List<SellerModel>? restaurants = Provider.of<DonarsListProvider>(context, listen: false).getrestaurantdonars;
-
-    // List<SellerModel>? donars = Provider.of<DonarsListProvider>(context, listen: false).donars;
     return SafeArea(
         child: Scaffold(
       body: StreamBuilder<List<DonationModel>>(
@@ -184,8 +173,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
               text: "No Donation",
             );
           } else {
-            foodList = filterFoodDonations(snapshot.data!);
-            clotheList = filterCLothesDonations(snapshot.data!);
+            foodList = utils.filterFoodDonations(snapshot.data!,"food");
+            clotheList = utils.filterFoodDonations(snapshot.data!,"clothes");
             return Padding(
               padding: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
               child: SizedBox(

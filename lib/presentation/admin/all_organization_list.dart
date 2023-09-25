@@ -30,6 +30,7 @@ class AllOrganizations extends StatelessWidget {
             const AllDonarsScreenHeader(
               header: "Organization",
               subHeader: "Donars",
+            backButton: true,
             ),
             donars!.isEmpty
                 ? const NoDataFoundScreen(text: "No Donars Found")

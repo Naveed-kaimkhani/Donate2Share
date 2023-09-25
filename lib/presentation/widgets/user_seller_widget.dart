@@ -1,8 +1,8 @@
+import 'package:donation_app/style/styling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../style/custom_text_style.dart';
-import '../../style/styling.dart';
 
 class UserSellerComponent extends StatelessWidget {
   final String image;

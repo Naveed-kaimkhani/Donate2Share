@@ -24,6 +24,7 @@ class NGOSetting extends StatelessWidget {
             const AllDonarsScreenHeader(
               header: "Settings",
               subHeader: "",
+              backButton: false,
             ),
             SizedBox(
               height: 20.h,

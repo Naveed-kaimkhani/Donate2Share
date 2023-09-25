@@ -7,10 +7,10 @@ class RequestModel {
   String? sentDate;
   String? sentTime;
   String? donationType;
-
   String? month;
   String? serviceId;
   int? quantity;
+  // String? type;
   String? status;
   String? description;
   String? senderDeviceToken;
@@ -19,6 +19,7 @@ class RequestModel {
   String? senderProfileImage;
 
   String? senderAddress;
+ 
   RequestModel({
     // this.receiverUid,
     this.documentId,

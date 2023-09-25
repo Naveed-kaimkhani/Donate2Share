@@ -47,6 +47,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                     const AllDonarsScreenHeader(
                       header: "Your Donation",
                       subHeader: "Requests",
+                      backButton: false,
                     ),
                     SizedBox(
                         height: MediaQuery.of(context).size.height,

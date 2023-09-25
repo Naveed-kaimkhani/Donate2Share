@@ -1,16 +1,9 @@
-import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
-import 'package:donation_app/presentation/widgets/auth_header.dart';
-import 'package:donation_app/presentation/widgets/donars_details_widget.dart';
-import 'package:donation_app/style/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../domain/models/seller_model.dart';
 import '../../domain/models/user_model.dart';
 import '../../providers/ngos_list_provider.dart';
 import '../donar screens/no_data_found.dart';
 import '../widgets/all_donars_screen_header.dart';
-import '../widgets/donar_details_widget.dart';
 import '../widgets/ngo_details_widget.dart';
 
 class ConnectedNGOScreen extends StatelessWidget {
@@ -29,6 +22,7 @@ const  ConnectedNGOScreen({ super.key});
             const AllDonarsScreenHeader(
               header: "Connected",
               subHeader: "NGOs",
+                backButton: true,
             ),
            donars!.isEmpty
                 ? const NoDataFoundScreen(text: "No NGOs Found")

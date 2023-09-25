@@ -13,7 +13,7 @@ class RoutesName {
   static const String ngoChangePassword = 'NgoChangePassword';
   static const String privacyPolicyScreen = 'PrivacyPolicyScreen';
   static const String aboutUs = 'AboutUs';
-//  static const String petrolProviders = 'PetrolProviders';
+ static const String donarChangePassword = 'DonarChangePassword';
 //  static const String punctureMaker = 'PunctureMaker';
 //  static const String contactUs = 'ContactUs';
 // static const String generalMechanic = 'GeneralMechanic';

@@ -44,10 +44,12 @@ class _DonationRequestScreenState extends State<DonationRequestScreen> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    const AllDonarsScreenHeader(
+                     const AllDonarsScreenHeader(
                       header: " Donation",
                       subHeader: "Requests",
+                    backButton: false,
                     ),
+
                     SizedBox(
                         height: MediaQuery.of(context).size.height,
                         // width: MediaQuery.of(context).size.width,

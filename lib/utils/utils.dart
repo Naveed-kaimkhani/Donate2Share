@@ -484,4 +484,12 @@ class utils {
     }
     return 'NA';
   }
+
+  static  List<DonationModel> filterFoodDonations(List<DonationModel> donationList, String type) {
+    return donationList.where((donation) => donation.type ==type).toList();
+  }
+  
+  static  List<RequestModel> filterRequestionDonations(List<RequestModel> donationList, String type) {
+    return donationList.where((donation) => donation.donationType ==type).toList();
+  }
 }

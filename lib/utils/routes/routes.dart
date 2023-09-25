@@ -4,6 +4,7 @@ import 'package:donation_app/presentation/NGO%20screens/ngo_singup.dart';
 import 'package:donation_app/presentation/NGO%20screens/update_ngo_profile.dart';
 import 'package:donation_app/presentation/about_us.dart';
 import 'package:donation_app/presentation/contact_us.dart';
+import 'package:donation_app/presentation/donar%20screens/donar_change_password.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
@@ -12,11 +13,15 @@ import 'package:donation_app/presentation/rider/rider_signup.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 
+import '../../presentation/donar screens/donar_login.dart';
+
 class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesName.ngoLogin:
         return _buildRoute(const NGOLogin(), settings);
+      case RoutesName.donarLogin:
+        return _buildRoute(const DonarLogin(), settings);
       case RoutesName.ngoSignup:
         return _buildRoute(const NGOSignUp(), settings);
       case RoutesName.riderSignUp:
@@ -31,6 +36,8 @@ class Routes {
               addedByAdmin: false,
             ),
             settings);
+      case RoutesName.donarChangePassword:
+        return _buildRoute(const DonarChangePassword(), settings);
 
       case RoutesName.donateClothes:
         return _buildRoute(const Donateclotheses(), settings);

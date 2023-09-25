@@ -1,5 +1,5 @@
-
 import 'package:donation_app/presentation/NGO%20screens/ngo_login.dart';
+import 'package:donation_app/presentation/ngo_donar_screen.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,13 +22,13 @@ showLogoutPopup(context) async {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          
-                         await     utils.logOutUser(context);
+                          await utils.logOutUser(context);
                           // ignore: use_build_context_synchronously
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const NGOLogin()));
+                                  builder: (context) =>
+                                      const NGODonarScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Styling.primaryColor),

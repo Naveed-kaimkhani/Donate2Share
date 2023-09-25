@@ -4,29 +4,28 @@ import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/update_profile_field.dart';
 import 'package:donation_app/utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../data/firebase_user_repository.dart';
 import '../../domain/models/user_model.dart';
+import '../../providers/seller_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
-import '../../utils/storage_services.dart';
 import '../../providers/user_provider.dart';
 import '../widgets/all_donars_screen_header.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/circle_progress.dart';
-import '../widgets/input_field.dart';
+import 'donar_navigation.dart';
 
-class UpdateNGoProfile extends StatefulWidget {
-  UpdateNGoProfile({Key? key}) : super(key: key);
+class UpdateDonarProfile extends StatefulWidget {
+  UpdateDonarProfile({Key? key}) : super(key: key);
 
   @override
-  State<UpdateNGoProfile> createState() => _UpdateNGoProfileState();
+  State<UpdateDonarProfile> createState() => _UpdateDonarProfileState();
 }
 
-class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
+class _UpdateDonarProfileState extends State<UpdateDonarProfile> {
   @override
   void initState() {
     _nameController.text = "";
@@ -49,7 +48,7 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
   }
 
   bool isLoadingNow = false;
-  Uint8List? _UpdateNGoProfileImage;
+  Uint8List? _UpdateDonarProfileImage;
   FocusNode nameFocusNode = FocusNode();
   FocusNode phoneFocusNode = FocusNode();
   FocusNode cityFocusNode = FocusNode();
@@ -70,13 +69,13 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
     right: 10.h,
     // top: 10.h,
   );
-  final users = FirebaseFirestore.instance.collection('NGOs');
+  final users = FirebaseFirestore.instance.collection('donars');
   UserModel? user;
-  Future<String> updateUpdateNGoProfile() async {
-    String UpdateNGoProfileUrl =
+  Future<String> updateUpdateDonarProfile() async {
+    String UpdateDonarProfileUrl =
         await _FirebaseUserRepository.uploadProfileImage(
-            imageFile: _UpdateNGoProfileImage!, uid: utils.currentUserUid);
-    return UpdateNGoProfileUrl;
+            imageFile: _UpdateDonarProfileImage!, uid: utils.currentUserUid);
+    return UpdateDonarProfileUrl;
   }
 
   void isLoading(bool value) {
@@ -87,8 +86,8 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
 
   Future<void> updateData() {
     final uid = utils.currentUserUid;
-    if (_UpdateNGoProfileImage != null) {
-      updateUpdateNGoProfile()
+    if (_UpdateDonarProfileImage != null) {
+      updateUpdateDonarProfile()
           .then((url) => {
                 users.doc(uid).update({
                   "profileImage": url,
@@ -125,10 +124,10 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
 
   Future<void> _getUserDetails(String uid) async {
     try {
-      await Provider.of<UserProvider>(context, listen: false)
-          .getUserFromServer(context);
+      await Provider.of<SellerProvider>(context, listen: false)
+          .getSellerFromServer(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return const NgoNavigation();
+        return const DonarNavigation();
       }));
     } catch (e) {
       utils.flushBarErrorMessage(e.toString(), context);
@@ -156,7 +155,7 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 120.0),
-                  child: UploadUpdateNGoProfile(_UpdateNGoProfileImage),
+                  child: UploadUpdateDonarProfile(_UpdateDonarProfileImage),
                 ),
                 SizedBox(
                   height: 23.h,
@@ -243,11 +242,11 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
     );
   }
 
-  Widget UploadUpdateNGoProfile(Uint8List? image) {
+  Widget UploadUpdateDonarProfile(Uint8List? image) {
     return image == null
         ? Stack(
             children: [
-              // UpdateNGoProfilePic(url: url, height: height, width: width)
+              // UpdateDonarProfilePic(url: url, height: height, width: width)
               ProfilePic(url: user!.profileImage, height: 80.h, width: 94.w),
 
               Positioned(
@@ -258,7 +257,7 @@ class _UpdateNGoProfileState extends State<UpdateNGoProfile> {
                     Uint8List? _image = await utils.pickImage();
                     if (_image != null) {
                       setState(() {
-                        _UpdateNGoProfileImage = _image;
+                        _UpdateDonarProfileImage = _image;
                       });
                     } else {
                       debugPrint("Image not loaded");
@@ -359,7 +358,7 @@ class Header extends StatelessWidget {
               width: 25.w,
             ),
             Text(
-              "Update UpdateNGoProfile",
+              "Update UpdateDonarProfile",
               style: CustomTextStyle.font_20_appColor,
             ),
           ],

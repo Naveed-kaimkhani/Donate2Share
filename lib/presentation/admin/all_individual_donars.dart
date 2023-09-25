@@ -1,14 +1,7 @@
 import 'package:donation_app/presentation/donar%20screens/no_data_found.dart';
-import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
-import 'package:donation_app/presentation/widgets/auth_header.dart';
 import 'package:donation_app/presentation/widgets/donar_details_widget.dart';
-import 'package:donation_app/presentation/widgets/donars_details_widget.dart';
-import 'package:donation_app/style/custom_text_style.dart';
-import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../data/firebase_user_repository.dart';
 import '../../domain/models/seller_model.dart';
 import '../../providers/donars_list_provider.dart';
 import '../widgets/add_donar_button.dart';
@@ -38,6 +31,7 @@ class _AllIndividualsState extends State<AllIndividuals> {
             const AllDonarsScreenHeader(
               header: "Individual",
               subHeader: "Donars",
+              backButton: true,
             ),
             donars!.isEmpty
                 ? const NoDataFoundScreen(text: "No Donars Found")

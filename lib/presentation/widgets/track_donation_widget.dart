@@ -117,34 +117,48 @@ class TrackDonationWidget extends StatelessWidget {
                 SizedBox(
                   height: 2.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 68.w,
-                  ),
-                  child: InkWell(
-                    child: const TrackDonationButton(
-                      text: "Track",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(TextSpan(
+                        text: 'Quantity: ',
+                        style: CustomTextStyle.font_10_primaryColor,
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: donationModel.type == 'food'
+                                ? '${donationModel.quantity} Kg'
+                                : '${donationModel.quantity} Dress',
+                            style: CustomTextStyle.font_10_black,
+                          )
+                        ])),
+                    SizedBox(
+                      width: 8.w,
                     ),
-                    onTap: () async {
-                      // print("calllllll");
-                      LoaderOverlay.show(context);
-                      DonationNgoModel? model =
-                          await FirebaseUserRepository.fetchRidesByRiderId(
-                              donationModel.donationId!, context);
-                      LoaderOverlay.hide();
-                      if (model == null) {
-                        utils.toastMessage("Rider is not assigned Yet");
-                      } else {
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FoodTrackingByDonar(
-                                      requestModel: model,
-                                    )));
-                      }
-                    },
-                  ),
+                    InkWell(
+                      child: const TrackDonationButton(
+                        text: "Track",
+                      ),
+                      onTap: () async {
+                        // print("calllllll");
+                        LoaderOverlay.show(context);
+                        DonationNgoModel? model =
+                            await FirebaseUserRepository.fetchRidesByRiderId(
+                                donationModel.donationId!, context);
+                        LoaderOverlay.hide();
+                        if (model == null) {
+                          utils.toastMessage("Rider is not assigned Yet");
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FoodTrackingByDonar(
+                                        requestModel: model,
+                                      )));
+                        }
+                      },
+                    ),
+                  ],
                 )
               ],
             ),
