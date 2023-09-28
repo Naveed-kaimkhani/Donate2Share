@@ -22,6 +22,8 @@ class DonarHomePage extends StatefulWidget {
 }
 
 class _DonarHomePageState extends State<DonarHomePage> {
+  FirebaseUserRepository _firebaseUserRepository=FirebaseUserRepository();
+  
   @override
   Widget build(BuildContext context) {
     SellerModel? donar =

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/update_profile_field.dart';
 import 'package:donation_app/utils/utils.dart';

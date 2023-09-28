@@ -4,7 +4,6 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:donation_app/domain/models/donation_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,7 +11,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/user_model.dart';
 import '../../providers/admin_provider.dart';
-import '../../providers/donars_list_provider.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 import '../../style/styling.dart';

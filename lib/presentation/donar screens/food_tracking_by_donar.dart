@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../domain/models/donation_model.dart';
 import '../../domain/models/donation_ngo_model.dart';
 import '../../style/styling.dart';
 import '../widgets/loading_map.dart';

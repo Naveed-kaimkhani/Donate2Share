@@ -32,7 +32,7 @@ class DonarSetting extends StatelessWidget {
             SettingScreenWidget(
               text: "profile",
               icon: Icons.admin_panel_settings,
-              routeName: "UpdateNGOProfile",
+              routeName: "UpdateDonarProfile",
             ),
             //  ServicesNSettingHeade(text: 'Setting Available'),
             const CustomDivider(),

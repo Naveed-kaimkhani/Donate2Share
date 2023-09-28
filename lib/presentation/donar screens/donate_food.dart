@@ -10,11 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../domain/models/seller_model.dart';
-import '../../domain/models/user_model.dart';
 import '../../providers/seller_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/circle_progress.dart';
 import '../widgets/donationScreen_input_field.dart';

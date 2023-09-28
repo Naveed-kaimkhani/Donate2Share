@@ -9,11 +9,8 @@ import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
-import '../../domain/models/user_model.dart';
-import '../../providers/admin_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
-import '../../style/images.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/circle_progress.dart';
@@ -59,15 +56,17 @@ class _NGOLoginState extends State<NGOLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login("ngo@gmail.com", "111111", context)
-        // .login(_emailController.text, _passwordController.text, context)
+        // .login("ngo@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
         _getUserDetails(user.uid);
       } else {
         isLoading(false);
-        utils.flushBarErrorMessage("Failed to login", context);
+        utils.flushBarErrorMessage("Invalid email or password", context);
+
+        // utils.flushBarErrorMessage("Failed to login", context);
       }
     });
   }
@@ -76,9 +75,9 @@ class _NGOLoginState extends State<NGOLogin> {
     try {
       await Provider.of<UserProvider>(context, listen: false)
           .getUserFromServer(context);
-         await StorageService.initNGO();
+      await StorageService.initNGO();
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         return const NgoNavigation();
       }));
     } catch (e) {

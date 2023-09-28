@@ -3,7 +3,6 @@ import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
 import 'package:donation_app/style/images.dart';
-import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
 import 'package:donation_app/utils/dialogues/select_donation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

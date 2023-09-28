@@ -1,4 +1,3 @@
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart';
 import 'package:donation_app/presentation/widgets/circle_progress.dart';
 import 'package:donation_app/presentation/widgets/update_profile_field.dart';
 import 'package:donation_app/style/styling.dart';
@@ -8,12 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/seller_model.dart';
-import '../../domain/models/user_model.dart';
 import '../../providers/seller_provider.dart';
-import '../../providers/user_provider.dart';
 import '../widgets/all_donars_screen_header.dart';
 import '../widgets/auth_button.dart';
-import '../widgets/input_field.dart';
 import '../widgets/profile_pic.dart';
 import 'donar_navigation.dart';
 

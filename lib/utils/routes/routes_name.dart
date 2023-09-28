@@ -9,6 +9,7 @@ class RoutesName {
   static const String donarSignup = 'DonarSignup';
   static const String trackDonation = 'TrackDonation';
   static const String updateNGOProfile = 'UpdateNGOProfile';
+  static const String updateDonarProfile = 'UpdateDonarProfile';
   static const String ngoSignup = 'NGOSignup';
   static const String ngoChangePassword = 'NgoChangePassword';
   static const String privacyPolicyScreen = 'PrivacyPolicyScreen';

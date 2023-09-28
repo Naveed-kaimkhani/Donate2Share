@@ -1,7 +1,4 @@
-import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
@@ -10,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
-import '../../../utils/storage_services.dart';
-import '../../domain/models/seller_model.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
@@ -57,8 +52,8 @@ class _DonarLoginState extends State<DonarLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login("donar@gmail.com", "111111", context)
-        // .login(_emailController.text, _passwordController.text, context)
+        // .login("donar@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -74,7 +69,7 @@ class _DonarLoginState extends State<DonarLogin> {
     try {
       await _firebaseRepository.loadDonarDataOnAppInit(context);
       isLoading(false);
-      isLoading(false);
+     
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const DonarNavigation()));
     } catch (e) {
@@ -82,27 +77,6 @@ class _DonarLoginState extends State<DonarLogin> {
     }
   }
 
-  // void _getSellerDetails() {
-  //   _firebaseRepository.getSellerDetails().then((SellerModel? sellerModel) {
-  //     if (sellerModel != null) {
-  //       StorageService.saveSeller(sellerModel).then((value) async {
-  //         // await Provider.of<SellerProvider>(context, listen: false)
-  //         //     .getSellerFromServer();
-  //         await _firebaseRepository.loadDonarDataOnAppInit(context);
-
-  //       }).catchError((error) {
-  //         isLoading(false);
-  //         utils.flushBarErrorMessage(error.message.toString(), context);
-  //       });
-  //     } else {
-  //       isLoading(false);
-  //       utils.flushBarErrorMessage("User is null", context);
-  //     }
-  //   }).catchError((error) {
-  //     isLoading(false);
-  //     utils.flushBarErrorMessage(error.message.toString(), context);
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -112,7 +86,6 @@ class _DonarLoginState extends State<DonarLogin> {
     _passwordController.dispose();
     super.dispose();
   }
-
   @override
   void initState() {
     super.initState();

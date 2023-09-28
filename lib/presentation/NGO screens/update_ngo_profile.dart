@@ -4,7 +4,6 @@ import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/update_profile_field.dart';
 import 'package:donation_app/utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -12,12 +11,10 @@ import '../../data/firebase_user_repository.dart';
 import '../../domain/models/user_model.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
-import '../../utils/storage_services.dart';
 import '../../providers/user_provider.dart';
 import '../widgets/all_donars_screen_header.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/circle_progress.dart';
-import '../widgets/input_field.dart';
 
 class UpdateNGoProfile extends StatefulWidget {
   UpdateNGoProfile({Key? key}) : super(key: key);

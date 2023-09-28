@@ -37,9 +37,6 @@ class _DonationDetailsState extends State<DonationDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // BackButton(
-              //   color: Colors.white,
-              // ),
               CarouselSlider.builder(
                 options: carousel(),
                 itemCount: widget.donationModel.pictures!.length,

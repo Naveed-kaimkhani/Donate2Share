@@ -14,6 +14,7 @@ import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/donar screens/donar_login.dart';
+import '../../presentation/donar screens/update_donar_profile.dart';
 
 class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -30,6 +31,9 @@ class Routes {
         return _buildRoute(const DonateFood(), settings);
       case RoutesName.updateNGOProfile:
         return _buildRoute(UpdateNGoProfile(), settings);
+      case RoutesName.updateDonarProfile:
+        return _buildRoute(UpdateDonarProfile(), settings);
+
       case RoutesName.donarSignup:
         return _buildRoute(
             const DonarSignup(

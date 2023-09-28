@@ -1,7 +1,6 @@
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
-import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../domain/models/request_model.dart';

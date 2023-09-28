@@ -1,16 +1,11 @@
 import 'package:donation_app/presentation/NGO%20screens/ngo_homepage.dart';
 import 'package:donation_app/presentation/NGO%20screens/ngo_setting.dart';
 import 'package:donation_app/presentation/NGO%20screens/request_details.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
-import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/images.dart';
-import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
-import 'package:donation_app/utils/dialogues/select_donation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/styling.dart';
+import '../chatting_screen.dart';
 
 class NgoNavigation extends StatefulWidget {
   const NgoNavigation({Key? key}) : super(key: key);
@@ -22,14 +17,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
   List pages = [
     const NGOHomePage(),
     const RequestDetails(),
-    Container(
-      child: Center(
-        child: Text(
-          "Coming soon",
-          style: CustomTextStyle.font_12_black,
-        ),
-      ),
-    ),
+    const ChattingScreen(),
     const NGOSetting()
     // const DonarDonationsScreen(),
     // const DonarSetting(),
@@ -100,7 +88,7 @@ class _NgoNavigationState extends State<NgoNavigation> {
                           minWidth: 40,
                           onPressed: () {
                             setState(() {
-                              currentScreen = Container();
+                              currentScreen = const ChattingScreen();
                               currentindex = 2;
                             });
                           },
