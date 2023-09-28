@@ -60,7 +60,7 @@ class ContactUs extends StatelessWidget {
           ),
           l,
           const Text(
-            "EMECH.CUSTOMERCARE@GMAIL.COM",
+            "Donate2Share.CUSTOMERCARE@GMAIL.COM",
             textAlign: TextAlign.center,
           ),
         ],

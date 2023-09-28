@@ -135,7 +135,7 @@ class _AdminLoginState extends State<AdminLogin> {
                 children: [
                   AuthHeader(
                     height: 230.h,
-                    text: "WellCome To Admin Panel",
+                    text: "Welcome To Admin Panel",
                     style: CustomTextStyle.font_20_white,
                   ),
                   SizedBox(

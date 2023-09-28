@@ -122,7 +122,7 @@ class _NGOSignUpState extends State<NGOSignUp> {
 
         // await _firebaseUserRepository.loadUserDataOnAppInit(context);
 
-        await StorageService.initUser();
+        await StorageService.initNGO();
 
         isLoading(false);
         Navigator.pushReplacement(

@@ -279,11 +279,11 @@ class utils {
     return preferences;
   }
 
-  static Future<void> logOutUser(context) async {
+  static Future<void> logOutNGO(context) async {
     try {
       await FirebaseAuth.instance.signOut();
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setInt('isUser', 0);
+      await preferences.setInt('isNGO', 0);
     } catch (e) {
       utils.flushBarErrorMessage(e.toString(), context);
     }

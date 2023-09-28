@@ -1,4 +1,3 @@
-
 import 'package:donation_app/presentation/widgets/user_seller_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,13 +14,13 @@ class DonarOrSellerScreeen extends StatelessWidget {
         // backgroundColor: const Color(0xffF5AD0D),
         //        appBar: custom_appbar(),
         body: Padding(
-          padding: EdgeInsets.only(left: 80.w, top: 40.h),
+          padding: EdgeInsets.only(left: 100.w, top: 40.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               UserSellerComponent(
-                image: 'assets/user.png',
+                image: 'assets/planet.png',
                 text: "NGO",
                 ontap: () {
                   Navigator.pushNamed(context, RoutesName.ngoLogin);
@@ -30,21 +29,20 @@ class DonarOrSellerScreeen extends StatelessWidget {
               SizedBox(
                 height: 50.h,
               ),
-              // UserSellerComponent(
-              //     image: Images.seller,
-              //     text: "Donar",
-              //     ontap: () {
-              //       Navigator.pushNamed(context, RoutesName.donarLogin);
-              //     }),
+              UserSellerComponent(
+                  image: "assets/donation.png",
+                  text: "Donar",
+                  ontap: () {
+                    Navigator.pushNamed(context, RoutesName.donarLogin);
+                  }),
               SizedBox(
-                height: 80.h,
+                height: 60.h,
               ),
-              // Image.asset(
-              //   Images.eMech,
-              //   height: 37.h,
-              //   width: 129.w,
-              // ),
-              // const EmergencyServiceProviderText()
+              Image.asset(
+                Images.logo,
+                height: 130.h,
+                width: 149.w,
+              ),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:donation_app/presentation/chatting_screen.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_setting.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_donation_screen.dart';
@@ -16,9 +17,9 @@ class DonarNavigation extends StatefulWidget {
 
 class _DonarNavigationState extends State<DonarNavigation> {
   List pages = [
-    DonarHomePage(),
-    // DonateFood(),
+    const DonarHomePage(),
     const DonarDonationsScreen(),
+    const ChattingScreen(),
     const DonarSetting(),
   ];
   int currentindex = 0;
@@ -29,7 +30,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = DonarHomePage();
+  Widget currentScreen = const DonarHomePage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,7 @@ class _DonarNavigationState extends State<DonarNavigation> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = DonarHomePage();
+                        currentScreen = const DonarHomePage();
                         currentindex = 0;
                       });
                     },
@@ -96,8 +97,8 @@ class _DonarNavigationState extends State<DonarNavigation> {
                     minWidth: 40.w,
                     onPressed: () {
                       setState(() {
-                        currentScreen = const DonarSetting();
-                        currentindex = 0;
+                        currentScreen = const ChattingScreen();
+                        currentindex = 2;
                       });
                     },
                     child: Icon(
@@ -116,14 +117,14 @@ class _DonarNavigationState extends State<DonarNavigation> {
                           onPressed: () {
                             setState(() {
                               currentScreen = const DonarSetting();
-                              currentindex = 0;
+                              currentindex = 3;
                             });
                           },
                           child: Icon(
                             size: 26.h,
                             Icons.settings_outlined,
                             color:
-                                currentindex == 2 ? Colors.white : Colors.grey,
+                                currentindex == 3 ? Colors.white : Colors.grey,
                           ),
                         ),
                       ],

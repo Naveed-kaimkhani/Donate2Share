@@ -41,7 +41,7 @@ class AboutUs extends StatelessWidget {
           ),
           l,
           const Text(
-            "At E-Mech, our mission is to ensure the timely help of our customer with proper safety. We want to let people allow travel without any hassle. Our service providers will be there for you at any emergency breakdown of yoir vehicle.",
+            "Donate2Shsare aim to Linking donors and NGOs, reducing waste by facilitating surplus food and clothing donations, and supporting those in need.",
             textAlign: TextAlign.center,
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:donation_app/presentation/admin/admin_login.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_login.dart';
 import 'package:donation_app/presentation/ngo_donar_screen.dart';
 import 'package:donation_app/presentation/rider/rider_login.dart';
+import 'package:donation_app/presentation/splash_screen.dart';
 import 'package:donation_app/providers/admin_provider.dart';
 import 'package:donation_app/providers/donars_list_provider.dart';
 import 'package:donation_app/providers/ngos_list_provider.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
             ),
             // home: AdminLogin(),
-            home: const NGODonarScreen(),
+            home: const SplashScreen(),
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );

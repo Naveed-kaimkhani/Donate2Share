@@ -120,7 +120,7 @@ class DonarsDetailsWidget extends StatelessWidget {
                   ),
                   k,
                   Text.rich(TextSpan(
-                      text: 'Address: ',
+                      text: 'Address: ${donar.address!.length}',
                       style: CustomTextStyle.font_10_primaryColor,
                       children: <InlineSpan>[
                         TextSpan(
@@ -147,9 +147,9 @@ class DonarsDetailsWidget extends StatelessWidget {
             //   width: 60.w,
             // ),
             Padding(
-              padding: donar.address!.length < 31
-                  ? EdgeInsets.only(left: 76.w, top: 10.h)
-                  : EdgeInsets.only(left: 70.w, top: 10.h),
+              padding: donar.address!.length < 50
+                  ? EdgeInsets.only(left: 52.w, top: 10.h)
+                  : EdgeInsets.only(left: 44.w, top: 10.h),
               child: CallWidget(
                   iconSize: 20.h,
                   radius: 20.r,

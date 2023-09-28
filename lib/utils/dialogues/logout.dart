@@ -22,7 +22,7 @@ showLogoutPopup(context) async {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          await utils.logOutUser(context);
+                          await utils.logOutNGO(context);
                           // ignore: use_build_context_synchronously
                           Navigator.pushReplacement(
                               context,

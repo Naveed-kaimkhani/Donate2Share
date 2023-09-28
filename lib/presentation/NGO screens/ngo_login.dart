@@ -76,6 +76,8 @@ class _NGOLoginState extends State<NGOLogin> {
     try {
       await Provider.of<UserProvider>(context, listen: false)
           .getUserFromServer(context);
+         await StorageService.initNGO();
+
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return const NgoNavigation();
       }));

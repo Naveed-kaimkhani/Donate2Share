@@ -1,6 +1,3 @@
-// import 'dart:typed_data';
-import 'dart:typed_data';
-import 'package:donation_app/presentation/NGO%20screens/ngo_navigation_page.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,8 +8,6 @@ import '../../data/firebase_user_repository.dart';
 import '../../data/notification_services.dart';
 import '../../domain/models/user_model.dart';
 import '../../providers/admin_provider.dart';
-import '../../providers/donars_list_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
 import '../../utils/storage_services.dart';
@@ -113,7 +108,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
       await StorageService.saveUser(userModel).then((value) async {
         await Provider.of<AdminProvider>(context, listen: false)
             .getAdminFromServer(context);
-        await StorageService.initUser();
+        // await StorageService.initUser();
 
         isLoading(false);
         Navigator.pushReplacement(context,

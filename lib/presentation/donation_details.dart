@@ -29,8 +29,8 @@ class _DonationDetailsState extends State<DonationDetails> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: CallWidget(
-            iconSize: 10.h,
-            radius: 2.0,
+            iconSize: 25.h,
+            radius: 28.r,
             num: widget.donationModel.donarPhone!,
             context: context),
         body: SingleChildScrollView(

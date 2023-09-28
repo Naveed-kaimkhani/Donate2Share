@@ -1,4 +1,5 @@
 import 'package:donation_app/presentation/donar%20screens/track_donation.dart';
+import 'package:donation_app/presentation/donation_details.dart';
 import 'package:donation_app/presentation/widgets/donar_donations_header.dart';
 import 'package:donation_app/presentation/widgets/track_donation_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,17 @@ class clothDonations extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: clothList.length,
                     itemBuilder: (context, index) {
-                      return DonationWidget(
-                          showButton: true, donationModel: clothList[index]);
+                      return InkWell(
+                        child: DonationWidget(
+                            showButton: true, donationModel: clothList[index]),
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return DonationDetails(
+                                donationModel: clothList[index]);
+                          }));
+                        },
+                      );
                     },
                   ),
                 ),

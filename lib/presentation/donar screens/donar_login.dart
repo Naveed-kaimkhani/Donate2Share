@@ -70,30 +70,39 @@ class _DonarLoginState extends State<DonarLogin> {
     });
   }
 
-  void _getSellerDetails() {
-    _firebaseRepository.getSellerDetails().then((SellerModel? sellerModel) {
-      if (sellerModel != null) {
-        StorageService.saveSeller(sellerModel).then((value) async {
-          // await Provider.of<SellerProvider>(context, listen: false)
-          //     .getSellerFromServer();
-          await _firebaseRepository.loadDonarDataOnAppInit(context);
-
-          isLoading(false);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const DonarNavigation()));
-        }).catchError((error) {
-          isLoading(false);
-          utils.flushBarErrorMessage(error.message.toString(), context);
-        });
-      } else {
-        isLoading(false);
-        utils.flushBarErrorMessage("User is null", context);
-      }
-    }).catchError((error) {
+  _getSellerDetails() async {
+    try {
+      await _firebaseRepository.loadDonarDataOnAppInit(context);
       isLoading(false);
-      utils.flushBarErrorMessage(error.message.toString(), context);
-    });
+      isLoading(false);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const DonarNavigation()));
+    } catch (e) {
+      utils.flushBarErrorMessage(e.toString(), context);
+    }
   }
+
+  // void _getSellerDetails() {
+  //   _firebaseRepository.getSellerDetails().then((SellerModel? sellerModel) {
+  //     if (sellerModel != null) {
+  //       StorageService.saveSeller(sellerModel).then((value) async {
+  //         // await Provider.of<SellerProvider>(context, listen: false)
+  //         //     .getSellerFromServer();
+  //         await _firebaseRepository.loadDonarDataOnAppInit(context);
+
+  //       }).catchError((error) {
+  //         isLoading(false);
+  //         utils.flushBarErrorMessage(error.message.toString(), context);
+  //       });
+  //     } else {
+  //       isLoading(false);
+  //       utils.flushBarErrorMessage("User is null", context);
+  //     }
+  //   }).catchError((error) {
+  //     isLoading(false);
+  //     utils.flushBarErrorMessage(error.message.toString(), context);
+  //   });
+  // }
 
   @override
   void dispose() {

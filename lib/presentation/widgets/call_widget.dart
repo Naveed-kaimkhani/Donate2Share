@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../../../style/styling.dart';
 
 class CallWidget extends StatelessWidget {
-final  String num;
- final double radius;
+  final String num;
+  final double radius;
 
- final double iconSize;
- final BuildContext context;
- const CallWidget({
+  final double iconSize;
+  final BuildContext context;
+  const CallWidget({
     required this.iconSize,
     required this.radius,
     required this.num,
@@ -30,7 +30,6 @@ final  String num;
         ),
       ),
       onTap: () {
-        
         utils.launchphone(num, context);
       },
     );

@@ -156,7 +156,7 @@ class FirebaseUserRepository {
     }
   }
 
-  loadUserDataOnAppInit(context) async {
+  loadNGODataOnAppInit(context) async {
     try {
       await Provider.of<UserProvider>(context, listen: false)
           .getUserFromServer(context);
