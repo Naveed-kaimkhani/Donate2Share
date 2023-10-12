@@ -1,5 +1,6 @@
 import 'package:donation_app/presentation/admin/admin_setting.dart';
 import 'package:donation_app/presentation/admin/donation_request_screen.dart';
+import 'package:donation_app/presentation/chatting_screen.dart';
 import 'package:donation_app/style/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +17,7 @@ class _AdminNavigationState extends State<AdminNavigation> {
   List pages = [
     AdminHomePage(),
     const DonationRequestScreen(),
-    const AdminSetting(),
+    const ChattingScreen(),
     const AdminSetting(),
     // const DonarSetting(),
   ];
@@ -87,7 +88,7 @@ class _AdminNavigationState extends State<AdminNavigation> {
                             minWidth: 40.w,
                             onPressed: () {
                               setState(() {
-                                currentScreen = const AdminSetting();
+                                currentScreen = const ChattingScreen();
                                 currentindex = 2;
                               });
                             },

@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:donation_app/domain/models/donation_model.dart';
 import 'package:donation_app/presentation/widgets/call_widget.dart';
 import 'package:donation_app/presentation/widgets/circle_progress.dart';
+import 'package:donation_app/presentation/widgets/wave_circle.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _DonationDetailsState extends State<DonationDetails> {
                     widthFactor: 2.0,
                     heightFactor: 2.0,
                     // child: CircularProgressIndicator()
-                    child: CircleProgress(),
+                    child: WaveCircleProgress(),
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),

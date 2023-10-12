@@ -9,10 +9,14 @@ import 'package:donation_app/presentation/donar%20screens/donar_signup.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
 import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/presentation/privacy_policy_screen.dart';
+import 'package:donation_app/presentation/rider/rider_profile.dart';
 import 'package:donation_app/presentation/rider/rider_signup.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 
+import '../../presentation/admin/admin_change_password.dart';
+import '../../presentation/admin/admin_profile.dart';
+import '../../presentation/admin/admin_signup.dart';
 import '../../presentation/donar screens/donar_login.dart';
 import '../../presentation/donar screens/update_donar_profile.dart';
 
@@ -33,6 +37,10 @@ class Routes {
         return _buildRoute(UpdateNGoProfile(), settings);
       case RoutesName.updateDonarProfile:
         return _buildRoute(UpdateDonarProfile(), settings);
+      case RoutesName.adminProfile:
+        return _buildRoute(AdminProfile(), settings);
+      case RoutesName.adminChangePassword:
+        return _buildRoute(AdminChangePassword(), settings);
 
       case RoutesName.donarSignup:
         return _buildRoute(
@@ -54,8 +62,11 @@ class Routes {
       case RoutesName.aboutUs:
         return _buildRoute(AboutUs(), settings);
 
-      // case RoutesName.sellerSignup:
-      //   return _buildRoute(const SellerSignUp(), settings);
+      case RoutesName.adminSignup:
+        return _buildRoute(const AdminSignUp(), settings);
+
+      case RoutesName.riderProfile:
+        return _buildRoute(RiderProfile(), settings);
 
       // case RoutesName.userLogin:
       //   return _buildRoute(const UserLogin(), settings);

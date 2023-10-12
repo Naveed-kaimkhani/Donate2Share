@@ -2,7 +2,6 @@
 import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-
 import '../domain/models/user_model.dart';
 
 class UserProvider with ChangeNotifier {

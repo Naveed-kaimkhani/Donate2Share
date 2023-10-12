@@ -1,3 +1,4 @@
+import 'package:donation_app/presentation/ngo_donar_screen.dart';
 import 'package:donation_app/presentation/widgets/all_donars_screen_header.dart';
 import 'package:donation_app/presentation/widgets/custom_divider.dart';
 import 'package:donation_app/presentation/widgets/setting_screen_widget.dart';
@@ -83,7 +84,7 @@ class NGOSetting extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                showLogoutPopup(context);
+                showLogoutPopup(NGODonarScreen(), context);
               },
             ),
           ],

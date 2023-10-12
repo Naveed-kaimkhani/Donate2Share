@@ -198,6 +198,8 @@ class _DonationWidgetState extends State<DonationWidget> {
                                   widget.donationModel.donarProfileImage,
                               sentDate: widget.donationModel.sentDate,
                               sentTime: widget.donationModel.sentTime,
+                              status: 'pending'
+
                             );
                             await FirebaseUserRepository.assignRider(
                                 rideDetails, context);

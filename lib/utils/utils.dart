@@ -24,6 +24,7 @@ import '../domain/models/seller_model.dart';
 import '../presentation/donar screens/no_internet_connection.dart';
 import '../presentation/widgets/circle_progress.dart';
 import 'dialogues/request_sent_dialogue.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class utils {
   static toastMessage(String message) {
@@ -272,6 +273,9 @@ class utils {
 
   static User? getCurrentUser() {
     return FirebaseAuth.instance.currentUser;
+  }
+  Future<void> clearImageCache(String imageUrl) async {
+    await CachedNetworkImage.evictFromCache(imageUrl);
   }
 
   static Future<SharedPreferences> getPreferencesObject() async {

@@ -1,8 +1,5 @@
-import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
 import 'package:donation_app/presentation/rider/rider_homepage.dart';
+import 'package:donation_app/presentation/rider/rider_navigation.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
@@ -12,10 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
-import '../../../utils/storage_services.dart';
-import '../../domain/models/seller_model.dart';
 import '../../providers/rider_provider.dart';
-import '../../providers/seller_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
@@ -61,13 +55,11 @@ class _RiderLoginState extends State<RiderLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        // .login(_emailController.text, _passwordController.text, context)
-        .login("rider@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
+        // .login("rider@gmail.com", "111111", context)
         .then((User? user) async {
       if (user != null) {
-        print("rider found");
-        //  final   currentLocation = await Geolocator.getCurrentPosition();
-        _getSellerDetails();
+       _getSellerDetails();
       } else {
         isLoading(false);
         utils.flushBarErrorMessage("Failed to login", context);
@@ -79,34 +71,12 @@ class _RiderLoginState extends State<RiderLogin> {
     try {
       await Provider.of<RiderProvider>(context, listen: false)
           .getRiderFromServer(context);
-      print("object");
-
       isLoading(false);
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const RiderHomePage()));
+          MaterialPageRoute(builder: (context) => const RiderNavigation()));
     } catch (e) {
       utils.flushBarErrorMessage(e.toString(), context);
     }
-    // _firebaseRepository
-    //     .getRiderDetails()
-    //     .then((SellerModel? sellerModel) async {
-    //   if (sellerModel != null) {
-    //     // await _firebaseRepository.loadDonarDataOnAppInit(context);
-
-    //     await Provider.of<RiderProvider>(context, listen: false)
-    //         .getRiderFromServer(context);
-
-    //     isLoading(false);
-    //     Navigator.pushReplacement(context,
-    //         MaterialPageRoute(builder: (context) => const RiderHomePage()));
-    //   } else {
-    //     isLoading(false);
-    //     utils.flushBarErrorMessage("User is null", context);
-    //   }
-    // }).catchError((error) {
-    //   isLoading(false);
-    //   utils.flushBarErrorMessage(error.message.toString(), context);
-    // });
   }
 
   @override
@@ -203,8 +173,8 @@ class _RiderLoginState extends State<RiderLogin> {
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              // _submitForm();
-                              _login();
+                              _submitForm();
+                              // _login();
                             },
                             color: Styling.primaryColor),
                   ),

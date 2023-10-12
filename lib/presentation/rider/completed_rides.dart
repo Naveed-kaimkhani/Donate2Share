@@ -10,8 +10,8 @@ import '../../providers/rider_provider.dart';
 import '../donar screens/no_data_found.dart';
 import '../widgets/wave_circle.dart';
 
-class RiderHomePage extends StatelessWidget {
-  const RiderHomePage({super.key});
+class CompletedRides extends StatelessWidget {
+  const CompletedRides({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,9 @@ class RiderHomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            DonarDonationHeader(
-              text: "Your Pending Rides",
-              height: 100.h,
-              backButton: false,
-            ),
+            DonarDonationHeader(text: "Your Completed Rides", height: 100.h,backButton: false,),
             StreamBuilder<List<DonationNgoModel>>(
-              stream:
-                  FirebaseUserRepository.getAssignedRides('pending', context),
+              stream: FirebaseUserRepository.getAssignedRides('completed',context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const WaveCircleProgress();
@@ -38,7 +33,7 @@ class RiderHomePage extends StatelessWidget {
                   return Text(snapshot.error.toString());
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const NoDataFoundScreen(
-                    text: "No pending rides",
+                    text: "No completed rides",
                   );
                 } else {
                   return ListView.builder(

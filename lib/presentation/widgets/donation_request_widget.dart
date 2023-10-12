@@ -1,15 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/presentation/widgets/track_donation_button.dart';
 import 'package:donation_app/style/custom_text_style.dart';
-import 'package:donation_app/style/styling.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
-import '../../../providers/seller_provider.dart';
 import '../../domain/models/donation_model.dart';
 import '../../domain/models/request_model.dart';
 

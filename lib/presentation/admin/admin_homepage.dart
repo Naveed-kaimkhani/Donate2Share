@@ -8,26 +8,21 @@ import 'package:donation_app/presentation/widgets/connected_donars.dart';
 import 'package:donation_app/presentation/widgets/connected_ngo_card.dart';
 import 'package:donation_app/providers/ngos_list_provider.dart';
 import 'package:donation_app/style/images.dart';
-import 'package:donation_app/style/styling.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../../domain/models/donation_model.dart';
 import '../../domain/models/seller_model.dart';
 import '../../domain/models/user_model.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/donars_list_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../donar screens/no_data_found.dart';
 import '../widgets/admin_home_card.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/connected_donars_card.dart';
 import '../widgets/custom_divider.dart';
-import '../widgets/ngo_card.dart';
-import '../widgets/profile_pic.dart';
 import '../widgets/wave_circle.dart';
 import 'connected_ngo_screen.dart';
 
@@ -39,18 +34,6 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  // List<DonationModel> filterFoodDonations(List<DonationModel> donationList) {
-  //   return donationList.where((donation) => donation.type == "food").toList();
-  // }
-
-  // List<DonationModel> filterCLothesDonations(List<DonationModel> donationList) {
-  //   return donationList
-  //       .where((donation) => donation.type == "clothes")
-  //       .toList();
-  // }
-
-  // List<Widget> connectedDonars=[]
-  // List<SellerModel>? allDonars;
   List<SellerModel>? individualDonarsList;
   List<SellerModel>? restaurantList;
   List<SellerModel>? organizationList;

@@ -1,10 +1,10 @@
-
-import 'package:donation_app/utils/utils.dart';
+import 'package:donation_app/presentation/admin/admin_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/styling.dart';
 
-showLogoutPopup(Widget screen, context) async {
+showAdminLogoutPopup(context) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -21,13 +21,13 @@ showLogoutPopup(Widget screen, context) async {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          await utils.logOutNGO(context);
                           // ignore: use_build_context_synchronously
+                         await FirebaseAuth.instance.signOut();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      screen));
+                                      const AdminLogin()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Styling.primaryColor),

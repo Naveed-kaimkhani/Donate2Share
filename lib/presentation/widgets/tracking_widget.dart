@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donation_app/data/firebase_user_repository.dart';
 import 'package:donation_app/domain/models/donation_ngo_model.dart';
 import 'package:donation_app/presentation/widgets/profile_pic.dart';
 import 'package:donation_app/style/custom_text_style.dart';
 import 'package:donation_app/style/styling.dart';
+import 'package:donation_app/utils/dialogues/custom_loader.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -119,7 +121,7 @@ class _TrackingWidgetState extends State<TrackingWidget> {
                   height: 4.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
                       children: [
@@ -150,7 +152,29 @@ class _TrackingWidgetState extends State<TrackingWidget> {
                       ],
                     ),
                     SizedBox(
-                      width: 69.w,
+                      width: 30.w,
+                    ),
+                    InkWell(
+                        child: Container(
+                          height: 30.h,
+                          width: 34.w,
+                          decoration: BoxDecoration(
+                              color: Styling.primaryColor,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: const Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onTap: () async {
+                          LoaderOverlay.show(context);
+                          await FirebaseUserRepository.updateRideStatus(
+                              widget.model.documentId!);
+                          LoaderOverlay.hide();
+                          utils.toastMessage("Ride mark completed");
+                        }),
+                    SizedBox(
+                      width: 8.w,
                     ),
                     InkWell(
                         child: Container(

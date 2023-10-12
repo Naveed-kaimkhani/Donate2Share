@@ -70,8 +70,8 @@ class _AdminSignUpState extends State<AdminSignUp> {
     // utils.showLoading(context);
     isLoading(true);
     _firebaseUserRepository
-        // .signUpUser(_emailController.text, _passwordController.text, context)
-        .signUpUser("admin@gmail.com", "111111", context)
+        .signUpUser(_emailController.text, _passwordController.text, context)
+        // .signUpUser("admin@gmail.com", "111111", context)
         .then((User? user) async {
       final value =
           await _firebaseUserRepository.getUserCurrentLocation(context);

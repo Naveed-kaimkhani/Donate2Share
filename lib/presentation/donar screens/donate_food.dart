@@ -197,13 +197,6 @@ class _DonateFoodState extends State<DonateFood> {
           nextNode: foodDescriptionFocusNode,
           controller: _foodNameController,
           obsecureText: false,
-          // validator: (value) {
-          //   if (value.isEmpty) {
-          //     return "Enter food name";
-          //   } else {
-          //     return null;
-          //   }
-          // },
         ),
         l,
         Padding(
@@ -251,13 +244,6 @@ class _DonateFoodState extends State<DonateFood> {
           keyboardType: TextInputType.number,
           controller: _quantityController,
           obsecureText: false,
-          // validator: (value) {
-          //   if (value.isEmpty) {
-          //     return "Enter quantity";
-          //   } else {
-          //     return null;
-          //   }
-          // },
         ),
         l,
         Padding(
@@ -274,13 +260,6 @@ class _DonateFoodState extends State<DonateFood> {
           nextNode: expiryFocusNode,
           controller: _expiryController,
           obsecureText: false,
-          // validator: (value) {
-          //   if (value.isEmpty) {
-          //     return "Enter quantity";
-          //   } else {
-          //     return null;
-          //   }
-          // },
         ),
         l,
         Padding(

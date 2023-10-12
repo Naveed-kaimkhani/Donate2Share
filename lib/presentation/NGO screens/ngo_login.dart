@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
+import '../../domain/models/user_model.dart';
 import '../../providers/user_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/auth_button.dart';
@@ -61,7 +62,7 @@ class _NGOLoginState extends State<NGOLogin> {
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
-        _getUserDetails(user.uid);
+        _getUserDetails();
       } else {
         isLoading(false);
         utils.flushBarErrorMessage("Invalid email or password", context);
@@ -71,46 +72,24 @@ class _NGOLoginState extends State<NGOLogin> {
     });
   }
 
-  Future<void> _getUserDetails(String uid) async {
-    try {
-      await Provider.of<UserProvider>(context, listen: false)
-          .getUserFromServer(context);
-      await StorageService.initNGO();
+void _getUserDetails() async{
+  _firebaseRepository.getUser().then((UserModel? userModel) async{
+    if (userModel != null) {
+      // Instead of calling saveUser, you can proceed with other actions directly.
+      await _firebaseRepository.loadNGODataOnAppInit(context);
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const NgoNavigation();
-      }));
-    } catch (e) {
-      utils.flushBarErrorMessage(e.toString(), context);
+      isLoading(false);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) =>NgoNavigation()));
+    } else {
+      isLoading(false);
+      utils.flushBarErrorMessage("User is null", context);
     }
-  }
-
-  // void _getUserDetails(String uid) {
-  //   _firebaseRepository.getUser().then((UserModel? userModel) {
-  //     if (userModel != null) {
-  //       StorageService.saveUser(userModel).then((value) async {
-  //         await Provider.of<UserProvider>(context, listen: false)
-  //             .getUserFromServer(context);
-  //         // await _firebaseRepository.loadUserDataOnAppInit(context);
-
-  //         await StorageService.initUser();
-  //         isLoading(false);
-  //         Navigator.pushReplacement(context,
-  //             MaterialPageRoute(builder: (context) => NgoNavigation()));
-  //       }).catchError((error) {
-  //         isLoading(false);
-
-  //         utils.flushBarErrorMessage(error.message.toString(), context);
-  //       });
-  //     } else {
-  //       isLoading(false);
-  //       utils.flushBarErrorMessage("User is null", context);
-  //     }
-  //   }).catchError((error) {
-  //     isLoading(false);
-  //     utils.flushBarErrorMessage(error.message.toString(), context);
-  //   });
-  // }
+  }).catchError((error) {
+    isLoading(false);
+    utils.flushBarErrorMessage(error.message.toString(), context);
+  });
+}
 
   @override
   void dispose() {
@@ -206,8 +185,8 @@ class _NGOLoginState extends State<NGOLogin> {
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              // _submitForm();
-                              _login();
+                              _submitForm();
+                              // _login();
                             },
                             color: Styling.primaryColor),
                   ),

@@ -11,6 +11,10 @@ class RiderProvider with ChangeNotifier {
     _riderDetails = await firebaseRepository.getRiderDetails();
     if (_riderDetails == null) {
       utils.flushBarErrorMessage("No user found",context);
+   return null;
+    }
+    else{
+      return _riderDetails;
     }
     notifyListeners();
   }

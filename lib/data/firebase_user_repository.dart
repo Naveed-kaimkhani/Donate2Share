@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_app/utils/dialogues/donation_done_popUp.dart';
 import 'package:donation_app/utils/utils.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import '../domain/models/donation_data.dart';
 import '../domain/models/donation_model.dart';
 import '../domain/models/donation_ngo_model.dart';
@@ -20,11 +17,9 @@ import '../domain/models/request_model.dart';
 import '../domain/models/seller_model.dart';
 import '../domain/models/user_model.dart';
 import '../providers/admin_provider.dart';
-import '../providers/donars_list_provider.dart';
 import '../providers/seller_provider.dart';
 import '../providers/user_provider.dart';
 import '../utils/dialogues/custom_loader.dart';
-import 'notification_services.dart';
 
 class FirebaseUserRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -40,7 +35,7 @@ class FirebaseUserRepository {
   static final CollectionReference _adminCollection =
       firestore.collection('admin');
   static final Reference _storageReference = FirebaseStorage.instance.ref();
-  NotificationServices _notificationServices = NotificationServices();
+  // NotificationServices _notificationServices = NotificationServices();
 
   static final CollectionReference _requestsCollection =
       FirebaseFirestore.instance.collection('requests');
@@ -168,20 +163,21 @@ class FirebaseUserRepository {
     }
   }
 
-  // Future<SellerModel?> getSeller() async {
-  //   DocumentSnapshot documentSnapshot =
-  //       await _sellerCollection.doc(utils.currentUserUid).get();
-  //   if (documentSnapshot.data() != null) {
-  //     SellerModel? sellerModel =
-  //         SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
-  //     if (sellerModel != null) {
-  //       return sellerModel;
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //   return null;
-  // }
+  Future<SellerModel?> getSeller() async {
+    DocumentSnapshot documentSnapshot =
+        await _sellerCollection.doc(utils.currentUserUid).get();
+    if (documentSnapshot.data() != null) {
+      SellerModel? sellerModel =
+          SellerModel.fromMap(documentSnapshot.data() as Map<String, dynamic>);
+      if (sellerModel != null) {
+        return sellerModel;
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
+
   @override
   Future<SellerModel?> getSellerDetails() async {
     DocumentSnapshot documentSnapshot =
@@ -437,20 +433,6 @@ class FirebaseUserRepository {
     }
   }
 
-  // Future<void> loadDonarDataOnAppInit(context) async {
-  //   try {
-  //     String? refreshedToken = await _notificationServices.isTokenRefresh();
-
-  //     await Provider.of<SellerProvider>(context, listen: false)
-  //         .getSellerFromServer(context);
-
-  //     // Navigate to the home screen after loading the data
-  //   } catch (error) {
-  //     utils.flushBarErrorMessage(error.toString(), context);
-  //     // Handle error if any
-  //   }
-  // }
-
   static Future<void> saveDonationModelToFirestore(
       DonationModel donation, context) async {
     try {
@@ -544,24 +526,6 @@ class FirebaseUserRepository {
     yield donationList;
   }
 
-  // static Stream<List<RequestModel>> getNGODonationList(context) async* {
-  //   List<RequestModel> donationList = [];
-
-  //   try {
-  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-  //         .collection("requests")
-  //         .where('senderUid', isEqualTo: utils.currentUserUid)
-  //         .where('status', isEqualTo: 'accepted')
-  //         .get();
-  //     donationList = querySnapshot.docs.map((doc) {
-  //       return RequestModel.fromMap(doc.data() as dynamic);
-  //     }).toList();
-  //   } catch (e) {
-  //     utils.flushBarErrorMessage('Error fetching donations: $e', context);
-  //   }
-  //   yield donationList;
-  // }
-
   static Stream<List<RequestModel>> getNGODonationList(context) async* {
     List<RequestModel> donationList = [];
 
@@ -580,25 +544,24 @@ class FirebaseUserRepository {
     yield donationList;
   }
 
-  static Stream<List<DonationNgoModel>> getAssignedRides(context) async* {
+  static Stream<List<DonationNgoModel>> getAssignedRides(
+      String query, context) async* {
+    List<DonationNgoModel> donationList = [];
+
     try {
-      final CollectionReference requestCollection = FirebaseFirestore.instance
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection("riders")
           .doc(utils.currentUserUid)
-          .collection('rides');
-
-      yield* requestCollection.snapshots().map((snapshot) {
-        final List<DonationNgoModel> models = snapshot.docs
-            .map((docsSnap) =>
-                DonationNgoModel.fromMap(docsSnap.data() as dynamic))
-            .toList();
-        return models;
-      });
+          .collection('rides')
+          .where('status', isEqualTo: query)
+          .get();
+      donationList = querySnapshot.docs.map((doc) {
+        return DonationNgoModel.fromMap(doc.data() as dynamic);
+      }).toList();
     } catch (e) {
-      // Handle any potential errors here
-      utils.flushBarErrorMessage('Error fetching requests: $e', context);
-      yield []; // Yield an empty list in case of an error
+      utils.flushBarErrorMessage('Error fetching donations: $e', context);
     }
+    yield donationList;
   }
 
   static Stream<List<dynamic>> getDocumentDetails(
@@ -863,5 +826,18 @@ class FirebaseUserRepository {
       'long': longitude,
       // Add any additional rider information you need to update
     });
+  }
+
+  static Future<void> updateRideStatus(String id) async {
+    try {
+      // Update the 'status' field of the document with the provided ID to "accepted"
+      await _riderCollection
+          .doc(utils.currentUserUid)
+          .collection('rides')
+          .doc(id)
+          .update({'status': 'completed'});
+    } catch (error) {
+      print('Error updating ride status: $error');
+    }
   }
 }

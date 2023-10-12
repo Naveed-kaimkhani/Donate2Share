@@ -34,11 +34,6 @@ const  ConnectedNGOScreen({ super.key});
                     itemCount: donars.length,
                     itemBuilder: (context, index) {
                       return NgoDetailsWidget(
-                        // uid: donars[index].uid!,
-                        // name: donars[index].name!,
-                        // phone: donars[index].phone!,
-                        // url: donars[index].profileImage!,
-                        // address: donars[index].address!,
                         donar: donars[index],
                        
                       );

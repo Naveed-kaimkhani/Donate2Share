@@ -1,3 +1,4 @@
+import 'package:donation_app/presentation/rider/rider_login.dart';
 import 'package:donation_app/presentation/widgets/all_donars_screen_header.dart';
 import 'package:donation_app/presentation/widgets/custom_divider.dart';
 import 'package:donation_app/presentation/widgets/setting_screen_widget.dart';
@@ -6,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style/custom_text_style.dart';
 import '../../style/styling.dart';
-import '../../utils/dialogues/admin_logout_popup.dart';
+import '../../utils/dialogues/logout.dart';
 
-class AdminSetting extends StatelessWidget {
-  const AdminSetting({super.key});
+class RiderSetting extends StatelessWidget {
+  const RiderSetting({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +33,14 @@ class AdminSetting extends StatelessWidget {
             SettingScreenWidget(
               text: "profile",
               icon: Icons.admin_panel_settings,
-              routeName: RoutesName.adminProfile,
+              routeName: RoutesName.riderProfile,
             ),
             //  ServicesNSettingHeade(text: 'Setting Available'),
             const CustomDivider(),
             SettingScreenWidget(
               text: "Change Password",
               icon: Icons.password_outlined,
-              routeName: RoutesName.adminChangePassword,
+              routeName: "DonarChangePasswor",
             ),
             const CustomDivider(),
             SettingScreenWidget(
@@ -83,7 +84,7 @@ class AdminSetting extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                showAdminLogoutPopup(context);
+                showLogoutPopup(RiderLogin(), context);
               },
             ),
           ],

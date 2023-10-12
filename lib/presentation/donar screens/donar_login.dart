@@ -1,3 +1,4 @@
+import 'package:donation_app/domain/models/seller_model.dart';
 import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
 import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
@@ -57,7 +58,7 @@ class _DonarLoginState extends State<DonarLogin> {
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
-        _getSellerDetails();
+        _getUserDetails();
       } else {
         isLoading(false);
         utils.flushBarErrorMessage("Failed to login", context);
@@ -65,18 +66,24 @@ class _DonarLoginState extends State<DonarLogin> {
     });
   }
 
-  _getSellerDetails() async {
-    try {
-      await _firebaseRepository.loadDonarDataOnAppInit(context);
-      isLoading(false);
-     
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const DonarNavigation()));
-    } catch (e) {
-      utils.flushBarErrorMessage(e.toString(), context);
-    }
-  }
+  void _getUserDetails() async {
+    _firebaseRepository.getSeller().then((SellerModel? userModel) async {
+      if (userModel != null) {
+        // Instead of calling saveUser, you can proceed with other actions directly.
+        await _firebaseRepository.loadDonarDataOnAppInit(context);
 
+        isLoading(false);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => DonarNavigation()));
+      } else {
+        isLoading(false);
+        utils.flushBarErrorMessage("User is null", context);
+      }
+    }).catchError((error) {
+      isLoading(false);
+      utils.flushBarErrorMessage(error.message.toString(), context);
+    });
+  }
 
   @override
   void dispose() {
@@ -86,6 +93,7 @@ class _DonarLoginState extends State<DonarLogin> {
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -171,8 +179,8 @@ class _DonarLoginState extends State<DonarLogin> {
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              // _submitForm();
-                              _login();
+                              _submitForm();
+                              // _login();
                             },
                             color: Styling.primaryColor),
                   ),

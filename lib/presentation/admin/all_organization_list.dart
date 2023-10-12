@@ -1,10 +1,5 @@
-import 'package:donation_app/presentation/widgets/appbar_back_button.dart';
-import 'package:donation_app/presentation/widgets/auth_header.dart';
-import 'package:donation_app/presentation/widgets/donars_details_widget.dart';
-import 'package:donation_app/style/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../domain/models/seller_model.dart';
 import '../../providers/donars_list_provider.dart';
 import '../donar screens/no_data_found.dart';
@@ -42,11 +37,6 @@ class AllOrganizations extends StatelessWidget {
                         itemCount: donars.length,
                         itemBuilder: (context, index) {
                           return DonarsDetailsWidget(
-                            // name: donars[index].name!,
-                            // address: donars[index].address!,
-                            // phone: donars[index].phone!,
-                            // url: donars[index].profileImage!,
-                            // uid: donars[index].uid!,
                             donar: donars[index],
                           );
                         }))

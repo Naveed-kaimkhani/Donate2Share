@@ -22,6 +22,7 @@ class DonationNgoModel {
   String? donarProfileImage;
   String? donarAddress;
   List<dynamic>? pictures;
+  String? status;
   DonationNgoModel({
     this.documentId,
     this.donationId,
@@ -38,6 +39,7 @@ class DonationNgoModel {
     this.ngoProfileImage,
     this.donarLat,
     this.donarLong,
+    this.status,
     this.donarAddress,
     this.donarDeviceToken,
     this.donationDescription,
@@ -56,6 +58,8 @@ class DonationNgoModel {
     data['donationType'] = request.donationType;
     data['ngoLat'] = request.ngoLat; 
     data['ngoLong'] = request.ngoLong;
+    
+    data['status'] = request.status;
     data['ngoAddress'] = request.ngoAddress;
     data['donationId'] = request.donationId;
     data['ngoName'] = request.ngoName;
@@ -90,6 +94,7 @@ class DonationNgoModel {
     donationType=mapData['donationType'];
     ngoAddress = mapData['ngoAddress'];
     donationId = mapData['donationId'];
+    status = mapData['status'];
     ngoProfileImage = mapData['ngoProfileImage'];
     sentDate = mapData['sentDate'];
     sentTime = mapData['sentTime'];
@@ -101,9 +106,7 @@ class DonationNgoModel {
     donarLong = mapData['donarLong'];
    ngoLong = mapData['ngoLong'];
     ngoLat = mapData['ngoLat'];
-    
     donarPhone = mapData['donarPhone'];
-    
     donarAddress = mapData['donarAddress'];
     quantity = mapData['quantity'];
     pictures = mapData['pictures'];

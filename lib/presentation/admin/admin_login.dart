@@ -1,7 +1,4 @@
-import 'package:donation_app/presentation/donar%20screens/donar_homepage.dart';
-import 'package:donation_app/presentation/donar%20screens/donar_navigation.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_clothes.dart';
-import 'package:donation_app/presentation/donar%20screens/donate_food.dart';
+import 'package:donation_app/utils/routes/routes_name.dart';
 import 'package:donation_app/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,11 +8,8 @@ import 'package:provider/provider.dart';
 import '../../../data/firebase_user_repository.dart';
 import '../../../style/styling.dart';
 import '../../../utils/storage_services.dart';
-import '../../domain/models/seller_model.dart';
 import '../../domain/models/user_model.dart';
 import '../../providers/admin_provider.dart';
-import '../../providers/donars_list_provider.dart';
-import '../../providers/seller_provider.dart';
 import '../../style/custom_text_style.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_header.dart';
@@ -62,8 +56,8 @@ class _AdminLoginState extends State<AdminLogin> {
   void _login() {
     isLoading(true);
     _firebaseRepository
-        .login("admin@gmail.com", "111111", context)
-        // .login(_emailController.text, _passwordController.text, context)
+        // .login("admin@gmail.com", "111111", context)
+        .login(_emailController.text, _passwordController.text, context)
         .then((User? user) async {
       if (user != null) {
         //  final   currentLocation = await Geolocator.getCurrentPosition();
@@ -197,15 +191,17 @@ class _AdminLoginState extends State<AdminLogin> {
                             text: "Login",
                             func: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              // _submitForm();
-                              _login();
+                              _submitForm();
+                              // _login();
                             },
                             color: Styling.primaryColor),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 48.w),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.adminSignup);
+                      },
                       child: Text.rich(TextSpan(
                           text: 'Dont have a account? ',
                           style: CustomTextStyle.font_15,
